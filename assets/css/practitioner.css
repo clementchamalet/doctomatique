@@ -1,0 +1,686 @@
+/* ========================================
+   PAGE PRATICIEN - DOCTOMATIQUE
+   Design elegant et epure
+   ======================================== */
+
+/* ========== EN-TETE PRATICIEN ========== */
+.practitioner-header {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.practitioner-info h1 {
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--couleur-texte-fonce);
+    margin: 0 0 12px 0;
+    letter-spacing: -0.3px;
+}
+
+.practitioner-info p.specialties {
+    font-size: 15px;
+    color: var(--couleur-principale);
+    margin: 0;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+/* ========== LAYOUT A DEUX COLONNES ========== */
+.content-layout {
+    display: grid;
+    grid-template-columns: 1fr 480px;
+    gap: 40px;
+    align-items: start;
+}
+
+/* ========== COLONNE PRINCIPALE ========== */
+.main-column {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.info-section {
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease;
+}
+
+.info-section:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.info-section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--couleur-texte-fonce);
+    margin: 0 0 24px 0;
+    letter-spacing: -0.2px;
+}
+
+.bio-text {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--couleur-texte-principal);
+}
+
+/* ========== STRUCTURES ========== */
+.structures-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.structure-card {
+    padding: 24px;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.structure-card:hover {
+    border-color: var(--couleur-principale);
+    box-shadow: 0 2px 12px rgba(67, 142, 76, 0.08);
+}
+
+.structure-card h4 {
+    margin: 0 0 8px 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--couleur-texte-fonce);
+}
+
+.structure-type {
+    color: var(--couleur-principale);
+    font-size: 13px;
+    margin: 6px 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.structure-address {
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--couleur-texte-principal);
+    line-height: 1.6;
+}
+
+.structure-phone {
+    margin: 8px 0;
+    font-size: 14px;
+    color: var(--couleur-texte-principal);
+}
+
+.structure-availability {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--couleur-principale);
+}
+
+/* ========== AVIS ========== */
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.review-card {
+    padding: 20px;
+    background: #fafbfa;
+    border-radius: 10px;
+    border: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.review-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.review-author {
+    font-weight: 600;
+    color: var(--couleur-texte-fonce);
+    font-size: 14px;
+}
+
+.review-rating {
+    color: #ffa500;
+    font-size: 13px;
+}
+
+.review-comment {
+    font-size: 14px;
+    color: var(--couleur-texte-principal);
+    margin: 12px 0 0 0;
+    line-height: 1.6;
+}
+
+.review-date {
+    font-size: 12px;
+    color: var(--couleur-texte-leger);
+    margin-top: 10px;
+}
+
+/* ========== CARTE DE RESERVATION ========== */
+.sidebar-column {
+    position: relative;
+}
+
+.booking-card {
+    background: white;
+    color: var(--couleur-texte-principal);
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(67, 142, 76, 0.12);
+    border: 1px solid rgba(67, 142, 76, 0.1);
+    transition: all 0.3s ease;
+}
+
+.booking-card.sticky {
+    position: sticky;
+    top: 100px;
+}
+
+.booking-card:hover {
+    box-shadow: 0 4px 16px rgba(67, 142, 76, 0.16);
+}
+
+.booking-card h3 {
+    font-size: 22px;
+    color: var(--couleur-texte-fonce);
+    margin: 0 0 28px 0;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+}
+
+.booking-card h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 20px;
+    background: var(--couleur-principale);
+    margin-right: 12px;
+    border-radius: 2px;
+}
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--couleur-texte-principal);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+    color: var(--couleur-texte-principal);
+    font-family: var(--font-famille);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--couleur-principale);
+    box-shadow: 0 0 0 3px rgba(67, 142, 76, 0.08);
+}
+
+.form-control::placeholder {
+    color: var(--couleur-texte-leger);
+}
+
+/* ========== CRENEAUX ========== */
+.slots-container {
+    margin-top: 28px;
+    background: #fafbfa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #f0f0f0;
+}
+
+.slots-container h4 {
+    font-size: 13px;
+    color: var(--couleur-texte-principal);
+    margin-bottom: 16px;
+    margin-top: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+}
+
+.loading-slots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    color: var(--couleur-texte-principal);
+}
+
+.spinner-small {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #f0f0f0;
+    border-top: 2px solid var(--couleur-principale);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.no-slots {
+    padding: 20px;
+    text-align: center;
+    color: var(--couleur-texte-principal);
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+    font-size: 14px;
+}
+
+.slots-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+/* Scrollbar personnalisee */
+.slots-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.slots-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.slots-list::-webkit-scrollbar-thumb {
+    background: rgba(67, 142, 76, 0.3);
+    border-radius: 10px;
+}
+
+.slots-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(67, 142, 76, 0.5);
+}
+
+.day-card {
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    padding: 14px;
+    background: white;
+}
+
+.day-header {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--couleur-principal);
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+}
+
+.slots-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+}
+
+.slot-button {
+    padding: 10px 0;
+    border: 1.5px solid #e5e7eb;
+    background: white;
+    color: var(--couleur-texte-principal);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.slot-button:hover {
+    border-color: var(--couleur-principale);
+    color: var(--couleur-principale);
+}
+
+.slot-button:active {
+    background: var(--couleur-principale);
+    color: white;
+    border-color: var(--couleur-principale);
+}
+
+.login-notice {
+    text-align: center;
+    padding: 20px;
+    background: #fafbfa;
+    border-radius: 10px;
+    margin-top: 16px;
+    border: 1px solid #f0f0f0;
+}
+
+.login-notice p {
+    margin-bottom: 16px;
+    color: var(--couleur-texte-principal);
+    font-size: 14px;
+}
+
+.login-notice .btn-primary {
+    background: var(--couleur-principale);
+    color: white;
+    width: 100%;
+    border: none;
+    padding: 11px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.login-notice .btn-primary:hover {
+    background: var(--couleur-principale-hover);
+}
+
+/* ========== MODAL DE RESERVATION ========== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    padding: 36px;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.16);
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--couleur-texte-leger);
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: var(--couleur-texte-principal);
+}
+
+.modal-content h2 {
+    font-size: 24px;
+    margin: 0 0 28px 0;
+    color: var(--couleur-texte-fonce);
+    font-weight: 700;
+}
+
+.booking-summary {
+    background: #fafbfa;
+    padding: 24px;
+    border-radius: 10px;
+    margin-bottom: 28px;
+    border: 1px solid #f0f0f0;
+}
+
+.summary-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    color: var(--couleur-texte-principal);
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.summary-item strong {
+    color: var(--couleur-texte-fonce);
+    margin-right: 8px;
+    font-weight: 600;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.btn-primary,
+.btn-secondary {
+    flex: 1;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background: var(--couleur-principale);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--couleur-principale-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(67, 142, 76, 0.2);
+}
+
+.btn-secondary {
+    background: #f0f0f0;
+    color: var(--couleur-texte-principal);
+    border: 1px solid #e5e7eb;
+}
+
+.btn-secondary:hover {
+    background: #e8e8e8;
+}
+
+.booking-success {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--couleur-principale);
+    color: white;
+    font-size: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-weight: bold;
+}
+
+.booking-success h3 {
+    font-size: 22px;
+    color: var(--couleur-texte-fonce);
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.booking-success p {
+    color: var(--couleur-texte-principal);
+    margin-bottom: 28px;
+    font-size: 14px;
+}
+
+/* ========== LOADING SPINNER ========== */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid #f0f0f0;
+    border-top: 3px solid var(--couleur-principale);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 24px;
+}
+
+.loading-spinner p {
+    color: var(--couleur-texte-principal);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ========== PRACTITIONER PAGE ========== */
+.practitioner-page {
+    flex: 1;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1200px) {
+    .content-layout {
+        grid-template-columns: 1fr 420px;
+        gap: 32px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .content-layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .booking-card.sticky {
+        position: relative;
+        top: 0;
+    }
+
+    .main-column,
+    .content-layout {
+        gap: 32px;
+    }
+}
+
+@media (max-width: 768px) {
+    .practitioner-header {
+        padding: 28px;
+        margin-bottom: 32px;
+    }
+
+    .practitioner-info h1 {
+        font-size: 28px;
+    }
+
+    .info-section {
+        padding: 24px;
+        margin-bottom: 0;
+    }
+
+    .booking-card {
+        padding: 28px;
+    }
+
+    .slots-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .modal-content {
+        padding: 28px;
+        border-radius: 12px;
+    }
+
+    .info-section h2 {
+        font-size: 18px;
+        margin-bottom: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-layout {
+        gap: 24px;
+    }
+
+    .practitioner-header {
+        padding: 20px;
+    }
+
+    .info-section {
+        padding: 18px;
+    }
+
+    .booking-card {
+        padding: 20px;
+    }
+
+    .booking-card h3 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .modal-content {
+        padding: 20px;
+    }
+
+    .slots-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .slot-button {
+        padding: 8px 0;
+        font-size: 11px;
+    }
+}

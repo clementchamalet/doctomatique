@@ -1,0 +1,490 @@
+/* ========================================
+   PAGE MES RENDEZ-VOUS - DOCTOMATIQUE
+   ======================================== */
+
+.appointments-page {
+    padding: 40px 0;
+    min-height: calc(100vh - 200px);
+}
+
+.appointments-page h1 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* ========== FILTRES PAR STATUT ========== */
+.appointments-filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    color: #666;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-btn:hover {
+    border-color: var(--primary-color, #007bff);
+    color: var(--primary-color, #007bff);
+}
+
+.filter-btn.active {
+    background: var(--primary-color, #007bff);
+    border-color: var(--primary-color, #007bff);
+    color: white;
+}
+
+.filter-btn .count {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.filter-btn.active .count {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ========== LISTE DES RENDEZ-VOUS ========== */
+.appointments-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+}
+
+.appointment-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.appointment-card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.appointment-card.past {
+    opacity: 0.7;
+}
+
+.appointment-card.cancelled {
+    opacity: 0.6;
+    border: 1px solid #dc3545;
+}
+
+/* ========== EN-TÊTE CARTE ========== */
+.appointment-header {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 15px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.appointment-date {
+    width: 70px;
+    height: 70px;
+    background: var(--primary-color, #007bff);
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3);
+}
+
+.date-day {
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.date-month {
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+.appointment-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.practitioner-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.practitioner-photo-small {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+}
+
+.practitioner-info h3 {
+    font-size: 18px;
+    color: #333;
+    margin: 0;
+}
+
+.practitioner-info .specialties {
+    font-size: 13px;
+    color: #666;
+    margin: 3px 0 0 0;
+}
+
+/* ========== BADGES DE STATUT ========== */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.status-badge.upcoming {
+    background: #28a745;
+    color: white;
+}
+
+.status-badge.today {
+    background: #ffc107;
+    color: #333;
+}
+
+.status-badge.past {
+    background: #6c757d;
+    color: white;
+}
+
+.status-badge.cancelled {
+    background: #dc3545;
+    color: white;
+}
+
+/* ========== DÉTAILS DU RENDEZ-VOUS ========== */
+.appointment-details {
+    padding: 20px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #555;
+}
+
+.detail-row:last-child {
+    margin-bottom: 0;
+}
+
+.detail-row .icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.detail-row strong {
+    color: #333;
+}
+
+.detail-row small {
+    display: block;
+    color: #999;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.detail-row em {
+    color: #666;
+    font-style: italic;
+}
+
+/* ========== ACTIONS ========== */
+.appointment-actions {
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-cancel,
+.btn-view-practitioner {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background: #c82333;
+    transform: scale(1.02);
+}
+
+.btn-view-practitioner {
+    background: var(--primary-color, #007bff);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-view-practitioner:hover {
+    background: var(--primary-hover, #0056b3);
+    transform: scale(1.02);
+}
+
+/* ========== MESSAGE AUCUN RENDEZ-VOUS ========== */
+.no-appointments {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.no-appointments-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+.no-appointments h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.no-appointments p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* ========== MODAL D'ANNULATION ========== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-content h2 {
+    font-size: 24px;
+    color: #333;
+    margin: 0 0 20px 0;
+}
+
+.cancel-summary {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.cancel-summary .summary-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 15px;
+}
+
+.cancel-summary .summary-item:last-child {
+    border-bottom: none;
+}
+
+.cancel-summary strong {
+    color: #333;
+    margin-right: 10px;
+}
+
+.warning-text {
+    color: #dc3545;
+    font-weight: 500;
+    margin: 20px 0;
+    padding: 15px;
+    background: #fff5f5;
+    border-left: 4px solid #dc3545;
+    border-radius: 4px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+    flex: 1;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--primary-color, #007bff);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover, #0056b3);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #545b62;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+/* ========== SUCCÈS D'ANNULATION ========== */
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: #28a745;
+    color: white;
+    font-size: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+/* ========== SPINNER ========== */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color, #007bff);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .appointments-list {
+        grid-template-columns: 1fr;
+    }
+
+    .appointment-header {
+        grid-template-columns: 60px 1fr;
+    }
+
+    .appointment-date {
+        width: 60px;
+        height: 60px;
+    }
+
+    .date-day {
+        font-size: 24px;
+    }
+
+    .date-month {
+        font-size: 12px;
+    }
+
+    .appointment-actions {
+        flex-direction: column;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .appointments-page h1 {
+        font-size: 24px;
+    }
+
+    .appointments-filters {
+        flex-direction: column;
+    }
+
+    .filter-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

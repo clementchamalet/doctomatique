@@ -1,0 +1,449 @@
+/* ========================================
+   DESISTEMENT.CSS - STYLES PAGE DÉSISTEMENT
+   Signalement de désistement patient
+   ======================================== */
+
+/* ========== EN-TÊTE DE PAGE ========== */
+.desistement-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--espacement-grand);
+    flex-wrap: wrap;
+    gap: var(--espacement-moyen);
+}
+
+.desistement-title-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.desistement-icon {
+    font-size: 2.5rem;
+}
+
+.desistement-title-section h1 {
+    font-size: var(--taille-police-h2);
+    color: var(--couleur-texte-fonce);
+    margin: 0 0 0.25rem 0;
+}
+
+.desistement-subtitle {
+    font-size: 0.9rem;
+    color: var(--couleur-texte-secondaire);
+    margin: 0;
+}
+
+/* ========== MESSAGES ========== */
+.message-box {
+    padding: 1rem 1.5rem;
+    border-radius: var(--rayon-bordure-moyen);
+    margin-bottom: var(--espacement-grand);
+    border: 1px solid;
+    font-weight: 500;
+    animation: slideDown 0.3s ease-out;
+}
+
+.message-success {
+    background: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+.message-error {
+    background: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========== SÉLECTION TYPE DE RECHERCHE ========== */
+.search-type-selector {
+    background: var(--couleur-fond-blanc);
+    padding: 0.5rem;
+    border-radius: var(--rayon-bordure-moyen);
+    box-shadow: var(--ombre-petite);
+    border: 1px solid var(--couleur-bordure);
+    margin-bottom: var(--espacement-grand);
+}
+
+.search-type-tabs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-type-tab {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: none;
+    border-radius: var(--rayon-bordure-petit);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    text-decoration: none;
+    color: var(--couleur-texte-secondaire);
+    text-align: center;
+}
+
+.search-type-tab:hover {
+    background: var(--couleur-principale-light);
+    color: var(--couleur-principale);
+}
+
+.search-type-tab.active {
+    background: var(--couleur-principale);
+    color: white;
+}
+
+/* ========== BARRE DE RECHERCHE ========== */
+.search-container {
+    background: var(--couleur-fond-blanc);
+    padding: 1.5rem;
+    border-radius: var(--rayon-bordure-moyen);
+    box-shadow: var(--ombre-petite);
+    border: 1px solid var(--couleur-bordure);
+    margin-bottom: var(--espacement-grand);
+}
+
+.search-form {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.search-input-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    font-size: 1.2rem;
+    color: var(--couleur-texte-leger);
+}
+
+.search-input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-moyen);
+    font-size: 1rem;
+    transition: all var(--transition-normale);
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: var(--couleur-principale);
+    box-shadow: 0 0 0 3px rgba(67, 142, 76, 0.1);
+}
+
+.clear-search {
+    position: absolute;
+    right: 1rem;
+    color: var(--couleur-texte-leger);
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 50%;
+    transition: all var(--transition-normale);
+}
+
+.clear-search:hover {
+    background: var(--couleur-fond-page);
+    color: var(--couleur-texte-principal);
+}
+
+.btn-search {
+    padding: 1rem 2rem;
+    background: var(--couleur-principale);
+    color: white;
+    border: none;
+    border-radius: var(--rayon-bordure-moyen);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    white-space: nowrap;
+}
+
+.btn-search:hover {
+    background: var(--couleur-principale-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--ombre-principale-hover);
+}
+
+/* ========== RÉSULTATS ========== */
+.results-container {
+    background: var(--couleur-fond-blanc);
+    border-radius: var(--rayon-bordure-moyen);
+    box-shadow: var(--ombre-petite);
+    border: 1px solid var(--couleur-bordure);
+    min-height: 300px;
+}
+
+.results-header {
+    padding: 1.5rem;
+    border-bottom: 2px solid var(--couleur-bordure);
+}
+
+.results-header h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--couleur-texte-fonce);
+    margin: 0;
+}
+
+.results-list {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ========== CARTES DE RÉSULTATS ========== */
+.result-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--couleur-bordure);
+    transition: all var(--transition-normale);
+}
+
+.result-card:last-child {
+    border-bottom: none;
+}
+
+.result-card:hover {
+    background: var(--couleur-fond-page);
+}
+
+/* Résultats patient */
+.patient-result {
+    cursor: default;
+}
+
+.result-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--couleur-principale-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--couleur-principale);
+    flex-shrink: 0;
+}
+
+/* Résultats RDV */
+.rdv-date-time {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.75rem;
+    background: var(--couleur-fond-page);
+    border-radius: var(--rayon-bordure-moyen);
+    min-width: 100px;
+    flex-shrink: 0;
+}
+
+.rdv-date {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--couleur-texte-secondaire);
+}
+
+.rdv-time {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--couleur-principale);
+}
+
+.result-info {
+    flex: 1;
+}
+
+.result-info h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--couleur-texte-fonce);
+    margin: 0 0 0.5rem 0;
+}
+
+.result-info p {
+    font-size: 0.9rem;
+    color: var(--couleur-texte-secondaire);
+    margin: 0.25rem 0;
+}
+
+.result-meta {
+    font-size: 0.85rem !important;
+    color: var(--couleur-texte-leger) !important;
+}
+
+/* ========== BOUTONS ========== */
+.btn-view-rdv {
+    padding: 0.75rem 1.5rem;
+    background: var(--couleur-principale-light);
+    color: var(--couleur-principale);
+    border: 1px solid var(--couleur-principale);
+    border-radius: var(--rayon-bordure-moyen);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    white-space: nowrap;
+}
+
+.btn-view-rdv:hover {
+    background: var(--couleur-principale);
+    color: white;
+}
+
+.btn-desist {
+    padding: 0.75rem 1.5rem;
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    border-radius: var(--rayon-bordure-moyen);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    white-space: nowrap;
+}
+
+.btn-desist:hover {
+    background: #dc2626;
+    color: white;
+    border-color: #dc2626;
+}
+
+.desist-form {
+    margin: 0;
+}
+
+/* ========== ÉTATS VIDES ========== */
+.empty-state,
+.no-results {
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.empty-state-icon,
+.no-results-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.5;
+}
+
+.empty-state h3,
+.no-results h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--couleur-texte-fonce);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p,
+.no-results p {
+    font-size: 1rem;
+    color: var(--couleur-texte-secondaire);
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* ========== STATUTS ========== */
+.status-confirmé {
+    color: #065f46;
+}
+
+.status-en-attente {
+    color: #92400e;
+}
+
+.status-annulé {
+    color: #991b1b;
+}
+
+.status-terminé {
+    color: #1e40af;
+}
+
+/* ========== RESPONSIVE : MOBILE ========== */
+@media (max-width: 768px) {
+    .desistement-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-action-secondary {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .search-type-tabs {
+        flex-direction: column;
+    }
+    
+    .search-form {
+        flex-direction: column;
+    }
+    
+    .btn-search {
+        width: 100%;
+    }
+    
+    .result-card {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .result-avatar,
+    .rdv-date-time {
+        align-self: center;
+    }
+    
+    .btn-view-rdv,
+    .btn-desist {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ========== ANIMATIONS ========== */
+.result-card {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

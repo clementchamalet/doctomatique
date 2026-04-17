@@ -1,0 +1,358 @@
+/* ========================================
+   PRICES.CSS - PAGE TARIFS ET ABONNEMENTS
+   Styles spécifiques à tarifs.html
+   ======================================== */
+
+/* ========== CONTENEUR GLOBAL ========== */
+.tarifs-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* ========== EN-TÊTE DE SECTION (HÉROS) ========== */
+.tarifs-hero {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* Titre principal */
+.tarifs-hero h1 {
+    font-size: var(--taille-police-h1);
+    margin-bottom: 1rem;
+}
+
+/* Description principale */
+.tarifs-hero p {
+    color: var(--couleur-texte-secondaire);
+    font-size: var(--taille-police-grand);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* ========== BANNIÈRE DE TRANSPARENCE ========== */
+.transparency-banner {
+    background: var(--couleur-principale-light);
+    border: 2px solid var(--couleur-principale);
+    border-radius: var(--rayon-bordure-grand);
+    padding: 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+/* Titre de la bannière */
+.transparency-banner h2 {
+    color: var(--couleur-principale);
+    font-size: var(--taille-police-h2);
+    margin-bottom: 1rem;
+}
+
+/* Paragraphes de la bannière */
+.transparency-banner p {
+    color: var(--couleur-texte-principal);
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+}
+
+/* Texte mis en évidence */
+.transparency-banner strong {
+    color: var(--couleur-principale);
+}
+
+/* ========== BOUTON DE BASCULE (TOGGLE) ========== */
+.pricing-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+/* Style du bouton de bascule */
+.toggle-btn {
+    padding: 0.8rem 2rem;
+    border: 2px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-petit);
+    background: var(--couleur-fond-blanc);
+    color: var(--couleur-texte-principal);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+}
+
+/* Bouton actif */
+.toggle-btn.active {
+    border-color: var(--couleur-principale);
+    background: var(--couleur-principale);
+    color: white;
+}
+
+/* ========== GRILLE DES CARTES TARIFS ========== */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Carte de tarif */
+.pricing-card {
+    background: var(--couleur-fond-blanc);
+    border: 2px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-grand);
+    padding: 2.5rem;
+    transition: all var(--transition-normale);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Effet au survol */
+.pricing-card:hover {
+    border-color: var(--couleur-principale);
+    box-shadow: var(--ombre-principale);
+    transform: translateY(-5px);
+}
+
+/* Carte mise en avant (featured) */
+.pricing-card.featured {
+    border-color: var(--couleur-principale);
+    position: relative;
+}
+
+/* Badge "Le plus populaire" */
+.pricing-card.featured::before {
+    content: "Le plus populaire";
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--couleur-principale);
+    color: white;
+    padding: 0.4rem 1.5rem;
+    border-radius: var(--rayon-bordure-petit);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* En-tête de la carte de prix */
+.pricing-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Titre du plan (H3) */
+.pricing-card h3 {
+    font-size: var(--taille-police-h2);
+    color: var(--couleur-principale);
+    margin-bottom: 0.5rem;
+}
+
+/* Sous-titre/Slogan */
+.pricing-card .subtitle {
+    color: var(--couleur-texte-secondaire);
+    font-size: 0.95rem;
+}
+
+/* Conteneur de prix */
+.pricing-price {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Montant du prix */
+.price-amount {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--couleur-texte-principal);
+}
+
+/* Symbole monétaire */
+.price-currency {
+    font-size: 1.5rem;
+    color: var(--couleur-texte-secondaire);
+}
+
+/* Période (par mois/an) */
+.price-period {
+    color: var(--couleur-texte-secondaire);
+    font-size: 1rem;
+}
+
+/* Badge 'Gratuit' */
+.free-badge {
+    display: inline-block;
+    background: var(--couleur-principale);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: var(--rayon-bordure-petit);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* ========== LISTE DES FONCTIONNALITÉS ========== */
+.pricing-features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+    flex-grow: 1; /* Permet à la liste de prendre l'espace restant */
+}
+
+/* Élément de la liste */
+.pricing-features li {
+    padding: 0.8rem 0;
+    color: var(--couleur-texte-secondaire);
+    display: flex;
+    align-items: start;
+    gap: 0.8rem;
+    line-height: 1.5;
+}
+
+/* Icône de coche (Succès) */
+.pricing-features li::before {
+    content: "✓";
+    color: var(--couleur-principale);
+    font-weight: bold;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+/* Fonctionnalité non disponible */
+.pricing-features li.unavailable {
+    opacity: 0.4;
+}
+
+/* Icône de croix (Non disponible) */
+.pricing-features li.unavailable::before {
+    content: "✗";
+    color: var(--couleur-texte-leger);
+}
+
+/* Conteneur du bouton d'appel à l'action */
+.pricing-cta {
+    margin-top: auto; /* Pousse le CTA vers le bas de la carte */
+}
+
+/* ========== VENTILATION DES COÛTS (DÉTAILS) ========== */
+.cost-breakdown {
+    background: var(--couleur-fond-blanc);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-grand);
+    padding: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+/* Titre de la ventilation */
+.cost-breakdown h2 {
+    font-size: var(--taille-police-h2);
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--couleur-principale);
+}
+
+/* Tableau des coûts */
+.cost-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Cellules d'en-tête et de données */
+.cost-table th,
+.cost-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--couleur-bordure);
+}
+
+/* En-têtes de colonnes */
+.cost-table th {
+    background: var(--couleur-principale-light);
+    color: var(--couleur-principale);
+    font-weight: 600;
+}
+
+/* Ligne Totale */
+.cost-table tr:last-child td {
+    border-bottom: none;
+    font-weight: 600;
+    color: var(--couleur-principale);
+}
+
+/* Dernière colonne (Montant) */
+.cost-table td:last-child {
+    text-align: right;
+    font-weight: 600;
+}
+
+/* ========== SECTION FAQ ========== */
+.faq-section {
+    margin-top: 3rem;
+}
+
+/* Titre de la section FAQ */
+.faq-section h2 {
+    font-size: var(--taille-police-h2);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Grille des éléments FAQ */
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+/* Élément de la FAQ */
+.faq-item {
+    background: var(--couleur-fond-blanc);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-moyen);
+    padding: 1.5rem;
+}
+
+/* Question (H3) */
+.faq-item h3 {
+    color: var(--couleur-principale);
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+}
+
+/* Réponse (Paragraphe) */
+.faq-item p {
+    color: var(--couleur-texte-secondaire);
+    line-height: 1.7;
+}
+
+/* ========== RESPONSIVE : MOBILE ========== */
+@media (max-width: 768px) {
+    /* Réduction du padding du conteneur */
+    .tarifs-container {
+        padding: 1rem;
+    }
+
+    /* Réduction de la taille du titre */
+    .tarifs-hero h1 {
+        font-size: 2rem;
+    }
+
+    /* Passage à une seule colonne pour la grille de prix */
+    .pricing-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Réduction de la taille du prix */
+    .price-amount {
+        font-size: 2.5rem;
+    }
+
+    /* Réduction de la taille du texte dans le tableau */
+    .cost-table {
+        font-size: 0.9rem;
+    }
+
+    /* Réduction du padding dans le tableau */
+    .cost-table th,
+    .cost-table td {
+        padding: 0.8rem 0.5rem;
+    }
+}

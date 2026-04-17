@@ -1,0 +1,57 @@
+/* ===============================
+   PAGE CHOIX DISPONIBILITÉS
+   =============================== */
+
+.disponibilites-choice h1 {
+    margin-bottom: 2rem;
+}
+
+.dispo-actions {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.btn-dispo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 260px;
+    padding: 1.2rem 1.5rem;
+    border-radius: var(--rayon-bordure-moyen);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: var(--ombre-petite);
+}
+
+.btn-dispo:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--ombre-moyenne);
+}
+
+/* Bouton Ajouter */
+.btn-add {
+    background: var(--couleur-principale);
+    color: #fff;
+}
+
+/* Bouton Modifier */
+.btn-edit {
+    background: var(--couleur-fond-page);
+    color: var(--couleur-principale);
+    border: 1px solid var(--couleur-principale);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dispo-actions {
+        flex-direction: column;
+    }
+
+    .btn-dispo {
+        width: 100%;
+    }
+}

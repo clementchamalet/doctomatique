@@ -1,0 +1,262 @@
+/* ========================================
+   ABOUT.CSS - PAGE À PROPOS
+   Styles spécifiques à a-propos.html
+   ======================================== */
+
+/* ========== CONTENEUR GLOBAL ========== */
+.about-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* ========== EN-TÊTE DE SECTION (HÉROS) ========== */
+.about-hero {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+/* Titre principal */
+.about-hero h1 {
+    font-size: var(--taille-police-h1);
+    margin-bottom: 1rem;
+}
+
+/* Description principale */
+.about-hero p {
+    color: var(--couleur-texte-secondaire);
+    font-size: var(--taille-police-grand);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+/* ========== SECTION HISTOIRE / NOTRE RÉCIT ========== */
+.story-section {
+    background: var(--couleur-fond-blanc);
+    border-radius: var(--rayon-bordure-grand);
+    border: 1px solid var(--couleur-bordure);
+    padding: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+/* Titre de la section histoire */
+.story-section h2 {
+    font-size: var(--taille-police-h2);
+    color: var(--couleur-principale);
+    margin-bottom: 1.5rem;
+}
+
+/* Paragraphes de l'histoire */
+.story-section p {
+    color: var(--couleur-texte-principal);
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+}
+
+/* ========== SECTION MISSION & VISION (GRILLE) ========== */
+.mission-vision {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Carte de Mission/Vision */
+.mission-card {
+    background: var(--couleur-principale-light);
+    border-left: 4px solid var(--couleur-principale);
+    border-radius: var(--rayon-bordure-moyen);
+    padding: 2rem;
+}
+
+/* Titre de la carte */
+.mission-card h3 {
+    font-size: var(--taille-police-h3);
+    color: var(--couleur-principale);
+    margin-bottom: 1rem;
+}
+
+/* Contenu de la carte */
+.mission-card p {
+    color: var(--couleur-texte-principal);
+    line-height: 1.7;
+}
+
+/* ========== SECTION VALEURS ========== */
+.values-section {
+    margin-bottom: 3rem;
+}
+
+/* Titre de la section valeurs */
+.values-section h2 {
+    font-size: var(--taille-police-h2);
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+/* Grille des cartes de valeurs */
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+/* Carte de valeur individuelle */
+.value-card {
+    background: var(--couleur-fond-blanc);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-grand);
+    padding: 2rem;
+    text-align: center;
+    transition: all var(--transition-normale);
+}
+
+/* Effet au survol */
+.value-card:hover {
+    box-shadow: var(--ombre-principale);
+    transform: translateY(-3px);
+}
+
+/* Icône de la valeur */
+.value-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1rem;
+    background: var(--couleur-principale-light);
+    border-radius: var(--rayon-bordure-complet);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+/* Titre de la carte de valeur */
+.value-card h3 {
+    font-size: var(--taille-police-grand);
+    color: var(--couleur-principale);
+    margin-bottom: 0.8rem;
+}
+
+/* Description de la valeur */
+.value-card p {
+    color: var(--couleur-texte-secondaire);
+    line-height: 1.6;
+}
+
+/* ========== SECTION STATISTIQUES ========== */
+.stats-section {
+    background: var(--couleur-principale);
+    color: white;
+    border-radius: var(--rayon-bordure-grand);
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Grille des statistiques */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    text-align: center;
+}
+
+/* Valeur numérique de la stat */
+.stat-item h3 {
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+/* Description de la stat */
+.stat-item p {
+    font-size: var(--taille-police-moyen);
+    opacity: 0.95;
+}
+
+/* ========== SECTION ÉQUIPE ========== */
+.team-section {
+    margin-bottom: 3rem;
+}
+
+/* Titre de la section équipe */
+.team-section h2 {
+    font-size: var(--taille-police-h2);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Paragraphe sous le titre */
+.team-section > p {
+    text-align: center;
+    color: var(--couleur-texte-secondaire);
+    margin-bottom: 2.5rem;
+}
+
+/* Grille des cartes d'équipe */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+/* Carte de membre d'équipe */
+.team-card {
+    background: var(--couleur-fond-blanc);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-grand);
+    padding: 2rem;
+    text-align: center;
+}
+
+/* Avatar du membre d'équipe */
+.team-avatar {
+    width: 100px;
+    height: 100px;
+    background: var(--couleur-principale-light);
+    border-radius: var(--rayon-bordure-complet);
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: var(--couleur-principale);
+}
+
+/* Nom du membre */
+.team-card h3 {
+    font-size: var(--taille-police-grand);
+    margin-bottom: 0.3rem;
+}
+
+/* Rôle / Poste */
+.team-card .role {
+    color: var(--couleur-principale);
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+}
+
+/* Description courte */
+.team-card p {
+    color: var(--couleur-texte-secondaire);
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+/* ========== RESPONSIVE : MOBILE ========== */
+@media (max-width: 768px) {
+    /* Réduction du padding du conteneur */
+    .about-container {
+        padding: 1rem;
+    }
+
+    /* Réduction de la taille du titre */
+    .about-hero h1 {
+        font-size: 2rem;
+    }
+
+    /* Réduction de la taille des stats */
+    .stat-item h3 {
+        font-size: 2.5rem;
+    }
+}

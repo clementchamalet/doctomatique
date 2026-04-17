@@ -1,0 +1,212 @@
+/* ========================================
+   STATISTIQUES - ESPACE PROFESSIONNEL
+   ======================================== */
+
+/* ====== LAYOUT PRINCIPAL ====== */
+.pro-layout {
+    display: flex;
+    min-height: calc(100vh - 120px);
+    background-color: #f8f9fa; 
+}
+
+/* ====== SIDEBAR ====== */
+.pro-sidebar {
+    width: 280px;
+    background: var(--couleur-fond-blanc);
+    border-right: 1px solid var(--couleur-bordure);
+    padding: var(--espacement-grand);
+    flex-shrink: 0;
+}
+
+/* ====== CONTENU PRINCIPAL ====== */
+.pro-main {
+    flex: 1;
+    padding: var(--espacement-tres-grand);
+    max-width: 1400px; 
+    margin: 0 auto;
+}
+
+/* ====== HEADER & FILTRES ====== */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; 
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--couleur-bordure);
+    padding-bottom: 1.5rem;
+}
+
+.periode-selector {
+    display: flex;
+    gap: 0.5rem;
+    background: #eee;
+    padding: 0.3rem;
+    border-radius: var(--rayon-bordure-petit);
+}
+
+.periode-btn {
+    padding: 0.5rem 1.2rem;
+    border-radius: var(--rayon-bordure-petit);
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.periode-btn.active {
+    background: var(--couleur-fond-blanc);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    color: var(--couleur-principale);
+}
+.btn-action-secondary {
+    padding: 0.75rem 1.5rem;
+    background: var(--couleur-fond-blanc);
+    color: var(--couleur-principale);
+    border: 2px solid var(--couleur-principale);
+    border-radius: var(--rayon-bordure-moyen);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-action-secondary:hover {
+    background: var(--couleur-principale-light);
+}
+
+.btn-action-primary {
+    padding: 0.75rem 1.5rem;
+    background: var(--couleur-principale);
+    color: white;
+    border: none;
+    border-radius: var(--rayon-bordure-moyen);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-action-primary:hover {
+    background: var(--couleur-principale-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--ombre-principale-hover);
+}
+
+
+/* ====== GRILLE DE STATISTIQUES (LE COEUR DU DESIGN) ====== */
+.stats-grid {
+    display: grid;
+    /* Crée 4 colonnes égales par défaut */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+/* ====== CARTE STAT (Standard) ====== */
+.stat-card {
+    background: var(--couleur-fond-blanc);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+/* Variante : Carte Large pour Graphiques */
+.stat-card.large {
+    grid-column: span 2; /* Prend 2 colonnes */
+    min-height: 300px;
+}
+
+/* Variante : Carte Pleine Largeur */
+.stat-card.full {
+    grid-column: span 4;
+}
+
+/* ====== CONTENU DES CARTES ====== */
+.stat-card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.stat-card-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--couleur-texte-secondaire);
+}
+
+.stat-card-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--couleur-texte-fonce);
+}
+
+/* Badge de tendance (Up/Down) */
+.stat-card-trend {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.stat-card-trend.positive {
+    background: #e6fcf5;
+    color: #0ca678;
+}
+
+.stat-card-trend.negative {
+    background: #fff5f5;
+    color: #fa5252;
+}
+
+/* ====== RESPONSIVE ====== */
+
+@media (max-width: 1200px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr); /* Passe en 2 colonnes */
+    }
+    .stat-card.full {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .pro-layout {
+        flex-direction: column;
+    }
+
+    .pro-sidebar {
+        width: 100%;
+        border-right: none;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr; /* Tout en une colonne sur mobile */
+    }
+
+    .stat-card.large, .stat-card.full {
+        grid-column: span 1;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

@@ -1,0 +1,430 @@
+/* ========================================
+   STYLES GLOBAUX - DOCTOMATIQUE
+   Styles communs à toutes les pages
+   ======================================== */
+
+/* ========== RÉINITIALISATION GLOBALE ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ========== STYLES DU BODY ========== */
+body {
+    font-family: var(--font-famille);
+    background: var(--couleur-fond-page);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: var(--couleur-texte-principal);
+}
+
+/* ========== EN-TÊTE (HEADER) ========== */
+header {
+    background: var(--couleur-fond-blanc);
+    padding: 1.5rem var(--espacement-grand);
+    border-bottom: 1px solid var(--couleur-bordure);
+}
+
+/* Conteneur de navigation */
+nav {
+    max-width: var(--largeur-max-contenu);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ========== LOGO ========== */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--couleur-principale);
+    text-decoration: none;
+    transition: opacity var(--transition-normale);
+}
+
+.logo:hover {
+    opacity: 0.8;
+}
+
+.logo img {
+    width: 64px;
+    height: 64px;
+}
+
+/* ========== LIENS DE NAVIGATION ========== */
+.nav-links {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--couleur-texte-secondaire);
+    font-weight: 500;
+    font-size: var(--taille-police-normal);
+    transition: color var(--transition-normale);
+}
+
+.nav-links a:hover {
+    color: var(--couleur-principale);
+}
+
+/* Bouton de connexion */
+.btn-connexion {
+    background: var(--couleur-fond-blanc);
+    color: var(--couleur-principale) !important;
+    padding: 0.65rem 1.5rem;
+    border: 2px solid var(--couleur-principale);
+    border-radius: var(--rayon-bordure-petit);
+    font-weight: 600;
+    transition: all var(--transition-normale);
+}
+
+.btn-connexion:hover {
+    background: var(--couleur-principale);
+    color: white !important;
+}
+
+/* Bouton de retour */
+.btn-retour {
+    background: var(--couleur-fond-blanc);
+    color: var(--couleur-principale) !important;
+    padding: 0.65rem 1.5rem;
+    border: 2px solid var(--couleur-principale);
+    border-radius: var(--rayon-bordure-petit);
+    font-weight: 600;
+    transition: all var(--transition-normale);
+}
+
+.btn-retour:hover {
+    background: var(--couleur-principale);
+    color: white !important;
+}
+
+/* ========== CONTENU PRINCIPAL ========== */
+main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem var(--espacement-grand);
+}
+
+.container {
+    width: 100%;
+}
+
+/* ========== TITRES GÉNÉRAUX ========== */
+h1 {
+    color: var(--couleur-texte-fonce);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+h2 {
+    color: var(--couleur-texte-principal);
+    font-weight: 700;
+}
+
+h3 {
+    color: var(--couleur-texte-principal);
+    font-weight: 600;
+}
+
+/* ========== BOUTONS RÉUTILISABLES ========== */
+
+/* Bouton principal */
+.btn-submit {
+    width: 100%;
+    padding: 1rem;
+    background: var(--couleur-principale);
+    color: white;
+    border: none;
+    border-radius: var(--rayon-bordure-moyen);
+    font-size: var(--taille-police-moyen);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-submit:hover {
+    background: var(--couleur-principale-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--ombre-principale-hover);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+/* Bouton secondaire */
+.btn-secondary {
+    width: 100%;
+    padding: 1rem;
+    background: var(--couleur-fond-blanc);
+    color: var(--couleur-principale);
+    border: 2px solid var(--couleur-principale);
+    border-radius: var(--rayon-bordure-moyen);
+    font-size: var(--taille-police-moyen);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+}
+
+.btn-secondary:hover {
+    background: var(--couleur-principale-light);
+}
+
+/* Bouton social (Google, etc.) */
+.btn-social {
+    width: 100%;
+    padding: 1rem;
+    background: var(--couleur-fond-blanc);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-moyen);
+    font-size: var(--taille-police-normal);
+    font-weight: 500;
+    color: var(--couleur-texte-principal);
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+}
+
+.btn-social img {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-social:hover {
+    background: var(--couleur-fond-page);
+    border-color: var(--couleur-texte-leger);
+}
+
+/* ========== LIENS ========== */
+
+/* Lien secondaire */
+.link-secondary {
+    color: var(--couleur-principale);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color var(--transition-normale);
+}
+
+.link-secondary:hover {
+    color: var(--couleur-principale-hover);
+    text-decoration: underline;
+}
+
+/* ========== FORMULAIRES COMMUNS ========== */
+
+/* Groupe de champs */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* Labels */
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--couleur-texte-principal);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* Conteneur input avec icône */
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Icône dans le champ */
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    width: 20px;
+    height: 20px;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Champs de saisie */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 0.9rem 1rem 0.9rem 3rem;
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-petit);
+    font-size: var(--taille-police-normal);
+    transition: all var(--transition-normale);
+    outline: none;
+    color: var(--couleur-texte-principal);
+}
+
+/* Focus sur les champs */
+.form-group input:focus {
+    border-color: var(--couleur-principale);
+    box-shadow: 0 0 0 3px rgba(67, 142, 76, 0.1);
+}
+
+/* Placeholder */
+.form-group input::placeholder {
+    color: var(--couleur-texte-leger);
+}
+
+/* Texte d'aide */
+.input-hint {
+    display: block;
+    margin-top: 0.4rem;
+    color: var(--couleur-texte-leger);
+    font-size: var(--taille-police-petit);
+}
+
+/* ========== PIED DE PAGE (FOOTER) ========== */
+footer {
+    background: var(--couleur-fond-blanc);
+    border-top: 1px solid var(--couleur-bordure);
+    padding: var(--espacement-tres-grand) var(--espacement-grand) 1.5rem;
+    margin-top: auto;
+}
+
+/* Contenu du footer en grille */
+.footer-content {
+    max-width: var(--largeur-max-contenu);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: var(--espacement-tres-grand);
+    margin-bottom: var(--espacement-grand);
+}
+
+/* Sections du footer */
+.footer-section h3 {
+    color: var(--couleur-principale);
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+}
+
+.footer-section h4 {
+    color: var(--couleur-texte-principal);
+    font-size: var(--taille-police-normal);
+    margin-bottom: var(--espacement-moyen);
+    font-weight: 600;
+}
+
+.footer-section p {
+    color: var(--couleur-texte-secondaire);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Liens du footer */
+.footer-section a {
+    display: block;
+    color: var(--couleur-texte-secondaire);
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+    transition: color var(--transition-normale);
+}
+
+.footer-section a:hover {
+    color: var(--couleur-principale);
+}
+
+/* Barre de copyright */
+.footer-bottom {
+    max-width: var(--largeur-max-contenu);
+    margin: 0 auto;
+    padding-top: var(--espacement-grand);
+    border-top: 1px solid var(--couleur-bordure);
+    text-align: center;
+}
+
+.footer-bottom p {
+    color: var(--couleur-texte-leger);
+    font-size: var(--taille-police-petit);
+}
+
+/* ========== FORM CONTROLS ========== */
+.form-control {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-petit);
+    font-size: var(--taille-police-normal);
+    transition: all var(--transition-normale);
+    outline: none;
+    color: var(--couleur-texte-principal);
+    font-family: var(--font-famille);
+}
+
+.form-control:focus {
+    border-color: var(--couleur-principale);
+    box-shadow: 0 0 0 3px rgba(67, 142, 76, 0.1);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ========== BOX ACCÈS RESTREINT ========== */
+.auth-box {
+    max-width: 420px;
+    background: var(--couleur-fond-blanc);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-moyen);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    box-shadow: var(--ombre-principale-hover);
+    font-family: var(--font-famille);
+}
+
+.auth-box h2 {
+    margin-bottom: 1rem;
+    color: var(--couleur-texte-fonce);
+    font-weight: 700;
+}
+
+.auth-box p {
+    color: var(--couleur-texte-secondaire);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* ========== RESPONSIVE : MOBILE ========== */
+@media (max-width: 768px) {
+    /* Réduction du padding principal */
+    main {
+        padding: 2rem var(--espacement-moyen);
+    }
+    
+    /* Cache le lien "Espace Professionnel" sur mobile */
+    .nav-links a:first-child {
+        display: none;
+    }
+    
+    /* Footer en une colonne */
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: var(--espacement-grand);
+    }
+}
+
+

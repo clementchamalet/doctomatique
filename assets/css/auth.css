@@ -1,0 +1,167 @@
+/* ========================================
+   AUTH.CSS - CONNEXION / INSCRIPTION
+   Styles spécifiques à connexion.html
+   ======================================== */
+
+/* ========== CONTENU PRINCIPAL ========== */
+.container {
+    max-width: var(--largeur-max-form);
+}
+
+/* ========== BOÎTE D'AUTHENTIFICATION ========== */
+.auth-box {
+    background: var(--couleur-fond-blanc);
+    border-radius: var(--rayon-bordure-grand);
+    box-shadow: var(--ombre-principale);
+    border: 1px solid var(--couleur-bordure);
+    overflow: hidden;
+}
+
+/* ========== ONGLETS DE NAVIGATION ========== */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--couleur-bordure);
+}
+
+/* Boutons des onglets */
+.tab-btn {
+    flex: 1;
+    padding: 1.2rem;
+    background: transparent;
+    border: none;
+    font-size: var(--taille-police-moyen);
+    font-weight: 600;
+    color: var(--couleur-texte-secondaire);
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    position: relative;
+}
+
+/* Onglet actif */
+.tab-btn.active {
+    color: var(--couleur-principale);
+}
+
+/* Bordure inférieure de l'onglet actif */
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--couleur-principale);
+}
+
+.tab-btn:hover {
+    background: var(--couleur-principale-light);
+}
+
+/* ========== FORMULAIRES ========== */
+.auth-form {
+    padding: 2.5rem;
+    display: none;
+}
+
+/* Formulaire actif visible */
+.auth-form.active {
+    display: block;
+}
+
+/* Titre du formulaire */
+.auth-form h2 {
+    font-size: var(--taille-police-h2);
+    margin-bottom: 0.5rem;
+}
+
+/* Sous-titre du formulaire */
+.form-subtitle {
+    color: var(--couleur-texte-secondaire);
+    font-size: var(--taille-police-normal);
+    margin-bottom: var(--espacement-grand);
+}
+
+/* ========== GROUPE CHECKBOX ========== */
+.checkbox-group {
+    margin-bottom: 1.8rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--couleur-texte-secondaire);
+}
+
+/* Checkbox personnalisée */
+.checkbox-label input[type="checkbox"] {
+    margin-top: 0.2rem;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--couleur-principale);
+}
+
+/* Liens dans le label checkbox */
+.checkbox-label a {
+    color: var(--couleur-principale);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.checkbox-label a:hover {
+    text-decoration: underline;
+}
+
+/* ========== PIED DE FORMULAIRE ========== */
+.form-footer {
+    text-align: right;
+    margin-bottom: 1.5rem;
+}
+
+/* ========== SÉPARATEUR AVEC TEXTE ========== */
+.separator-text {
+    position: relative;
+    text-align: center;
+    margin: 1.8rem 0;
+}
+
+.separator-text::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--couleur-bordure);
+}
+
+.separator-text span {
+    position: relative;
+    display: inline-block;
+    padding: 0 var(--espacement-moyen);
+    background: var(--couleur-fond-blanc);
+    color: var(--couleur-texte-leger);
+    font-size: var(--taille-police-petit);
+}
+
+/* ========== RESPONSIVE : MOBILE ========== */
+@media (max-width: 768px) {
+    /* Réduction du padding du formulaire */
+    .auth-form {
+        padding: 2rem 1.5rem;
+    }
+    
+    /* Réduction de la taille du titre */
+    .auth-form h2 {
+        font-size: var(--taille-police-h3);
+    }
+    
+    /* Réduction de la taille des onglets */
+    .tab-btn {
+        font-size: 0.9rem;
+        padding: var(--espacement-moyen);
+    }
+}

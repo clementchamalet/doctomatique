@@ -1,0 +1,455 @@
+/* ========================================
+   AGENDA.CSS - STYLES DE L'AGENDA
+   Styles spécifiques à la page agenda
+   ======================================== */
+
+/* ========== EN-TÊTE DE PAGE ========== */
+.agenda-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--espacement-grand);
+    flex-wrap: wrap;
+    gap: var(--espacement-moyen);
+}
+
+.agenda-title-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.agenda-icon {
+    font-size: 2rem;
+}
+
+.agenda-title-section h1 {
+    font-size: var(--taille-police-h2);
+    color: var(--couleur-texte-fonce);
+    margin: 0;
+}
+
+.agenda-actions {
+    display: flex;
+    gap: var(--espacement-moyen);
+}
+
+.btn-action-secondary {
+    padding: 0.75rem 1.5rem;
+    background: var(--couleur-fond-blanc);
+    color: var(--couleur-principale);
+    border: 2px solid var(--couleur-principale);
+    border-radius: var(--rayon-bordure-moyen);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-action-secondary:hover {
+    background: var(--couleur-principale-light);
+}
+
+.btn-action-primary {
+    padding: 0.75rem 1.5rem;
+    background: var(--couleur-principale);
+    color: white;
+    border: none;
+    border-radius: var(--rayon-bordure-moyen);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-action-primary:hover {
+    background: var(--couleur-principale-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--ombre-principale-hover);
+}
+
+.btn-icon {
+    font-size: 1rem;
+}
+
+/* ========== CONTENEUR PRINCIPAL ========== */
+.agenda-container {
+    width: 100%;
+}
+
+.agenda-card {
+    background: var(--couleur-fond-blanc);
+    border-radius: var(--rayon-bordure-moyen);
+    box-shadow: var(--ombre-petite);
+    border: 1px solid var(--couleur-bordure);
+    overflow: hidden;
+}
+
+/* ========== EN-TÊTE DE L'AGENDA ========== */
+.agenda-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--couleur-bordure);
+    background: var(--couleur-fond-blanc);
+    flex-wrap: wrap;
+    gap: var(--espacement-moyen);
+}
+
+/* ========== NAVIGATION DE L'AGENDA ========== */
+.agenda-navigation {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.nav-btn {
+    padding: 0.6rem 1rem;
+    background: var(--couleur-fond-blanc);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-petit);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--couleur-texte-principal);
+    text-decoration: none;
+    transition: all var(--transition-normale);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-btn:hover {
+    background: var(--couleur-principale-light);
+    border-color: var(--couleur-principale);
+    color: var(--couleur-principale);
+}
+
+.nav-btn-today {
+    background: var(--couleur-principale);
+    color: white;
+    border-color: var(--couleur-principale);
+}
+
+.nav-btn-today:hover {
+    background: var(--couleur-principale-hover);
+}
+
+.semaine-info {
+    flex: 1;
+    text-align: center;
+}
+
+.semaine-titre {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--couleur-texte-fonce);
+}
+
+/* ========== LÉGENDE ========== */
+.legende {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.85rem;
+}
+
+.legende-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.legende-couleur {
+    width: 20px;
+    height: 20px;
+    border-radius: var(--rayon-bordure-petit);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.legende-rdv {
+    background: var(--couleur-principale);
+}
+
+.legende-dispo {
+    background: #c084fc;
+}
+
+/* ========== GRILLE DE L'AGENDA ========== */
+.agenda-grid {
+    display: grid;
+    grid-template-columns: 80px repeat(7, 1fr);
+    background: var(--couleur-fond-blanc);
+    min-height: 400px;
+}
+
+/* ========== EN-TÊTES DE LA GRILLE ========== */
+.agenda-header-cell {
+    background: var(--couleur-fond-page);
+    padding: 1rem 0.5rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-bottom: 2px solid var(--couleur-bordure);
+    border-right: 1px solid var(--couleur-bordure);
+    color: var(--couleur-texte-secondaire);
+}
+
+.agenda-header-cell.time-column {
+    background: var(--couleur-fond-blanc);
+    border-right: 2px solid var(--couleur-bordure);
+}
+
+.jour-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.jour-nom {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--couleur-texte-secondaire);
+    letter-spacing: 0.5px;
+}
+
+.jour-date {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--couleur-texte-fonce);
+}
+
+.agenda-header-cell.today-header {
+    background: var(--couleur-principale-light);
+    position: relative;
+}
+
+.agenda-header-cell.today-header .jour-nom {
+    color: var(--couleur-principale);
+}
+
+.agenda-header-cell.today-header .jour-date {
+    color: var(--couleur-principale);
+}
+
+/* ===== Colonne des heures continue ===== */
+
+.time-column-container {
+    position: relative;
+    background: var(--couleur-fond-blanc);
+    border-right: 2px solid var(--couleur-bordure);
+}
+
+.time-label {
+    position: absolute;
+    right: 6px;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    color: var(--couleur-texte-secondaire);
+    height: 1px;
+    white-space: nowrap;
+}
+
+/* ========== COLONNES DE JOURS ========== */
+.day-column {
+    background: var(--couleur-fond-blanc);
+    position: relative;
+    min-height: 60px;
+    border-bottom: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+    overflow: visible;
+}
+
+.day-column.today {
+    background: #fffbeb;
+}
+
+/* ========== CRÉNEAUX (RDV ET DISPONIBILITÉS) ========== */
+.creneau {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    border-radius: var(--rayon-bordure-petit);
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.creneau:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--ombre-moyenne);
+    z-index: 10;
+}
+
+/* Créneaux rendez-vous */
+.creneau-rdv {
+    background: var(--couleur-principale);
+    color: white;
+    border-left: 4px solid #2d6a3e;
+}
+
+.creneau-rdv:hover {
+    background: #3a9447;
+    box-shadow: 0 4px 12px rgba(67, 142, 76, 0.4);
+}
+
+/* Créneaux disponibilités */
+.creneau-dispo {
+    background: #c084fc;
+    color: white;
+    border-left: 4px solid #9333ea;
+}
+
+.creneau-dispo:hover {
+    background: #d8b4fe;
+    box-shadow: 0 4px 12px rgba(192, 132, 252, 0.4);
+}
+
+.creneau-titre {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.85rem;
+}
+
+.creneau-info {
+    font-size: 0.7rem;
+    opacity: 0.9;
+    line-height: 1.3;
+}
+
+/* ========== MESSAGE AGENDA VIDE ========== */
+.agenda-empty {
+    grid-column: 1 / -1;
+    padding: 3rem;
+    text-align: center;
+    color: var(--couleur-texte-secondaire);
+}
+
+.agenda-empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.agenda-empty-text {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.agenda-empty-hint {
+    font-size: 0.9rem;
+    color: var(--couleur-texte-leger);
+}
+
+/* ========== RESPONSIVE : TABLETTE ========== */
+@media (max-width: 1024px) {
+    .agenda-grid {
+        font-size: 0.85rem;
+    }
+    
+    .creneau {
+        padding: 0.4rem;
+        font-size: 0.75rem;
+    }
+    
+    .semaine-titre {
+        font-size: 1rem;
+    }
+}
+
+/* ========== RESPONSIVE : MOBILE ========== */
+@media (max-width: 768px) {
+    .agenda-page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .agenda-actions {
+        width: 100%;
+    }
+    
+    .btn-action-secondary,
+    .btn-action-primary {
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .agenda-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .agenda-navigation {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .nav-btn {
+        flex: 1;
+    }
+    
+    .semaine-info {
+        text-align: center;
+        padding: 0.5rem 0;
+    }
+    
+    .semaine-titre {
+        font-size: 0.9rem;
+    }
+    
+    .legende {
+        justify-content: center;
+        padding-top: 1rem;
+        border-top: 1px solid var(--couleur-bordure);
+    }
+    
+    .agenda-grid {
+        overflow-x: auto;
+        font-size: 0.7rem;
+    }
+    
+    .creneau {
+        padding: 0.3rem;
+        font-size: 0.65rem;
+    }
+    
+    .creneau-titre {
+        font-size: 0.7rem;
+    }
+    
+    .creneau-info {
+        font-size: 0.6rem;
+    }
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.agenda-card {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+.pro-main .agenda-actions a {
+    text-decoration: none;
+}

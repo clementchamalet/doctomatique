@@ -1,0 +1,232 @@
+/* ========================================
+   HELP.CSS - PAGE D'AIDE ET SUPPORT
+   Styles spécifiques à help.php
+   ======================================== */
+
+/* ========== CONTENEUR GLOBAL ========== */
+.help-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* ========== EN-TÊTE DE SECTION (HÉROS) ========== */
+.help-hero {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+/* Titre principal */
+.help-hero h1 {
+    font-size: var(--taille-police-h1);
+    margin-bottom: 1rem;
+    color: var(--couleur-principale);
+}
+
+/* Description principale */
+.help-hero p {
+    color: var(--couleur-texte-secondaire);
+    font-size: var(--taille-police-grand);
+}
+
+/* ========== SECTION CONTACTEZ-NOUS ========== */
+.contact-section {
+    background: var(--couleur-fond-blanc);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-grand);
+    padding: 3rem;
+    margin-bottom: 4rem;
+    box-shadow: var(--ombre-petite);
+}
+
+/* Titre de la section contact */
+.contact-section h2 {
+    font-size: var(--taille-police-h2);
+    margin-bottom: 0.5rem;
+    text-align: center;
+    color: var(--couleur-principale);
+}
+
+/* Sous-titre de la section contact */
+.contact-section .subtitle {
+    text-align: center;
+    color: var(--couleur-texte-secondaire);
+    margin-bottom: 2.5rem;
+    font-size: var(--taille-police-normal);
+}
+
+/* Formulaire de contact (limiteur de largeur) */
+.contact-form {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Ajustement du champ textarea */
+.contact-form textarea {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-petit);
+    font-size: var(--taille-police-normal);
+    font-family: var(--font-famille);
+    transition: all var(--transition-normale);
+    outline: none;
+    color: var(--couleur-texte-principal);
+    resize: vertical;
+    min-height: 150px;
+}
+
+.contact-form textarea:focus {
+    border-color: var(--couleur-principale);
+    box-shadow: 0 0 0 3px rgba(67, 142, 76, 0.1);
+}
+
+.contact-form textarea::placeholder {
+    color: var(--couleur-texte-leger);
+}
+
+/* ========== PRÉVISUALISATION FAQ ========== */
+.faq-preview {
+    background: var(--couleur-fond-blanc);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-grand);
+    padding: 3rem;
+    box-shadow: var(--ombre-petite);
+}
+
+/* Titre de la section FAQ */
+.faq-preview h2 {
+    font-size: var(--taille-police-h2);
+    margin-bottom: 0.5rem;
+    color: var(--couleur-principale);
+    text-align: center;
+}
+
+/* Sous-titre de la section FAQ */
+.faq-preview .subtitle {
+    text-align: center;
+    color: var(--couleur-texte-secondaire);
+    margin-bottom: 2.5rem;
+    font-size: var(--taille-police-normal);
+}
+
+/* Élément de la FAQ */
+.faq-item {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    background: var(--couleur-fond-page);
+    border-radius: var(--rayon-bordure-moyen);
+    border-left: 4px solid var(--couleur-principale);
+    transition: all var(--transition-normale);
+}
+
+/* Effet au survol */
+.faq-item:hover {
+    background: var(--couleur-principale-light);
+    transform: translateX(5px);
+}
+
+/* Dernier élément */
+.faq-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Question de la FAQ */
+.faq-question {
+    font-weight: 600;
+    color: var(--couleur-texte-principal);
+    margin-bottom: 0.7rem;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Icône de question */
+.faq-question::before {
+    content: "?";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--couleur-principale);
+    color: white;
+    border-radius: var(--rayon-bordure-complet);
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+/* Réponse de la FAQ */
+.faq-answer {
+    color: var(--couleur-texte-secondaire);
+    line-height: 1.7;
+    padding-left: 2rem;
+}
+
+/* Message de succès/erreur */
+.message {
+    padding: 1rem 1.5rem;
+    border-radius: var(--rayon-bordure-moyen);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    display: none;
+}
+
+.message.success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.message.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+.message.show {
+    display: block;
+}
+
+/* ========== RESPONSIVE : MOBILE ========== */
+@media (max-width: 768px) {
+    /* Réduction du padding du conteneur */
+    .help-container {
+        padding: 1rem;
+    }
+
+    /* Réduction de la taille du titre */
+    .help-hero h1 {
+        font-size: 2rem;
+    }
+
+    /* Réduction du padding des sections */
+    .contact-section,
+    .faq-preview {
+        padding: 1.5rem;
+    }
+
+    /* Ajustement de la taille du titre h2 */
+    .contact-section h2,
+    .faq-preview h2 {
+        font-size: 1.5rem;
+    }
+
+    /* Réduction du padding des items FAQ */
+    .faq-item {
+        padding: 1rem;
+    }
+
+    /* Réduction de la taille de la question */
+    .faq-question {
+        font-size: 1rem;
+    }
+
+    /* Réduction du padding left de la réponse */
+    .faq-answer {
+        padding-left: 1.5rem;
+        font-size: 0.9rem;
+    }
+}

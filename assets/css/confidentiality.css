@@ -1,0 +1,174 @@
+/* ========================================
+   CONFIDENTIALITY.CSS - POLITIQUE DE CONFIDENTIALITÉ
+   Styles spécifiques à politique-de-confidentialite.html
+   ======================================== */
+
+/* ========== CONTENEUR GLOBAL ========== */
+.privacy-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* ========== EN-TÊTE DE SECTION (HÉROS) ========== */
+.privacy-hero {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* Titre principal */
+.privacy-hero h1 {
+    font-size: var(--taille-police-h1);
+    margin-bottom: 0.5rem;
+}
+
+/* Date de la politique */
+.privacy-hero .date {
+    color: var(--couleur-texte-secondaire);
+    font-size: 0.9rem;
+}
+
+/* ========== INTRODUCTION / RÉSUMÉ ========== */
+.privacy-intro {
+    background: var(--couleur-principale-light);
+    border-left: 4px solid var(--couleur-principale);
+    border-radius: var(--rayon-bordure-moyen);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Paragraphes de l'introduction */
+.privacy-intro p {
+    color: var(--couleur-texte-principal);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+/* Dernier paragraphe de l'introduction */
+.privacy-intro p:last-child {
+    margin-bottom: 0;
+}
+
+/* ========== CONTENU PRINCIPAL (CORPS DE LA POLITIQUE) ========== */
+.privacy-content {
+    background: var(--couleur-fond-blanc);
+    border-radius: var(--rayon-bordure-grand);
+    border: 1px solid var(--couleur-bordure);
+    padding: 2.5rem;
+}
+
+/* ========== SECTIONS DE LA POLITIQUE ========== */
+.privacy-section {
+    margin-bottom: 2.5rem;
+}
+
+/* Dernière section (pas de marge en bas) */
+.privacy-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Titre de section principal (H2) */
+.privacy-section h2 {
+    font-size: var(--taille-police-h2);
+    color: var(--couleur-principale);
+    margin-bottom: 1rem;
+}
+
+/* Sous-titre de section (H3) */
+.privacy-section h3 {
+    font-size: var(--taille-police-grand);
+    color: var(--couleur-texte-principal);
+    margin: 1.5rem 0 0.8rem;
+}
+
+/* Paragraphes de section */
+.privacy-section p {
+    color: var(--couleur-texte-principal);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+/* Listes à puces et ordonnées */
+.privacy-section ul,
+.privacy-section ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Éléments de liste */
+.privacy-section li {
+    color: var(--couleur-texte-principal);
+    line-height: 1.8;
+    margin-bottom: 0.5rem;
+}
+
+/* Texte mis en évidence (strong) */
+.privacy-section strong {
+    color: var(--couleur-principale);
+}
+
+/* ========== TABLEAUX DE DONNÉES ========== */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+}
+
+/* Cellules d'en-tête et de données */
+.data-table th,
+.data-table td {
+    padding: 1rem;
+    text-align: left;
+    border: 1px solid var(--couleur-bordure);
+}
+
+/* En-têtes de colonnes */
+.data-table th {
+    background: var(--couleur-principale-light);
+    color: var(--couleur-principale);
+    font-weight: 600;
+}
+
+/* ========== BOÎTE DE MISE EN ÉVIDENCE ========== */
+.highlight-box {
+    background: var(--couleur-principale-light);
+    border-radius: var(--rayon-bordure-petit);
+    padding: 1.2rem;
+    margin: 1.5rem 0;
+}
+
+/* Texte fort dans la boîte */
+.highlight-box strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--couleur-principale);
+}
+
+/* ========== RESPONSIVE : MOBILE ========== */
+@media (max-width: 768px) {
+    /* Réduction du padding du conteneur */
+    .privacy-container {
+        padding: 1rem;
+    }
+
+    /* Réduction du padding du contenu */
+    .privacy-content {
+        padding: 1.5rem;
+    }
+
+    /* Réduction de la taille du titre */
+    .privacy-hero h1 {
+        font-size: 2rem;
+    }
+
+    /* Réduction de la taille du texte dans le tableau */
+    .data-table {
+        font-size: 0.85rem;
+    }
+
+    /* Réduction du padding dans le tableau */
+    .data-table th,
+    .data-table td {
+        padding: 0.7rem;
+    }
+}

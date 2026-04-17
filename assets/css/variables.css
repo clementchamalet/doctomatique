@@ -1,0 +1,75 @@
+/* ========================================
+   VARIABLES CSS - DOCTOMATIQUE
+   Fichier centralisé de toutes les variables
+   ======================================== */
+
+:root {
+    /* ========== COULEURS PRINCIPALES ========== */
+    --couleur-principale: #438E4C;
+    --couleur-principale-hover: #3a7841;
+    --couleur-principale-light: #e8f5ea;
+    
+    /* ========== COULEURS DE TEXTE ========== */
+    --couleur-texte-principal: #2d3748;
+    --couleur-texte-secondaire: #718096;
+    --couleur-texte-leger: #9ca3af;
+    --couleur-texte-fonce: #1a202c;
+    
+    /* ========== COULEURS DE FOND ========== */
+    --couleur-fond-page: #f8faf9;
+    --couleur-fond-blanc: white;
+    
+    /* ========== COULEURS DES BORDURES ========== */
+    --couleur-bordure: #e5e7eb;
+    
+    /* ========== COULEURS D'ÉTAT ========== */
+    --couleur-erreur: #ef4444;
+    --couleur-succes: #10b981;
+    --couleur-warning: #f59e0b;
+    --couleur-info: #3b82f6;
+    
+    /* ========== ESPACEMENT ========== */
+    --espacement-petit: 0.5rem;      /* 8px */
+    --espacement-moyen: 1rem;        /* 16px */
+    --espacement-grand: 2rem;        /* 32px */
+    --espacement-tres-grand: 3rem;   /* 48px */
+    
+    /* ========== BORDURES ARRONDIES ========== */
+    --rayon-bordure-petit: 8px;
+    --rayon-bordure-moyen: 10px;
+    --rayon-bordure-grand: 16px;
+    --rayon-bordure-complet: 50%;
+    
+    /* ========== OMBRES ========== */
+    --ombre-petite: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --ombre-moyenne: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --ombre-grande: 0 8px 24px rgba(0, 0, 0, 0.2);
+    --ombre-principale: 0 4px 30px rgba(67, 142, 76, 0.12);
+    --ombre-principale-hover: 0 4px 12px rgba(67, 142, 76, 0.3);
+    
+    /* ========== TRANSITIONS ========== */
+    --transition-rapide: 0.2s ease;
+    --transition-normale: 0.3s ease;
+    --transition-lente: 0.5s ease;
+    
+    /* ========== TYPOGRAPHIE ========== */
+    --font-famille: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --taille-police-petit: 0.85rem;
+    --taille-police-normal: 0.95rem;
+    --taille-police-moyen: 1rem;
+    --taille-police-grand: 1.15rem;
+    --taille-police-h1: 2.8rem;
+    --taille-police-h2: 1.8rem;
+    --taille-police-h3: 1.5rem;
+    
+    /* ========== DIMENSIONS ========== */
+    --largeur-max-contenu: 1200px;
+    --largeur-max-form: 500px;
+    --largeur-max-home: 900px;
+    
+    /* ========== BREAKPOINTS (pour référence) ========== */
+    /* Utiliser dans les media queries */
+    /* Mobile: 768px */
+    /* Tablet: 1024px */
+    /* Desktop: 1200px */
+}

@@ -1,0 +1,88 @@
+/* ========================================
+   DISPONIBILITES-MODIFIER.CSS
+   ======================================== */
+
+.pro-main h1 {
+    font-size: var(--taille-police-h2);
+    margin-bottom: var(--espacement-grand);
+}
+
+/* Table container */
+.table-card {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--couleur-fond-blanc);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-moyen);
+    overflow: hidden;
+    box-shadow: var(--ombre-petite);
+}
+
+/* En-tête */
+.table-card thead {
+    background: var(--couleur-fond-page);
+}
+
+.table-card th {
+    padding: 1rem 1.2rem;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--couleur-texte-secondaire);
+    text-transform: uppercase;
+}
+
+/* Cellules */
+.table-card td {
+    padding: 1rem 1.2rem;
+    border-top: 1px solid var(--couleur-bordure);
+    font-size: 0.95rem;
+    color: var(--couleur-texte-principal);
+}
+
+/* Hover ligne */
+.table-card tbody tr:hover {
+    background: var(--couleur-fond-page);
+}
+
+/* Liens actions */
+.table-card a {
+    font-weight: 500;
+    text-decoration: none;
+    margin-right: 0.3rem;
+}
+
+/* Modifier */
+.table-card a:first-child {
+    color: var(--couleur-principale);
+}
+
+/* Supprimer */
+.table-card a:last-child {
+    color: var(--couleur-erreur);
+}
+
+.table-card a:hover {
+    text-decoration: underline;
+}
+
+/* Lien retour */
+.pro-main > a {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: var(--couleur-principale);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.pro-main > a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .table-card {
+        display: block;
+        overflow-x: auto;
+    }
+}

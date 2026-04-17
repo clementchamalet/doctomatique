@@ -1,0 +1,85 @@
+/* ========================================
+   NOUVELLE_DISPONIBILITE.CSS
+   ======================================== */
+
+/* Titre */
+.pro-main h1 {
+    font-size: var(--taille-police-h2);
+    color: var(--couleur-texte-fonce);
+    margin-bottom: var(--espacement-grand);
+}
+
+/* Carte du formulaire */
+.form-card {
+    background: var(--couleur-fond-blanc);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-moyen);
+    box-shadow: var(--ombre-petite);
+    padding: 2rem;
+    max-width: 500px;
+}
+
+/* Labels */
+.form-card label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    color: var(--couleur-texte-principal);
+}
+
+/* Inputs / select */
+.form-card input,
+.form-card select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-petit);
+    font-size: var(--taille-police-normal);
+    font-family: var(--font-famille);
+    transition: all var(--transition-normale);
+}
+
+.form-card input:focus,
+.form-card select:focus {
+    border-color: var(--couleur-principale);
+    box-shadow: 0 0 0 3px rgba(67, 142, 76, 0.1);
+    outline: none;
+}
+
+/* Bouton principal */
+.btn-action-primary {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--couleur-principale);
+    color: white;
+    border: none;
+    border-radius: var(--rayon-bordure-moyen);
+    font-size: var(--taille-police-moyen);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normale);
+}
+
+.btn-action-primary:hover {
+    background: var(--couleur-principale-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--ombre-principale-hover);
+}
+
+/* Message succès */
+.pro-main p {
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+/* Lien retour */
+.pro-main a {
+    color: var(--couleur-principale);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.pro-main a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,123 @@
+/* ========================================
+   LEGAL-MENTIONS.CSS - MENTIONS LÉGALES
+   Styles spécifiques à mentions-legales.html
+   ======================================== */
+
+/* ========== CONTENEUR GLOBAL ========== */
+.legal-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* ========== EN-TÊTE DE SECTION (HÉROS) ========== */
+.legal-hero {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* Titre principal */
+.legal-hero h1 {
+    font-size: var(--taille-police-h1);
+    margin-bottom: 0.5rem;
+}
+
+/* Date de mise à jour */
+.legal-hero .date {
+    color: var(--couleur-texte-secondaire);
+    font-size: 0.9rem;
+}
+
+/* ========== CONTENU PRINCIPAL ========== */
+.legal-content {
+    background: var(--couleur-fond-blanc);
+    border-radius: var(--rayon-bordure-grand);
+    border: 1px solid var(--couleur-bordure);
+    padding: 2.5rem;
+}
+
+/* ========== SECTIONS DES MENTIONS ========== */
+.legal-section {
+    margin-bottom: 2.5rem;
+}
+
+/* Dernière section (pas de marge en bas) */
+.legal-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Titre de section principal (H2) */
+.legal-section h2 {
+    font-size: var(--taille-police-h2);
+    color: var(--couleur-principale);
+    margin-bottom: 1rem;
+}
+
+/* Sous-titre de section (H3) */
+.legal-section h3 {
+    font-size: var(--taille-police-grand);
+    color: var(--couleur-texte-principal);
+    margin: 1.5rem 0 0.8rem;
+}
+
+/* Paragraphes de section */
+.legal-section p {
+    color: var(--couleur-texte-principal);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+/* Listes */
+.legal-section ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Éléments de liste */
+.legal-section li {
+    color: var(--couleur-texte-principal);
+    line-height: 1.8;
+    margin-bottom: 0.5rem;
+}
+
+/* Texte mis en évidence (strong) */
+.legal-section strong {
+    color: var(--couleur-principale);
+}
+
+/* ========== BOÎTE D'INFORMATION ========== */
+.info-box {
+    background: var(--couleur-principale-light);
+    border-left: 4px solid var(--couleur-principale);
+    border-radius: var(--rayon-bordure-petit);
+    padding: 1.2rem;
+    margin: 1.5rem 0;
+}
+
+/* Paragraphes dans la boîte */
+.info-box p {
+    margin-bottom: 0.5rem;
+}
+
+/* Dernier paragraphe dans la boîte (pas de marge en bas) */
+.info-box p:last-child {
+    margin-bottom: 0;
+}
+
+/* ========== RESPONSIVE : MOBILE ========== */
+@media (max-width: 768px) {
+    /* Réduction du padding du conteneur */
+    .legal-container {
+        padding: 1rem;
+    }
+
+    /* Réduction du padding du contenu */
+    .legal-content {
+        padding: 1.5rem;
+    }
+
+    /* Réduction de la taille du titre */
+    .legal-hero h1 {
+        font-size: 2rem;
+    }
+}

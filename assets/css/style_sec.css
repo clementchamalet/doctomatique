@@ -1,0 +1,32 @@
+
+
+.praticien-selector {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .praticien-selector label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--couleur-texte-principal);
+        }
+        
+        .praticien-selector select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--couleur-bordure);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .praticien-selector select:focus {
+            outline: none;
+            border-color: var(--couleur-primaire);
+        }
+    

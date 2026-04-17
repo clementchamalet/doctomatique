@@ -1,0 +1,444 @@
+/* ========================================
+   STYLES ESPACE PATIENT - DOCTOMATIQUE
+   
+   ======================================== */
+
+/* ========== EN-TÊTE ESPACE PATIENT ========== */
+
+/* Header spécifique espace patient */
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-center {
+    text-align: center;
+    flex: 1;
+    margin-right: 90px;
+}
+
+.header-center h1 {
+    font-size: 1.5rem;
+    color: var(--couleur-principale);
+    margin: 0;
+    
+}
+
+.header-center p {
+    font-size: 0.9rem;
+    color: var(--couleur-texte-secondaire);
+    margin: 0.3rem 0 0 0;
+}
+
+/* S'assurer que le logo et le bouton ont la même largeur pour centrer le milieu */
+.logo {
+    flex: 0 0 auto;
+}
+
+.nav-links {
+    flex: 0 0 auto;
+}
+
+
+header {
+    background: var(--couleur-fond-blanc);
+    padding: 1.5rem var(--espacement-grand);
+    border-bottom: 1px solid var(--couleur-bordure);
+    box-shadow: var(--ombre-petite);
+}
+
+header h1 {
+    color: var(--couleur-principale);
+    font-size: var(--taille-police-h2);
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    color: var(--couleur-texte-secondaire);
+    font-size: var(--taille-police-normal);
+    margin-bottom: 1rem;
+}
+
+header nav {
+    display: flex;
+    justify-content: flex-end;
+}
+
+header nav a {
+    background: var(--couleur-fond-blanc);
+    color: var(--couleur-principale);
+    padding: 0.65rem 1.5rem;
+    border-radius: var(--rayon-bordure-petit);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--transition-normale);
+}
+
+/* ========== CONTENU PRINCIPAL ========== */
+main {
+    max-width: var(--largeur-max-contenu);
+    margin: 0 auto;
+    padding: var(--espacement-tres-grand) var(--espacement-grand);
+}
+
+/* ========== SECTIONS ========== */
+section {
+    background: var(--couleur-fond-blanc);
+    padding: var(--espacement-grand);
+    border-radius: var(--rayon-bordure-moyen);
+    box-shadow: var(--ombre-petite);
+    margin-bottom: var(--espacement-grand);
+}
+
+section h2 {
+    color: var(--couleur-texte-fonce);
+    font-size: var(--taille-police-h3);
+    margin-bottom: var(--espacement-grand);
+    padding-bottom: var(--espacement-moyen);
+    border-bottom: 2px solid var(--couleur-principale-light);
+}
+
+/* ========== SÉPARATEURS ========== */
+hr {
+    display: none; /* On utilise les marges des sections à la place */
+}
+
+/* ========== TABLEAUX ========== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--espacement-moyen);
+}
+
+/* En-tête de tableau */
+thead {
+    background: var(--couleur-principale-light);
+}
+
+thead th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--couleur-principale);
+    font-size: var(--taille-police-normal);
+    border-bottom: 2px solid var(--couleur-principale);
+}
+
+/* Cellules de tableau */
+tbody td,
+tbody th {
+    padding: 1rem;
+    border-bottom: 1px solid var(--couleur-bordure);
+    color: var(--couleur-texte-principal);
+    font-size: var(--taille-police-normal);
+}
+
+tbody th {
+    font-weight: 600;
+    background: var(--couleur-fond-page);
+    color: var(--couleur-texte-principal);
+    width: 180px;
+}
+
+/* Alternance de couleurs pour les lignes */
+tbody tr:hover {
+    background: var(--couleur-fond-page);
+    transition: background var(--transition-rapide);
+}
+
+/* Dernière ligne sans bordure */
+tbody tr:last-child td,
+tbody tr:last-child th {
+    border-bottom: none;
+}
+
+/* Texte dans les cellules */
+tbody td small {
+    display: block;
+    color: var(--couleur-texte-leger);
+    font-size: var(--taille-police-petit);
+    margin-top: 0.3rem;
+}
+
+tbody td em {
+    color: var(--couleur-texte-leger);
+    font-style: italic;
+}
+
+tbody td strong {
+    color: var(--couleur-texte-fonce);
+    font-weight: 600;
+}
+
+/* ========== CARTES DE RENDEZ-VOUS PASSÉS ========== */
+.rdv-card {
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-bordure-moyen);
+    padding: var(--espacement-grand);
+    margin-bottom: var(--espacement-grand);
+    background: var(--couleur-fond-blanc);
+    transition: all var(--transition-normale);
+}
+
+.rdv-card:hover {
+    box-shadow: var(--ombre-moyenne);
+    transform: translateY(-2px);
+}
+
+.rdv-card:last-child {
+    margin-bottom: 0;
+}
+
+.rdv-card h3 {
+    color: var(--couleur-principale);
+    font-size: var(--taille-police-grand);
+    margin-bottom: var(--espacement-moyen);
+    padding-bottom: var(--espacement-petit);
+    border-bottom: 1px solid var(--couleur-bordure);
+}
+
+.rdv-card p {
+    margin-bottom: var(--espacement-petit);
+    color: var(--couleur-texte-principal);
+    font-size: var(--taille-police-normal);
+    line-height: 1.6;
+}
+
+.rdv-card p:last-of-type {
+    margin-bottom: 0;
+}
+
+.rdv-card strong {
+    color: var(--couleur-texte-fonce);
+    font-weight: 600;
+}
+
+/* ========== NOTES DE CONSULTATION ========== */
+.notes-consultation {
+    background: var(--couleur-principale-light);
+    padding: var(--espacement-moyen);
+    border-radius: var(--rayon-bordure-petit);
+    margin-top: var(--espacement-moyen);
+    border-left: 4px solid var(--couleur-principale);
+}
+
+.notes-consultation h4 {
+    color: var(--couleur-principale);
+    font-size: var(--taille-police-normal);
+    margin-bottom: var(--espacement-petit);
+    font-weight: 600;
+}
+
+.notes-consultation p {
+    color: var(--couleur-texte-principal);
+    font-size: var(--taille-police-normal);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ========== MESSAGES VIDES ========== */
+section > p {
+    color: var(--couleur-texte-secondaire);
+    font-size: var(--taille-police-normal);
+    text-align: center;
+    padding: var(--espacement-grand);
+    background: var(--couleur-fond-page);
+    border-radius: var(--rayon-bordure-petit);
+    font-style: italic;
+}
+
+/* ========== PIED DE PAGE ========== */
+footer {
+    background: var(--couleur-fond-blanc);
+    border-top: 1px solid var(--couleur-bordure);
+    padding: var(--espacement-grand);
+    text-align: center;
+    margin-top: auto;
+}
+
+footer p {
+    color: var(--couleur-texte-leger);
+    font-size: var(--taille-police-petit);
+}
+
+/* ========== RESPONSIVE : TABLETTE ========== */
+@media (max-width: 1024px) {
+    main {
+        padding: var(--espacement-grand) var(--espacement-moyen);
+    }
+    
+    section {
+        padding: var(--espacement-moyen);
+    }
+    
+    table {
+        font-size: var(--taille-police-petit);
+    }
+    
+    thead th,
+    tbody td,
+    tbody th {
+        padding: 0.75rem;
+    }
+}
+
+/* ========== RESPONSIVE : MOBILE ========== */
+@media (max-width: 768px) {
+    /* En-tête */
+    header {
+        padding: var(--espacement-moyen);
+    }
+    
+    header h1 {
+        font-size: var(--taille-police-h3);
+    }
+    
+    header p {
+        font-size: var(--taille-police-petit);
+    }
+    
+    /* Contenu principal */
+    main {
+        padding: var(--espacement-moyen);
+    }
+    
+    section {
+        padding: var(--espacement-moyen);
+        margin-bottom: var(--espacement-moyen);
+    }
+    
+    section h2 {
+        font-size: var(--taille-police-grand);
+        margin-bottom: var(--espacement-moyen);
+    }
+    
+    /* Tableaux en mode responsive */
+    
+    /* Table des informations personnelles */
+    section:first-of-type table {
+        display: block;
+    }
+    
+    section:first-of-type table tbody {
+        display: block;
+    }
+    
+    section:first-of-type table tr {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: var(--espacement-moyen);
+        padding-bottom: var(--espacement-moyen);
+        border-bottom: 1px solid var(--couleur-bordure);
+    }
+    
+    section:first-of-type table tr:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    section:first-of-type table th,
+    section:first-of-type table td {
+        display: block;
+        width: 100%;
+        padding: 0.5rem 0;
+        border: none;
+    }
+    
+    section:first-of-type table th {
+        background: none;
+        color: var(--couleur-texte-leger);
+        font-size: var(--taille-police-petit);
+        font-weight: 500;
+        padding-bottom: 0.3rem;
+    }
+    
+    section:first-of-type table td {
+        font-weight: 600;
+        color: var(--couleur-texte-fonce);
+        padding-top: 0;
+    }
+    
+    /* Table des rendez-vous à venir */
+    section table:not(section:first-of-type table) {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    section table:not(section:first-of-type table) thead {
+        display: none;
+    }
+    
+    section table:not(section:first-of-type table) tbody,
+    section table:not(section:first-of-type table) tr {
+        display: block;
+    }
+    
+    section table:not(section:first-of-type table) tr {
+        margin-bottom: var(--espacement-moyen);
+        padding: var(--espacement-moyen);
+        border: 1px solid var(--couleur-bordure);
+        border-radius: var(--rayon-bordure-petit);
+        background: var(--couleur-fond-blanc);
+    }
+    
+    section table:not(section:first-of-type table) td {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border: none;
+    }
+    
+    section table:not(section:first-of-type table) td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--couleur-texte-leger);
+        font-size: var(--taille-police-petit);
+        flex-shrink: 0;
+        margin-right: var(--espacement-moyen);
+    }
+    
+    /* Cartes de rendez-vous passés */
+    .rdv-card {
+        padding: var(--espacement-moyen);
+        margin-bottom: var(--espacement-moyen);
+    }
+    
+    .rdv-card h3 {
+        font-size: var(--taille-police-normal);
+    }
+    
+    .rdv-card p {
+        font-size: var(--taille-police-petit);
+    }
+    
+    /* Notes de consultation */
+    .notes-consultation {
+        padding: var(--espacement-moyen);
+    }
+    
+    .notes-consultation h4 {
+        font-size: var(--taille-police-petit);
+    }
+    
+    .notes-consultation p {
+        font-size: var(--taille-police-petit);
+    }
+}
+
+/* ========== RESPONSIVE : TRÈS PETIT MOBILE ========== */
+@media (max-width: 480px) {
+    header {
+        padding: var(--espacement-moyen) var(--espacement-petit);
+    }
+    
+    main {
+        padding: var(--espacement-moyen) var(--espacement-petit);
+    }
+    
+    section {
+        padding: var(--espacement-moyen) var(--espacement-petit);
+    }
+}
