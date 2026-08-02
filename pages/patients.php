@@ -12,7 +12,7 @@ $pagesRendezvous = ['rdv.php', 'desistement'];
 $pagesStats = ['professional.php', 'statistiques.php'];
 $pagesParametres = ['parametres.php'];
 
-// Vérifier que l'utilisateur est un praticien
+// Check that the user is a practitioner
 $stmt = mysqli_prepare($connexion, "SELECT 1 FROM praticiens WHERE utilisateur_id = ?");
 mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
 mysqli_stmt_execute($stmt);
@@ -23,7 +23,7 @@ if (mysqli_num_rows($result) === 0) {
     exit;
 }
 
-// Récupérer les infos du praticien
+// Get the practitioner's info
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.prenom, u.nom
@@ -36,7 +36,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $praticien = mysqli_fetch_assoc($result);
 
-// Récupérer les spécialités
+// Get the specialties
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT sm.nom
@@ -53,10 +53,10 @@ while ($row = mysqli_fetch_assoc($res)) {
     $specialites[] = $row['nom'];
 }
 
-// Récupérer le terme de recherche
+// Get the search term
 $recherche = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-// Construire la requête SQL pour récupérer les patients
+// Build the SQL query to get the patients
 $sql = "SELECT DISTINCT
             u.id,
             u.prenom,
@@ -79,7 +79,7 @@ $sql = "SELECT DISTINCT
 $params = [$_SESSION['user_id']];
 $types = "i";
 
-// Ajouter le filtre de recherche si présent
+// Add the search filter if present
 if ($recherche !== '') {
     $sql .= " AND (u.prenom LIKE ? OR u.nom LIKE ? OR u.email LIKE ?)";
     $recherche_param = "%$recherche%";
@@ -99,7 +99,7 @@ $result_patients = mysqli_stmt_get_result($stmt);
 
 $patients = [];
 while ($row = mysqli_fetch_assoc($result_patients)) {
-    // Calculer l'âge
+    // Calculate the age
     if ($row['date_naissance']) {
         $date_naissance = new DateTime($row['date_naissance']);
         $aujourd_hui = new DateTime();
@@ -108,7 +108,7 @@ while ($row = mysqli_fetch_assoc($result_patients)) {
         $row['age'] = null;
     }
     
-    // Formater les dates
+    // Format the dates
     if ($row['derniere_consultation']) {
         $date_derniere = new DateTime($row['derniere_consultation']);
         $row['derniere_consultation_format'] = $date_derniere->format('d/m/Y');
@@ -117,7 +117,7 @@ while ($row = mysqli_fetch_assoc($result_patients)) {
     $patients[] = $row;
 }
 
-// Statistiques
+// Statistics
 $total_patients = count($patients);
 ?>
 
@@ -133,7 +133,7 @@ $total_patients = count($patients);
     <link rel="stylesheet" href="../assets/css/patients.css">
 </head>
 <body>
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -147,7 +147,7 @@ $total_patients = count($patients);
         </nav>
     </header>
 
-    <!-- ========== LAYOUT PRINCIPAL ========== -->
+    <!-- ========== MAIN LAYOUT ========== -->
     <div class="pro-layout">
         
         <!-- ========== SIDEBAR NAVIGATION ========== -->
@@ -184,7 +184,7 @@ $total_patients = count($patients);
             </nav>
         </aside>
 
-        <!-- ========== CONTENU PRINCIPAL ========== -->
+        <!-- ========== MAIN CONTENT ========== -->
         <main class="pro-main">
             <div class="patients-page-header">
                 <div class="patients-title-section">
@@ -196,7 +196,7 @@ $total_patients = count($patients);
                 </div>
             </div>
 
-            <!-- Barre de recherche -->
+            <!-- Search bar -->
              <div class="patients-container">
             <div class="search-bar-container">
                 <form method="GET" action="patients.php" class="search-form">
@@ -223,7 +223,7 @@ $total_patients = count($patients);
                 <?php endif; ?>
             </div>
 
-            <!-- Liste des patients -->
+            <!-- Patient list -->
             
                 <?php if (count($patients) > 0): ?>
                     <div class="patients-grid">
@@ -314,7 +314,7 @@ $total_patients = count($patients);
         </main>
     </div>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">

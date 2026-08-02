@@ -12,7 +12,7 @@ $pagesRendezvous = ['rdv.php', 'desistement.php'];
 $pagesStats = ['professional.php', 'statistiques.php'];
 $pagesParametres = ['parametres.php'];
 
-// Vérifier dans la table praticien
+// Check the praticiens table
 $stmt = mysqli_prepare($connexion,"SELECT 1 FROM praticiens WHERE utilisateur_id = ?");
 mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
 mysqli_stmt_execute($stmt);
@@ -23,7 +23,7 @@ if (mysqli_num_rows($result) === 0) {
     exit;
 }
 
-// Récupérer les infos du praticien
+// Get the practitioner's info
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.prenom, u.nom
@@ -36,7 +36,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $praticien = mysqli_fetch_assoc($result);
 
-// Récupérer les spécialités
+// Get the specialties
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT sm.nom
@@ -53,12 +53,12 @@ while ($row = mysqli_fetch_assoc($res)) {
     $specialites[] = $row['nom'];
 }
 
-// ========== PÉRIODE SÉLECTIONNÉE ==========
+// ========== SELECTED PERIOD ==========
 $periode = isset($_GET['periode']) ? $_GET['periode'] : 'semaine';
 
-// ========== STATISTIQUES PAR PÉRIODE ==========
+// ========== STATISTICS BY PERIOD ==========
 
-// Fonction pour obtenir les dates selon la période
+// Function to get the dates for a given period
 function getDatesForPeriod($periode) {
     $dates = [];
     switch($periode) {
@@ -87,7 +87,7 @@ function getDatesForPeriod($periode) {
 $dates = getDatesForPeriod($periode);
 $stats = [];
 
-// 1. RDV Total
+// 1. Total appointments
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(*) as nb
@@ -101,7 +101,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_total'] = mysqli_fetch_assoc($result)['nb'];
 
-// RDV période précédente
+// Appointments for the previous period
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(*) as nb
@@ -116,7 +116,7 @@ $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_total_prev'] = mysqli_fetch_assoc($result)['nb'];
 $stats['diff_rdv_total'] = $stats['rdv_total'] - $stats['rdv_total_prev'];
 
-// 2. RDV Confirmés
+// 2. Confirmed appointments
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(*) as nb
@@ -132,7 +132,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_confirmes'] = mysqli_fetch_assoc($result)['nb'];
 
-// Confirmés période précédente
+// Confirmed for the previous period
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(*) as nb
@@ -149,7 +149,7 @@ $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_confirmes_prev'] = mysqli_fetch_assoc($result)['nb'];
 $stats['diff_confirmes'] = $stats['rdv_confirmes'] - $stats['rdv_confirmes_prev'];
 
-// 3. RDV Terminés
+// 3. Completed appointments
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(*) as nb
@@ -165,7 +165,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_termines'] = mysqli_fetch_assoc($result)['nb'];
 
-// 4. RDV Annulés
+// 4. Cancelled appointments
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(*) as nb
@@ -181,7 +181,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_annules'] = mysqli_fetch_assoc($result)['nb'];
 
-// Annulés période précédente
+// Cancelled for the previous period
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(*) as nb
@@ -198,7 +198,7 @@ $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_annules_prev'] = mysqli_fetch_assoc($result)['nb'];
 $stats['diff_annules'] = $stats['rdv_annules'] - $stats['rdv_annules_prev'];
 
-// 5. RDV Désistement
+// 5. Withdrawn appointments
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(*) as nb
@@ -214,7 +214,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_attente'] = mysqli_fetch_assoc($result)['nb'];
 
-// 6. Nouveaux patients
+// 6. New patients
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(DISTINCT r.patient_id) as nb
@@ -228,7 +228,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['nouveaux_patients'] = mysqli_fetch_assoc($result)['nb'];
 
-// Nouveaux patients période précédente
+// New patients for the previous period
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(DISTINCT r.patient_id) as nb
@@ -243,7 +243,7 @@ $result = mysqli_stmt_get_result($stmt);
 $stats['nouveaux_patients_prev'] = mysqli_fetch_assoc($result)['nb'];
 $stats['diff_patients'] = $stats['nouveaux_patients'] - $stats['nouveaux_patients_prev'];
 
-// 7. Total patients uniques
+// 7. Total unique patients
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(DISTINCT r.patient_id) as nb
@@ -256,7 +256,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['total_patients'] = mysqli_fetch_assoc($result)['nb'];
 
-// 8. Taux de remplissage
+// 8. Fill rate
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT 
@@ -277,7 +277,7 @@ $stats['taux_remplissage'] = $taux_data['total_creneaux'] > 0
 $stats['total_creneaux'] = $taux_data['total_creneaux'];
 $stats['creneaux_reserves'] = $taux_data['creneaux_reserves'];
 
-// Taux période précédente
+// Rate for the previous period
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT 
@@ -297,17 +297,17 @@ $stats['taux_remplissage_prev'] = $taux_data_prev['total_creneaux'] > 0
     : 0;
 $stats['diff_taux'] = $stats['taux_remplissage'] - $stats['taux_remplissage_prev'];
 
-// 9. Taux d'annulation
+// 9. Cancellation rate
 $stats['taux_annulation'] = $stats['rdv_total'] > 0 
     ? round(($stats['rdv_annules'] / $stats['rdv_total']) * 100, 1) 
     : 0;
 
-// 10. Revenus estimés
+// 10. Estimated revenue
 $tarif_consultation = 50;
 $stats['revenus'] = $stats['rdv_termines'] * $tarif_consultation;
 $stats['revenus_potentiels'] = $stats['rdv_confirmes'] * $tarif_consultation;
 
-// 11. Durée moyenne des consultations
+// 11. Average consultation duration
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT AVG(c.duree_minute) as moyenne
@@ -323,7 +323,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['duree_moyenne'] = round(mysqli_fetch_assoc($result)['moyenne'] ?? 0);
 
-// 12. Top 3 motifs de consultation
+// 12. Top 3 consultation reasons
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT m.description, COUNT(*) as nb
@@ -344,7 +344,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     $stats['top_motifs'][] = $row;
 }
 
-// Fonction pour formatter le titre de la période
+// Function to format the period title
 function getPeriodeTitle($periode, $dates) {
     switch($periode) {
         case 'semaine':

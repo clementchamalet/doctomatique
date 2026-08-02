@@ -11,10 +11,10 @@
 <body>
     <?php 
     require_once __DIR__ . '/config.php';
-    requirePatient(); // Redirige si non connecté ou non patient
+    requirePatient(); // Redirects if not logged in or not a patient
     ?>
     
-    <!-- ========== EN-TÊTE ========== -->
+    <!-- ========== HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -31,12 +31,12 @@
         </nav>
     </header>
 
-    <!-- ========== CONTENU PRINCIPAL ========== -->
+    <!-- ========== MAIN CONTENT ========== -->
     <main class="appointments-page">
         <div class="container">
             <h1>Mes rendez-vous</h1>
 
-            <!-- Filtres par statut -->
+            <!-- Status filters -->
             <div class="appointments-filters">
                 <button class="filter-btn active" data-filter="all">
                     Tous <span class="count" id="countAll">0</span>
@@ -52,13 +52,13 @@
                 </button>
             </div>
 
-            <!-- Indicateur de chargement -->
+            <!-- Loading indicator -->
             <div id="loadingSpinner" class="loading-spinner">
                 <div class="spinner"></div>
                 <p>Chargement de vos rendez-vous...</p>
             </div>
 
-            <!-- Message si aucun rendez-vous -->
+            <!-- Message when there are no appointments -->
             <div id="noAppointments" class="no-appointments" style="display: none;">
                 <div class="no-appointments-icon">📅</div>
                 <h2>Aucun rendez-vous</h2>
@@ -66,20 +66,20 @@
                 <a href="search.php" class="btn-primary">Prendre rendez-vous</a>
             </div>
 
-            <!-- Liste des rendez-vous -->
+            <!-- Appointment list -->
             <div id="appointmentsList" class="appointments-list">
-                <!-- Rempli dynamiquement par JavaScript -->
+                <!-- Filled dynamically by JavaScript -->
             </div>
         </div>
     </main>
 
-    <!-- Modal de confirmation d'annulation -->
+    <!-- Cancellation confirmation modal -->
     <div id="cancelModal" class="modal" style="display: none;">
         <div class="modal-content">
             <h2>Annuler le rendez-vous</h2>
             
             <div id="cancelSummary" class="cancel-summary">
-                <!-- Rempli dynamiquement -->
+                <!-- Filled dynamically -->
             </div>
 
             <p class="warning-text">
@@ -94,7 +94,7 @@
         </div>
     </div>
 
-    <!-- Modal de succès d'annulation -->
+    <!-- Cancellation success modal -->
     <div id="cancelSuccessModal" class="modal" style="display: none;">
         <div class="modal-content">
             <div class="success-icon">✓</div>
@@ -104,7 +104,7 @@
         </div>
     </div>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -139,7 +139,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript modulaire -->
+    <!-- Modular JavaScript -->
     <script type="module" src="../assets/js/appointments.js"></script>
 </body>
 </html>

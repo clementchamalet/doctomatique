@@ -12,13 +12,12 @@ $pagesRendezvous = ['rdv_sec.php', 'desistement_sec.php'];
 $pagesStats = ['professional_sec.php', 'statistiques_sec.php'];
 $pagesParametres = ['parametres_sec.php'];
 
-$_SESSION['user_id'] = 2;
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'secretaire') {
     header('Location: index.php');
     exit;
 }
 
-// Récupérer les infos de la secrétaire et de sa structure
+// Get the secretary's info and their facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.prenom, u.nom, s.id as structure_id, s.nom as structure_nom
@@ -31,7 +30,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $secretaire = mysqli_fetch_assoc($result);
 
-// Si pas de structure trouvée, rediriger
+// If no facility found, redirect
 if (!$secretaire) {
     header("Location: index.php");
     exit;
@@ -39,7 +38,7 @@ if (!$secretaire) {
 
 $structure_id = $secretaire['structure_id'];
 
-// Récupérer la liste des praticiens de l'établissement
+// Get the list of practitioners at the facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT DISTINCT p.utilisateur_id, u.prenom, u.nom
@@ -58,15 +57,15 @@ while ($row = mysqli_fetch_assoc($result)) {
     $praticiens_liste[] = $row;
 }
 
-// Déterminer le praticien sélectionné
+// Determine the selected practitioner
 $praticien_selectionne = isset($_GET['praticien']) && $_GET['praticien'] !== '' ? intval($_GET['praticien']) : null;
 
-// Si aucun praticien sélectionné et qu'il y en a dans la liste, sélectionner le premier
+// If no practitioner is selected and the list isn't empty, select the first one
 if ($praticien_selectionne === null && !empty($praticiens_liste)) {
     $praticien_selectionne = $praticiens_liste[0]['utilisateur_id'];
 }
 
-// Obtenir le nom du praticien sélectionné
+// Get the selected practitioner's name
 $nom_praticien = null;
 if ($praticien_selectionne) {
     foreach ($praticiens_liste as $prat) {
@@ -88,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $recurrence = $_POST['recurrence'] ?? 'aucune';
     $fin_recurrence = $_POST['fin_recurrence'] ?? null;
 
-    // Vérifier que le praticien appartient bien à l'établissement
+    // Check that the practitioner really belongs to the facility
     $stmt = mysqli_prepare(
         $connexion,
         "SELECT 1 FROM praticiens_structures WHERE praticien_id = ? AND structure_id = ?"
@@ -126,13 +125,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($recurrence === 'quotidienne') {
                 do {
                     $dateDebut->modify('+1 day');
-                } while ($dateDebut->format('N') == 7); // Sauter les dimanches
+                } while ($dateDebut->format('N') == 7); // Skip Sundays
             }
             elseif ($recurrence === 'hebdomadaire') {
                 $dateDebut->modify('+1 week');
             }
             else {
-                break; // aucune récurrence
+                break; // no recurrence
             }
         }
 
@@ -154,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../assets/css/style_sec.css">
 </head>
 <body>
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -168,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </nav>
     </header>
-    <!-- ========== LAYOUT PRINCIPAL ========== -->
+    <!-- ========== MAIN LAYOUT ========== -->
     <div class="pro-layout">
         
         <!-- ========== SIDEBAR NAVIGATION ========== -->
@@ -201,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </nav>
         </aside>
 
-        <!-- ========== CONTENU PRINCIPAL ========== -->
+        <!-- ========== MAIN CONTENT ========== -->
         <main class="pro-main">
             <h1>➕ Nouvelle disponibilité
                 <?php if ($nom_praticien): ?>
@@ -218,7 +217,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a href="disponibilites_sec.php<?= $praticien_selectionne ? '?praticien='.$praticien_selectionne : '' ?>">← Retour aux disponibilités</a>
             <?php else: ?>
 
-            <!-- Sélecteur de praticien -->
+            <!-- Practitioner selector -->
             <div class="praticien-selector">
                 <label for="praticien-select">👨‍⚕️ Ajouter une disponibilité pour :</label>
                 <select id="praticien-select">
@@ -270,7 +269,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
         </main>
     </div>
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -305,7 +304,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </footer>
 
     <script>
-        // Auto-submit lors du changement de praticien
+        // Auto-submit when the practitioner changes
         document.getElementById('praticien-select').addEventListener('change', function() {
             const praticienId = this.value;
             window.location.href = 'nouvelle_disponibilite.php?praticien=' + praticienId;

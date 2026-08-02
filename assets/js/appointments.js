@@ -1,9 +1,9 @@
 /**
- * Module de gestion des rendez-vous du patient
- * Affichage, filtrage et annulation de rendez-vous
+ * Patient appointment management module
+ * Displaying, filtering, and cancelling appointments
  */
 
-// ========== Ã‰TAT ==========
+// ========== STATE ==========
 const state = {
     appointments: [],
     filteredAppointments: [],
@@ -11,13 +11,13 @@ const state = {
     appointmentToCancel: null
 };
 
-// ========== INITIALISATION ==========
+// ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', () => {
     loadAppointments();
     attachEventListeners();
 });
 
-// ========== CHARGEMENT DES RENDEZ-VOUS ==========
+// ========== LOADING APPOINTMENTS ==========
 async function loadAppointments(filter = 'all') {
     showLoading();
 
@@ -44,11 +44,11 @@ async function loadAppointments(filter = 'all') {
     }
 }
 
-// ========== AFFICHAGE ==========
+// ========== DISPLAY ==========
 function applyFilter(filter) {
     state.currentFilter = filter;
 
-    // Mise Ã  jour des boutons actifs
+    // Update the active buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.remove('active');
         if (btn.dataset.filter === filter) {
@@ -56,7 +56,7 @@ function applyFilter(filter) {
         }
     });
 
-    // Filtrage des rendez-vous
+    // Filter the appointments
     switch (filter) {
         case 'upcoming':
             state.filteredAppointments = state.appointments.filter(a => 
@@ -103,10 +103,10 @@ function createAppointmentCard(apt) {
     const card = document.createElement('div');
     card.className = `appointment-card ${apt.is_past ? 'past' : ''} ${apt.status === 'Annulé' ? 'cancelled' : ''}`;
 
-    // Badge de statut
+    // Status badge
     const statusBadge = getStatusBadge(apt);
 
-    // Date formatÃ©e
+    // Formatted date
     const dateLabel = apt.is_today ? 'Aujourd\'hui' :
                      apt.is_tomorrow ? 'Demain' :
                      new Date(apt.datetime).toLocaleDateString('fr-FR', {
@@ -195,7 +195,7 @@ function updateCounts(stats) {
     document.getElementById('countCancelled').textContent = stats.cancelled;
 }
 
-// ========== ANNULATION ==========
+// ========== CANCELLATION ==========
 window.showCancelModal = function(appointmentId) {
     const appointment = state.appointments.find(a => a.id === appointmentId);
     if (!appointment) return;
@@ -254,7 +254,7 @@ async function confirmCancel() {
         if (data.success) {
             closeCancelModal();
             showCancelSuccessModal();
-            // Rechargement des rendez-vous après un court délai
+            // Reload the appointments after a short delay
             setTimeout(() => loadAppointments(), 1500);
         } else {
             alert(data.error || 'Erreur lors de l\'annulation');
@@ -277,21 +277,21 @@ function closeCancelSuccessModal() {
     document.getElementById('cancelSuccessModal').style.display = 'none';
 }
 
-// ========== Évènement ==========
+// ========== EVENTS ==========
 function attachEventListeners() {
-    // Filtres
+    // Filters
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             applyFilter(btn.dataset.filter);
         });
     });
 
-    // Modal d'annulation
+    // Cancellation modal
     document.getElementById('btnCloseCancelModal').addEventListener('click', closeCancelModal);
     document.getElementById('btnConfirmCancel').addEventListener('click', confirmCancel);
     document.getElementById('btnCloseCancelSuccess').addEventListener('click', closeCancelSuccessModal);
 
-    // Fermeture en cliquant à l'extérieur
+    // Close by clicking outside
     document.getElementById('cancelModal').addEventListener('click', (e) => {
         if (e.target.id === 'cancelModal') closeCancelModal();
     });

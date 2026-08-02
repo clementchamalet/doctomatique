@@ -6,7 +6,7 @@ $conn = get_db();
 
 $user_id = $_SESSION['user_id'];
 
-// Récupérer les informations de l'utilisateur
+// Get the user's info
 $sql_user = "SELECT nom, prenom, email, telephone FROM utilisateurs WHERE id = ?";
 $stmt_user = mysqli_prepare($conn, $sql_user);
 mysqli_stmt_bind_param($stmt_user, "i", $user_id);
@@ -15,7 +15,7 @@ $result_user = mysqli_stmt_get_result($stmt_user);
 $user_info = mysqli_fetch_assoc($result_user);
 mysqli_stmt_close($stmt_user);
 
-// Récupérer l'ID patient (depuis la table patients)
+// Get the patient ID (from the patients table)
 $sql_patient_id = "SELECT utilisateur_id FROM patients WHERE utilisateur_id = ?";
 $stmt_patient_id = mysqli_prepare($conn, $sql_patient_id);
 mysqli_stmt_bind_param($stmt_patient_id, "i", $user_id);
@@ -27,7 +27,7 @@ if (mysqli_num_rows($result_patient_id) > 0) {
 }
 mysqli_stmt_close($stmt_patient_id);
 
-// Récupérer les rendez-vous futurs
+// Get upcoming appointments
 $sql_rdv_futurs = "SELECT 
     r.id as rdv_id,
     r.cree_le,
@@ -61,7 +61,7 @@ while ($row = mysqli_fetch_assoc($result_rdv_futurs)) {
 }
 mysqli_stmt_close($stmt_rdv_futurs);
 
-// Récupérer les rendez-vous passés avec notes de consultation
+// Get past appointments with consultation notes
 $sql_rdv_passes = "SELECT 
     r.id as rdv_id,
     r.cree_le,
@@ -130,7 +130,7 @@ mysqli_close($conn);
 
     <main>
         <div class="container">
-            <!-- Section informations personnelles -->
+            <!-- Personal information section -->
             <section>
                 <h2>Mes informations personnelles</h2>
                 <table>
@@ -155,7 +155,7 @@ mysqli_close($conn);
                 </table>
             </section>
 
-            <!-- Section rendez-vous à venir -->
+            <!-- Upcoming appointments section -->
             <section>
                 <h2>Mes rendez-vous à venir</h2>
                 <?php if (count($rdv_futurs) > 0): ?>
@@ -197,7 +197,7 @@ mysqli_close($conn);
                 <?php endif; ?>
             </section>
 
-            <!-- Section rendez-vous passés -->
+            <!-- Past appointments section -->
             <section>
                 <h2>Mes rendez-vous passés</h2>
                 <?php if (count($rdv_passes) > 0): ?>

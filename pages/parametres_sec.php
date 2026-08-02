@@ -12,13 +12,12 @@ $pagesRendezvous = ['rdv_sec.php', 'desistement_sec.php'];
 $pagesStats = ['professional_sec.php', 'statistiques_sec.php'];
 $pagesParametres = ['parametres_sec.php'];
 
-$_SESSION['user_id'] = 2;
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'secretaire') {
     header('Location: index.php');
     exit;
 }
 
-// Récupérer les infos de la secrétaire et de sa structure
+// Get the secretary's info and their facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.id, u.prenom, u.nom, u.email, u.telephone, s.id as structure_id, s.nom as structure_nom, t.description as structure_type
@@ -32,7 +31,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $secretaire = mysqli_fetch_assoc($result);
 
-// Si pas de structure trouvée, rediriger
+// If no facility found, redirect
 if (!$secretaire) {
     header("Location: index.php");
     exit;
@@ -41,18 +40,18 @@ if (!$secretaire) {
 $success_message = '';
 $error_message = '';
 
-// Traitement du formulaire
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     
     if ($action === 'update_info') {
-        // Mise à jour des informations de base
+        // Update basic info
         $prenom = trim($_POST['prenom']);
         $nom = trim($_POST['nom']);
         $email = trim($_POST['email']);
         $telephone = trim($_POST['telephone']);
         
-        // Vérifier que l'email n'est pas déjà utilisé par un autre utilisateur
+        // Check that the email isn't already used by another user
         $stmt = mysqli_prepare($connexion, "SELECT id FROM utilisateurs WHERE email = ? AND id != ?");
         mysqli_stmt_bind_param($stmt, "si", $email, $_SESSION['user_id']);
         mysqli_stmt_execute($stmt);
@@ -61,13 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (mysqli_num_rows($result) > 0) {
             $error_message = "Cet email est déjà utilisé par un autre utilisateur.";
         } else {
-            // Mise à jour de la table utilisateurs
+            // Update the utilisateurs table
             $stmt = mysqli_prepare($connexion, "UPDATE utilisateurs SET prenom = ?, nom = ?, email = ?, telephone = ? WHERE id = ?");
             mysqli_stmt_bind_param($stmt, "ssssi", $prenom, $nom, $email, $telephone, $_SESSION['user_id']);
             
             if (mysqli_stmt_execute($stmt)) {
                 $success_message = "Vos informations ont été mises à jour avec succès.";
-                // Recharger les données
+                // Reload the data
                 $secretaire['prenom'] = $prenom;
                 $secretaire['nom'] = $nom;
                 $secretaire['email'] = $email;
@@ -79,12 +78,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     if ($action === 'update_password') {
-        // Mise à jour du mot de passe
+        // Update the password
         $current_password = $_POST['current_password'];
         $new_password = $_POST['new_password'];
         $confirm_password = $_POST['confirm_password'];
         
-        // Récupérer le mot de passe actuel
+        // Get the current password
         $stmt = mysqli_prepare($connexion, "SELECT mot_de_passe FROM utilisateurs WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
         mysqli_stmt_execute($stmt);
@@ -125,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -140,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </nav>
     </header>
 
-    <!-- ========== LAYOUT PRINCIPAL ========== -->
+    <!-- ========== MAIN LAYOUT ========== -->
     <div class="pro-layout">
         
         <!-- ========== SIDEBAR NAVIGATION ========== -->
@@ -177,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </nav>
         </aside>
 
-        <!-- ========== CONTENU PRINCIPAL ========== -->
+        <!-- ========== MAIN CONTENT ========== -->
         <main class="pro-main">
             <div class="section-header">
                 <h1>Paramètres du compte</h1>
@@ -197,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
 
-            <!-- Informations personnelles -->
+            <!-- Personal information -->
             <div class="settings-section">
                 <h3>Informations personnelles</h3>
                 <form method="POST" action="">
@@ -234,7 +233,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
             </div>
 
-            <!-- Établissement -->
+            <!-- Facility -->
             <div class="settings-section">
                 <h3>Établissement</h3>
                 <div class="info-section">
@@ -260,7 +259,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
-            <!-- Sécurité -->
+            <!-- Security -->
             <div class="settings-section">
                 <h3>Sécurité</h3>
                 <form method="POST" action="">
@@ -295,7 +294,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </main>
     </div>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">

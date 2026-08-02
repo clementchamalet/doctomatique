@@ -1,7 +1,7 @@
 <?php
 require 'config.php';
 
-// Si l'admin est déjà connecté, rediriger vers le dashboard
+// If the admin is already logged in, redirect to the dashboard
 if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true) {
     header('Location: espace-admin.php');
     exit;
@@ -17,7 +17,7 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true) {
     <link rel="stylesheet" href="../assets/css/global.css">
     <link rel="stylesheet" href="../assets/css/inscription.css">
     <style>
-        /* Style spécifique pour la page admin */
+        /* Admin page specific styles */
         .admin-badge {
             display: inline-block;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -100,7 +100,7 @@ if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true) {
             </div>
             
             <?php
-            // Afficher les erreurs s'il y en a
+            // Display errors if there are any
             if (isset($_GET['error'])) {
                 echo '<div class="message-erreur">';
                 switch($_GET['error']) {

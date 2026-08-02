@@ -26,7 +26,7 @@ else {
 </head>
 <body>
 
-    <!-- EN-TETE DE LA PAGE -->
+    <!-- PAGE HEADER -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -36,34 +36,34 @@ else {
             <div class="nav-links">
                 <a href="patient.php">Espace patient</a>
                 
-                <!-- Bouton de connexion -->
+                <!-- Login button -->
                 <a href=<?php echo '"' . $link . '"' ; ?> class="btn-connexion"><?php echo $affichage ; ?></a>
             </div>
         </nav>
     </header>
 
-    <!-- CONTENU PRINCIPAL -->
+    <!-- MAIN CONTENT -->
     <main>
         <div class="help-container">
 
-            <!-- SECTION INTRODUCTION HERO -->
+            <!-- INTRO HERO SECTION -->
             <div class="help-hero">
                 <h1>Comment pouvons-nous vous aider ?</h1>
                 <p>Notre equipe est la pour repondre a toutes vos questions</p>
             </div>
 
-            <!-- SECTION FORMULAIRE CONTACT -->
+            <!-- CONTACT FORM SECTION -->
             <div class="contact-section">
                 <h2>Envoyez-nous un message</h2>
                 <p class="subtitle">Nous vous repondrons dans les plus brefs delais</p>
 
-                <!-- Message succes/erreur -->
+                <!-- Success/error message -->
                 <div id="formMessage" class="message"></div>
 
-                <!-- Formulaire contact -->
+                <!-- Contact form -->
                 <form class="contact-form" id="contactForm" method="POST" action="">
                     
-                    <!-- Champ Nom -->
+                    <!-- Name field -->
                     <div class="form-group">
                         <label for="nom">Nom complet</label>
                         <div class="input-with-icon">
@@ -72,7 +72,7 @@ else {
                         </div>
                     </div>
 
-                    <!-- Champ Email -->
+                    <!-- Email field -->
                     <div class="form-group">
                         <label for="email">Adresse email</label>
                         <div class="input-with-icon">
@@ -81,7 +81,7 @@ else {
                         </div>
                     </div>
 
-                    <!-- Champ Sujet -->
+                    <!-- Subject field -->
                     <div class="form-group">
                         <label for="sujet">Sujet</label>
                         <div class="input-with-icon">
@@ -90,7 +90,7 @@ else {
                         </div>
                     </div>
 
-                    <!-- Champ Message -->
+                    <!-- Message field -->
                     <div class="form-group">
                         <label for="message">Message</label>
                         <div class="input-with-icon">
@@ -99,12 +99,12 @@ else {
                         </div>
                     </div>
 
-                    <!-- Bouton soumission -->
+                    <!-- Submit button -->
                     <button type="submit" class="btn-submit">Envoyer le message</button>
                 </form>
             </div>
 
-            <!-- APERCU FAQ -->
+            <!-- FAQ PREVIEW -->
             <div class="faq-preview">
                 <h2>Questions frequentes</h2>
                 <p class="subtitle">Trouvez rapidement des reponses a vos questions</p>
@@ -148,7 +148,7 @@ else {
         </div>
     </main>
 
-    <!-- PIED DE PAGE -->
+    <!-- FOOTER -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -183,11 +183,11 @@ else {
         </div>
     </footer>
 
-    <!-- SCRIPT JAVASCRIPT -->
+    <!-- JAVASCRIPT -->
     <script src="../assets/js/help.js"></script>
 
     <?php
-    // TRAITEMENT FORMULAIRE COTE SERVEUR
+    // SERVER-SIDE FORM HANDLING
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         header('Content-Type: application/json; charset=utf-8');
@@ -207,11 +207,11 @@ else {
             
             if (empty($errors)) {
                 
-                // Chemin du dossier messages
+                // Path to the messages folder
                 $root_dir = dirname(__DIR__);
                 $messages_dir = $root_dir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'messages' . DIRECTORY_SEPARATOR;
                 
-                // Creer le dossier s'il n'existe pas
+                // Create the folder if it doesn't exist
                 if (!is_dir($messages_dir)) {
                     @mkdir($messages_dir, 0777, true);
                 }
@@ -220,15 +220,15 @@ else {
                     throw new Exception('Impossible de creer le dossier: ' . $messages_dir);
                 }
                 
-                // Verifier les permissions
+                // Check permissions
                 if (!is_writable($messages_dir)) {
                     @chmod($messages_dir, 0777);
                 }
                 
-                // Fichier du jour
+                // Today's file
                 $log_file = $messages_dir . 'contact_' . date('Y-m-d') . '.txt';
                 
-                // Contenu du message
+                // Message content
                 $log_entry = "\n";
                 $log_entry .= "========================================\n";
                 $log_entry .= "NOUVEAU MESSAGE - " . date('d/m/Y a H:i:s') . "\n";
@@ -241,7 +241,7 @@ else {
                 $log_entry .= $message . "\n";
                 $log_entry .= "----------------------------------------\n\n";
                 
-                // Ecrire dans le fichier
+                // Write to the file
                 if (file_put_contents($log_file, $log_entry, FILE_APPEND | LOCK_EX) === false) {
                     throw new Exception('Erreur ecriture fichier: ' . $log_file);
                 }

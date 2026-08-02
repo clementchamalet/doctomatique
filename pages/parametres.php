@@ -12,7 +12,7 @@ $pagesRendezvous = ['rdv.php', 'desistement'];
 $pagesStats = ['professional.php', 'statistiques.php'];
 $pagesParametres = ['parametres.php'];
 
-// Vérifier que c'est un praticien
+// Check that this is a practitioner
 $stmt = mysqli_prepare($connexion, "SELECT 1 FROM praticiens WHERE utilisateur_id = ?");
 mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
 mysqli_stmt_execute($stmt);
@@ -26,19 +26,19 @@ if (mysqli_num_rows($result) === 0) {
 $success_message = '';
 $error_message = '';
 
-// Traitement du formulaire
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     
     if ($action === 'update_info') {
-        // Mise à jour des informations de base
+        // Update basic info
         $prenom = trim($_POST['prenom']);
         $nom = trim($_POST['nom']);
         $email = trim($_POST['email']);
         $telephone = trim($_POST['telephone']);
         $biographie = trim($_POST['biographie']);
         
-        // Vérifier que l'email n'est pas déjà utilisé par un autre utilisateur
+        // Check that the email isn't already used by another user
         $stmt = mysqli_prepare($connexion, "SELECT id FROM utilisateurs WHERE email = ? AND id != ?");
         mysqli_stmt_bind_param($stmt, "si", $email, $_SESSION['user_id']);
         mysqli_stmt_execute($stmt);
@@ -47,12 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (mysqli_num_rows($result) > 0) {
             $error_message = "Cet email est déjà utilisé par un autre utilisateur.";
         } else {
-            // Mise à jour de la table utilisateurs
+            // Update the utilisateurs table
             $stmt = mysqli_prepare($connexion, "UPDATE utilisateurs SET prenom = ?, nom = ?, email = ?, telephone = ? WHERE id = ?");
             mysqli_stmt_bind_param($stmt, "ssssi", $prenom, $nom, $email, $telephone, $_SESSION['user_id']);
             
             if (mysqli_stmt_execute($stmt)) {
-                // Mise à jour de la biographie dans praticiens
+                // Update the bio in praticiens
                 $stmt = mysqli_prepare($connexion, "UPDATE praticiens SET biographie = ? WHERE utilisateur_id = ?");
                 mysqli_stmt_bind_param($stmt, "si", $biographie, $_SESSION['user_id']);
                 mysqli_stmt_execute($stmt);
@@ -65,12 +65,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     if ($action === 'update_password') {
-        // Mise à jour du mot de passe
+        // Update the password
         $current_password = $_POST['current_password'];
         $new_password = $_POST['new_password'];
         $confirm_password = $_POST['confirm_password'];
         
-        // Récupérer le mot de passe actuel
+        // Get the current password
         $stmt = mysqli_prepare($connexion, "SELECT mot_de_passe FROM utilisateurs WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
         mysqli_stmt_execute($stmt);
@@ -97,15 +97,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     if ($action === 'update_structures') {
-        // Mise à jour des structures
+        // Update facilities
         $structures = $_POST['structures'] ?? [];
         
-        // Supprimer toutes les anciennes associations
+        // Delete all previous associations
         $stmt = mysqli_prepare($connexion, "DELETE FROM praticiens_structures WHERE praticien_id = ?");
         mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
         mysqli_stmt_execute($stmt);
         
-        // Ajouter les nouvelles associations
+        // Add the new associations
         if (!empty($structures)) {
             $stmt = mysqli_prepare($connexion, "INSERT INTO praticiens_structures (praticien_id, structure_id) VALUES (?, ?)");
             foreach ($structures as $structure_id) {
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Récupérer les informations du praticien
+// Get the practitioner's info
 $stmt = mysqli_prepare($connexion, 
     "SELECT u.prenom, u.nom, u.email, u.telephone, p.biographie, p.numero_licence
      FROM utilisateurs u
@@ -130,7 +130,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $praticien = mysqli_fetch_assoc($result);
 
-// Récupérer les spécialités
+// Get the specialties
 $stmt = mysqli_prepare($connexion,
     "SELECT sm.nom
      FROM specialites_medecine sm
@@ -146,7 +146,7 @@ while ($row = mysqli_fetch_assoc($res)) {
     $specialites[] = $row['nom'];
 }
 
-// Récupérer toutes les structures disponibles
+// Get all available facilities
 $structures_disponibles = mysqli_query($connexion, 
     "SELECT s.id, s.nom, t.description as type
      FROM structures_sante s
@@ -154,7 +154,7 @@ $structures_disponibles = mysqli_query($connexion,
      ORDER BY s.nom"
 );
 
-// Récupérer les structures actuellement associées au praticien
+// Get the facilities currently associated with the practitioner
 $stmt = mysqli_prepare($connexion,
     "SELECT structure_id FROM praticiens_structures WHERE praticien_id = ?"
 );
@@ -181,7 +181,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 </head>
 <body>
 
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -195,7 +195,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         </nav>
     </header>
 
-    <!-- ========== LAYOUT PRINCIPAL ========== -->
+    <!-- ========== MAIN LAYOUT ========== -->
     <div class="pro-layout">
         
         <!-- ========== SIDEBAR NAVIGATION ========== -->
@@ -232,7 +232,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             </nav>
         </aside>
 
-        <!-- ========== CONTENU PRINCIPAL ========== -->
+        <!-- ========== MAIN CONTENT ========== -->
         <main class="pro-main">
             <div class="section-header">
                 <h1>Paramètres du compte</h1>
@@ -252,7 +252,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 </div>
             <?php endif; ?>
 
-            <!-- Informations personnelles -->
+            <!-- Personal information -->
             <div class="settings-section">
                 <h3>Informations personnelles</h3>
                 <form method="POST" action="">
@@ -301,7 +301,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 </form>
             </div>
 
-            <!-- Établissements -->
+            <!-- Facilities -->
             <div class="settings-section">
                 <h3>Établissements</h3>
                 <form method="POST" action="" id="structuresForm">
@@ -324,7 +324,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                         <label>Vos établissements</label>
                         <div id="selectedStructures" class="selected-structures">
                             <?php 
-                            // Récupérer les structures déjà associées
+                            // Get the already associated facilities
                             $stmt = mysqli_prepare($connexion,
                                 "SELECT s.id, s.nom, t.description as type
                                  FROM structures_sante s
@@ -370,7 +370,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 </form>
             </div>
 
-            <!-- Sécurité -->
+            <!-- Security -->
             <div class="settings-section">
                 <h3>Sécurité</h3>
                 <form method="POST" action="">
@@ -405,7 +405,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         </main>
     </div>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -441,7 +441,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     </footer>
 
     <script>
-        // Gestion de la recherche d'établissements
+        // Handle facility search
         const searchInput = document.getElementById('structureSearch');
         const searchResults = document.getElementById('searchResults');
         const selectedStructuresContainer = document.getElementById('selectedStructures');
@@ -449,13 +449,13 @@ while ($row = mysqli_fetch_assoc($result)) {
         let allStructures = [];
         let selectedStructureIds = new Set();
         
-        // Charger toutes les structures au chargement de la page
+        // Load all facilities on page load
         async function loadStructures() {
             try {
                 const response = await fetch('api_structures.php');
                 allStructures = await response.json();
                 
-                // Initialiser les IDs déjà sélectionnés
+                // Initialize the already selected IDs
                 document.querySelectorAll('.selected-structure-item').forEach(item => {
                     selectedStructureIds.add(parseInt(item.dataset.id));
                 });
@@ -464,7 +464,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             }
         }
         
-        // Recherche avec délai (debounce)
+        // Search with a delay (debounce)
         let searchTimeout;
         searchInput.addEventListener('input', function() {
             clearTimeout(searchTimeout);
@@ -480,7 +480,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             }, 300);
         });
         
-        // Afficher les résultats de recherche
+        // Display search results
         function displaySearchResults(query) {
             const filtered = allStructures.filter(structure => 
                 structure.nom.toLowerCase().includes(query)
@@ -507,19 +507,19 @@ while ($row = mysqli_fetch_assoc($result)) {
             searchResults.classList.add('active');
         }
         
-        // Ajouter une structure
+        // Add a facility
         function addStructure(id, nom, type) {
             if (selectedStructureIds.has(id)) return;
             
             selectedStructureIds.add(id);
             
-            // Supprimer le message "Aucun établissement"
+            // Remove the "No facility" message
             const noStructuresMsg = selectedStructuresContainer.querySelector('.no-structures');
             if (noStructuresMsg) {
                 noStructuresMsg.remove();
             }
             
-            // Créer l'élément
+            // Create the element
             const structureElement = document.createElement('div');
             structureElement.className = 'selected-structure-item';
             structureElement.dataset.id = id;
@@ -536,12 +536,12 @@ while ($row = mysqli_fetch_assoc($result)) {
             
             selectedStructuresContainer.appendChild(structureElement);
             
-            // Réinitialiser la recherche
+            // Reset the search
             searchInput.value = '';
             searchResults.classList.remove('active');
         }
         
-        // Supprimer une structure
+        // Remove a facility
         function removeStructure(id) {
             selectedStructureIds.delete(id);
             
@@ -550,27 +550,27 @@ while ($row = mysqli_fetch_assoc($result)) {
                 element.remove();
             }
             
-            // Afficher le message si plus aucune structure
+            // Show the message if no facility remains
             if (selectedStructureIds.size === 0) {
                 selectedStructuresContainer.innerHTML = '<p class="no-structures">Aucun établissement sélectionné</p>';
             }
         }
         
-        // Échapper le HTML pour éviter les injections XSS
+        // Escape HTML to prevent XSS injection
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
         
-        // Fermer les résultats quand on clique ailleurs
+        // Close the results when clicking elsewhere
         document.addEventListener('click', function(e) {
             if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
                 searchResults.classList.remove('active');
             }
         });
         
-        // Charger les structures au chargement de la page
+        // Load facilities on page load
         loadStructures();
     </script>
 

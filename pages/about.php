@@ -25,16 +25,16 @@ else {
 </head>
 <body>
 
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
-            <!-- Logo principal avec lien vers l'accueil -->
+            <!-- Main logo linking to home -->
             <a href="../index.php" class="logo">
                 <img src="../assets/images/logo.png" alt="Logo Doctomatique">
                 <span>Doctomatique</span>
             </a>
 
-            <!-- Navigation principale -->
+            <!-- Main navigation -->
             <div class="nav-links">
                 <a href="patient.php">Espace patient</a>
                 <a href=<?php echo '"' . $link . '"' ; ?> class="btn-connexion"><?php echo $affichage ; ?></a>
@@ -42,17 +42,17 @@ else {
         </nav>
     </header>
 
-    <!-- ========== CONTENU PRINCIPAL ========== -->
+    <!-- ========== MAIN CONTENT ========== -->
     <main>
         <div class="about-container">
 
-            <!-- Section d'introduction / Hero -->
+            <!-- Intro / Hero section -->
             <div class="about-hero">
                 <h1>À propos de nous</h1>
                 <p>Nous sommes quatre étudiants en école d'ingénieurs passionnés par l'innovation, et nous souhaitons améliorer l'accès aux soins de santé.</p>
             </div>
 
-            <!-- Notre Mission -->
+            <!-- Our Mission -->
             <div class="mission-vision">
                 <div class="mission-card">
                     <h3>Notre Mission</h3>
@@ -64,23 +64,23 @@ else {
                 </div>
             </div>
 
-            <!-- Section Qui sommes-nous, Vision, Engagement -->
+            <!-- Who We Are, Vision, Commitment section -->
             <div class="values-grid">
-                <!-- Carte Qui sommes-nous -->
+                <!-- Who We Are card -->
                 <div class="value-card">
                     <div class="value-icon">🎓</div>
                     <h3>Qui sommes-nous ?</h3>
                     <p>Une équipe de quatre étudiants ingénieurs motivés par l'innovation technologique au service de la santé.</p>
                 </div>
 
-                <!-- Carte Vision -->
+                <!-- Vision card -->
                 <div class="value-card">
                     <div class="value-icon">💡</div>
                     <h3>Notre Vision</h3>
                     <p>Créer une solution accessible qui facilite la prise de rendez-vous médicaux et améliore l'expérience patient.</p>
                 </div>
 
-                <!-- Carte Engagement -->
+                <!-- Commitment card -->
                 <div class="value-card">
                     <div class="value-icon">🤝</div>
                     <h3>Engagement</h3>
@@ -91,7 +91,7 @@ else {
         </div>
     </main>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">

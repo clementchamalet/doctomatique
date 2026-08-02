@@ -2,18 +2,18 @@
 
 require 'config.php' ;
 
-        // Vérifier que le formulaire a été soumis
+        // Ensure the form was submitted
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: auth.php');
             exit;
         }
 
-        $conn     = get_db(); //variable de connexion venant du fichier config.php
-        $user_email = $_POST['user_email'];  //Variables venant de la page login.php
-        $password = $_POST['password']; //Variables venant de la page login.php
+        $conn     = get_db(); //connection variable from config.php
+        $user_email = $_POST['user_email'];  //Variables from the login page
+        $password = $_POST['password']; //Variables from the login page
 
 
-        // protection contre injection SQL
+        // protection against SQL injection
         $sql = "SELECT * FROM utilisateurs WHERE email = ?";
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "s", $user_email);
@@ -23,20 +23,20 @@ require 'config.php' ;
         if (mysqli_num_rows($result) > 0) {
             $user = mysqli_fetch_assoc($result);
 
-        // UTILISER password_verify pour les mots de passe hashés
-        // Note : vos mots de passe devraient être hashés avec password_hash()
+        // USE password_verify for hashed passwords
+        // Note: your passwords should be hashed with password_hash()
 
         if (password_verify($password, $user['mot_de_passe'])) {
 
-            // Régénérer l'ID de session si jamais la personne change de compte
+            // Regenerate the session ID in case the person switches accounts
             session_regenerate_id(true);
 
             $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_email'] = $user['email'];                  ////////////VARIABLES DE SESSIONS
+            $_SESSION['user_email'] = $user['email'];                  ////////////SESSION VARIABLES
             $_SESSION['user_prenom'] = $user['prenom'];
             $_SESSION['user_nom'] = $user['nom'];
 
-            // Récupérer les rôles de l'utilisateur
+            // Get the user's roles
             $sql_roles = "SELECT r.nom FROM roles r INNER JOIN utilisateurs_roles ur ON r.id = ur.role_id WHERE ur.utilisateur_id = ?";
             $stmt_roles = mysqli_prepare($conn, $sql_roles);
             mysqli_stmt_bind_param($stmt_roles, "i", $user['id']);
@@ -49,10 +49,10 @@ require 'config.php' ;
             }
             mysqli_stmt_close($stmt_roles);
             
-            // Déterminer le rôle principal 
+            // Determine the primary role
             if (in_array('praticien', $roles)) {
                 $_SESSION['role'] = 'praticien';
-            } elseif (in_array('secretaire', $roles)) {               ////////////VARIABLES DE SESSION POUR LES ROLES
+            } elseif (in_array('secretaire', $roles)) {               ////////////ROLE SESSION VARIABLES
                 $_SESSION['role'] = 'secretaire';
             } else {
                 $_SESSION['role'] = 'patient';
@@ -93,7 +93,7 @@ require 'config.php' ;
             $error = "Utilisateur introuvable";
         }
 
-        // Si erreur, rediriger vers login avec message
+        // If there's an error, redirect to login with a message
         if (isset($error)) {
             echo '
             <!DOCTYPE html>

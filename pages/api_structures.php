@@ -7,7 +7,7 @@ $connexion = get_db();
 
 header('Content-Type: application/json');
 
-// Vérifier que c'est un praticien
+// Check that this is a practitioner
 $stmt = mysqli_prepare($connexion, "SELECT 1 FROM praticiens WHERE utilisateur_id = ?");
 mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
 mysqli_stmt_execute($stmt);
@@ -19,7 +19,7 @@ if (mysqli_num_rows($result) === 0) {
     exit;
 }
 
-// Récupérer toutes les structures
+// Get all facilities
 $query = "SELECT s.id, s.nom, t.description as type
           FROM structures_sante s
           LEFT JOIN type_struct t ON s.type = t.id

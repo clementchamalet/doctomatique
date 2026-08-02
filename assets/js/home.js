@@ -14,7 +14,7 @@ function setupEventListeners() {
             clearTimeout(autocompleteTimeout);
             showAutocompleteSpecialties(e.target.value);
             autocompleteTimeout = setTimeout(() => {
-                // Pas d'envoi auto
+                // No auto-submit
             }, 300);
         });
 
@@ -28,7 +28,7 @@ function setupEventListeners() {
             clearTimeout(autocompleteTimeout);
             showAutocompleteCities(e.target.value);
             autocompleteTimeout = setTimeout(() => {
-                // Pas d'envoi auto
+                // No auto-submit
             }, 300);
         });
 
@@ -51,7 +51,7 @@ function setupEventListeners() {
         });
     }
 
-    // Fermer autocomplete si click ailleurs
+    // Close autocomplete when clicking elsewhere
     document.addEventListener('click', (e) => {
         const wrappers = document.querySelectorAll('.input-wrapper');
         let isInWrapper = false;

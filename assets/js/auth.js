@@ -1,10 +1,10 @@
 /* ========================================
-   AUTH.JS - CONNEXION / INSCRIPTION
-   Gestion de l'authentification
+   AUTH.JS - LOGIN / SIGNUP
+   Authentication handling
    ======================================== */
 
-import { 
-    validerEmail, 
+import {
+    validerEmail,
     validerChampNonVide,
     notificationErreur,
     notificationSucces,
@@ -12,24 +12,24 @@ import {
     logDev
 } from './utils.js';
 
-// ========== GESTION DES ONGLETS ==========
+// ========== TAB HANDLING ==========
 
 /**
- * Affiche le formulaire sélectionné (connexion ou inscription)
- * @param {string} typeFormulaire - 'connexion' ou 'inscription'
+ * Shows the selected form (login or signup)
+ * @param {string} typeFormulaire - 'connexion' or 'inscription'
  */
 function afficherFormulaire(typeFormulaire) {
-    // Récupération de tous les onglets et formulaires
+    // Get all tabs and forms
     const onglets = document.querySelectorAll('.tab-btn');
     const formulaires = document.querySelectorAll('.auth-form');
-    
-    // Retrait de la classe 'active' de tous les onglets
+
+    // Remove the 'active' class from all tabs
     onglets.forEach(onglet => onglet.classList.remove('active'));
-    
-    // Masquage de tous les formulaires
+
+    // Hide all forms
     formulaires.forEach(formulaire => formulaire.classList.remove('active'));
-    
-    // Affichage du formulaire sélectionné
+
+    // Show the selected form
     if (typeFormulaire === 'connexion') {
         onglets[0].classList.add('active');
         document.getElementById('formConnexion').classList.add('active');
@@ -41,132 +41,132 @@ function afficherFormulaire(typeFormulaire) {
     }
 }
 
-// Rendre la fonction accessible globalement pour les boutons onclick dans HTML
+// Make the function globally accessible for onclick buttons in HTML
 window.afficherFormulaire = afficherFormulaire;
 
-// ========== GESTION DU FORMULAIRE DE CONNEXION ==========
+// ========== LOGIN FORM HANDLING ==========
 
 /**
- * Traite la soumission du formulaire de connexion
- * @param {Event} e - L'événement de soumission
+ * Handles submission of the login form
+ * @param {Event} e - The submit event
  */
 function soumettreConnexion(e) {
     e.preventDefault();
-    
-    // Récupération des valeurs
+
+    // Get the values
     const email = document.getElementById('emailConnexion').value.trim();
     const motdepasse = document.getElementById('motdepasseConnexion').value;
-    
-    // Validation des champs
+
+    // Validate fields
     if (!validerChampNonVide(email) || !validerChampNonVide(motdepasse)) {
         notificationErreur('Veuillez remplir tous les champs');
         return;
     }
-    
-    // Validation du format email
+
+    // Validate the email format
     if (!validerEmail(email)) {
         notificationErreur('Veuillez entrer une adresse email valide');
         return;
     }
-    
-    // Log pour le développement
+
+    // Log for development
     logDev(`Tentative de connexion - Email: ${email}`, 'info');
-    
-    // TODO: Appel API pour la connexion
+
+    // TODO: API call for login
     console.log('Données de connexion:', { email, motdepasse: '***' });
-    
-    // Simulation de connexion réussie
+
+    // Simulated successful login
     notificationSucces(`Connexion en cours...\nEmail: ${email}`);
-    
-    // TODO: Redirection après connexion réussie
+
+    // TODO: Redirect after successful login
     // window.location.href = 'espace-patient.html';
 }
 
-// ========== GESTION DU FORMULAIRE D'INSCRIPTION ==========
+// ========== SIGNUP FORM HANDLING ==========
 
 /**
- * Traite la soumission du formulaire d'inscription
- * @param {Event} e - L'événement de soumission
+ * Handles submission of the signup form
+ * @param {Event} e - The submit event
  */
 function soumettreInscription(e) {
     e.preventDefault();
-    
-    // Récupération des valeurs
+
+    // Get the values
     const nomComplet = document.getElementById('nomComplet').value.trim();
     const email = document.getElementById('emailInscription').value.trim();
     const motdepasse = document.getElementById('motdepasseInscription').value;
     const confirmation = document.getElementById('confirmationMotdepasse').value;
     const accepteCGU = document.getElementById('accepterCGU').checked;
-    
-    // Validation : tous les champs doivent être remplis
-    if (!validerChampNonVide(nomComplet) || 
-        !validerChampNonVide(email) || 
-        !validerChampNonVide(motdepasse) || 
+
+    // Validation: all fields must be filled in
+    if (!validerChampNonVide(nomComplet) ||
+        !validerChampNonVide(email) ||
+        !validerChampNonVide(motdepasse) ||
         !validerChampNonVide(confirmation)) {
         notificationErreur('Veuillez remplir tous les champs');
         return;
     }
-    
-    // Validation du format email
+
+    // Validate the email format
     if (!validerEmail(email)) {
         notificationErreur('Veuillez entrer une adresse email valide');
         return;
     }
-    
-    // Validation de la longueur du mot de passe
+
+    // Validate the password length
     if (motdepasse.length < 8) {
         notificationErreur('Le mot de passe doit contenir au moins 8 caractères');
         return;
     }
-    
-    // Vérification que les mots de passe correspondent
+
+    // Check that the passwords match
     if (motdepasse !== confirmation) {
         notificationErreur('Les mots de passe ne correspondent pas');
         return;
     }
-    
-    // Vérification que les CGU sont acceptées
+
+    // Check that the terms are accepted
     if (!accepteCGU) {
         notificationErreur('Vous devez accepter les Conditions Générales d\'Utilisation');
         return;
     }
-    
-    // Log pour le développement
+
+    // Log for development
     logDev(`Tentative d'inscription - Nom: ${nomComplet}, Email: ${email}`, 'info');
-    
-    // TODO: Appel API pour l'inscription
+
+    // TODO: API call for signup
     console.log('Données d\'inscription:', { nomComplet, email, motdepasse: '***' });
-    
-    // Simulation d'inscription réussie
+
+    // Simulated successful signup
     notificationSucces(`Création du compte en cours...\nNom: ${nomComplet}\nEmail: ${email}`);
-    
-    // TODO: Redirection après inscription réussie
+
+    // TODO: Redirect after successful signup
     // window.location.href = 'espace-patient.html';
 }
 
-// ========== CONNEXION AVEC GOOGLE ==========
+// ========== GOOGLE LOGIN ==========
 
 /**
- * Gère la connexion via Google OAuth
+ * Handles login via Google OAuth
  */
 function connexionGoogle() {
     logDev('Tentative de connexion avec Google', 'info');
-    
-    // TODO: Implémenter avec l'API Google OAuth
+
+    // TODO: Implement with the Google OAuth API
     alert('La connexion avec Google sera bientôt disponible');
-    
-    // Exemple d'implémentation future :
+
+    // Example of a future implementation:
     // window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?...';
 }
 
-// Rendre la fonction accessible globalement
+// Make the function globally accessible
 window.connexionGoogle = connexionGoogle;
 
-// ========== AFFICHAGE/MASQUAGE DU MOT DE PASSE ==========
+// ========== PASSWORD VISIBILITY TOGGLE ==========
 
 /**
- * Bascule l'affichage du mot de passe
- * @param {string} idChamp - L'ID du champ de mot de passe
+ * Toggles the password field's visibility
+ * @param {string} idChamp - The password field's ID
  */
 function basculerAffichageMotdepasse(idChamp) {
     const champ = document.getElementById(idChamp);
@@ -176,36 +176,36 @@ function basculerAffichageMotdepasse(idChamp) {
     }
 }
 
-// Rendre la fonction accessible globalement
+// Make the function globally accessible
 window.basculerAffichageMotdepasse = basculerAffichageMotdepasse;
 
-// ========== INITIALISATION ==========
+// ========== INITIALIZATION ==========
 
 document.addEventListener('DOMContentLoaded', function() {
     logDev('Page de connexion/inscription chargée', 'success');
-    
-    // Affichage du formulaire de connexion par défaut
+
+    // Show the login form by default
     afficherFormulaire('connexion');
-    
-    // Gestion des formulaires
+
+    // Set up forms
     const formConnexion = document.getElementById('formConnexion');
     const formInscription = document.getElementById('formInscription');
-    
+
     if (formConnexion) {
         formConnexion.addEventListener('submit', soumettreConnexion);
     }
-    
+
     if (formInscription) {
         formInscription.addEventListener('submit', soumettreInscription);
     }
-    
-    // Navigation au clavier pour le formulaire de connexion
+
+    // Keyboard navigation for the login form
     gererNavigationClavier([
         'emailConnexion',
         'motdepasseConnexion'
     ]);
-    
-    // Navigation au clavier pour le formulaire d'inscription
+
+    // Keyboard navigation for the signup form
     gererNavigationClavier([
         'nomComplet',
         'emailInscription',

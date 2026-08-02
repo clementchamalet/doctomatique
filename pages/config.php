@@ -6,13 +6,13 @@ if (defined('APP_CONFIG_BOOTSTRAPPED')) {
 define('APP_CONFIG_BOOTSTRAPPED', true);
 
 /**
- * Configuration de la base de donnees
- * Support des deux systemes de connexion :
- * - MySQLi (anciennes fonctions : get_db())
- * - PDO (nouvelles fonctions : getDBConnection())
+ * Database configuration
+ * Supports two connection systems:
+ * - MySQLi (legacy functions: get_db())
+ * - PDO (newer functions: getDBConnection())
  */
 
-// Configuration de la base de donnees
+// Database configuration
 $defaultConfig = [
     'host' => '127.0.0.1',
     'name' => 'Doctomatique',
@@ -54,21 +54,21 @@ define('DB_USER', $appConfig['user']);
 define('DB_PASS', $appConfig['pass']);
 define('DB_CHARSET', $appConfig['charset']);
 
-// Fuseau horaire
+// Timezone
 date_default_timezone_set($appConfig['timezone']);
 
-// Demarrage de la session si elle n'est pas deja active
+// Start the session if it's not already active
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 // =====================================================
-// SYSTEME 1 : MySQLi (anciennes fonctions)
+// SYSTEM 1: MySQLi (legacy functions)
 // =====================================================
 
 /**
- * Connexion MySQLi a la base de donnees
- * Fonction ancienne - compatible avec les fichiers existants
+ * MySQLi database connection
+ * Legacy function - compatible with existing files
  * @return mysqli|null
  */
 function get_db() {
@@ -78,11 +78,11 @@ function get_db() {
         $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         
         if (!$conn) {
-            error_log("Erreur de connexion MySQLi a la base de donnees : " . mysqli_connect_error());
+            error_log("MySQLi database connection error: " . mysqli_connect_error());
             die("Erreur de connexion a la base de donnees");
         }
         
-        // Definir le charset
+        // Set the charset
         mysqli_set_charset($conn, DB_CHARSET);
     }
     
@@ -90,12 +90,12 @@ function get_db() {
 }
 
 // =====================================================
-// SYSTEME 2 : PDO (nouvelles fonctions)
+// SYSTEM 2: PDO (newer functions)
 // =====================================================
 
 /**
- * Connexion PDO a la base de donnees
- * Fonction nouvelle - pour les nouveaux fichiers
+ * PDO database connection
+ * Newer function - for new files
  * @return PDO|null
  */
 function getDBConnection() {
@@ -111,7 +111,7 @@ function getDBConnection() {
             ];
             $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
         } catch (PDOException $e) {
-            error_log("Erreur de connexion PDO a la base de donnees : " . $e->getMessage());
+            error_log("PDO database connection error: " . $e->getMessage());
             return null;
         }
     }
@@ -120,7 +120,7 @@ function getDBConnection() {
 }
 
 /**
- * Alias pour getDBConnection() - permet d'utiliser get_pdo() aussi
+ * Alias for getDBConnection() - allows using get_pdo() as well
  * @return PDO|null
  */
 function get_pdo() {
@@ -128,11 +128,11 @@ function get_pdo() {
 }
 
 // =====================================================
-// FONCTIONS UTILITAIRES
+// UTILITY FUNCTIONS
 // =====================================================
 
 /**
- * Verifie si l'utilisateur est connecte
+ * Checks whether the user is logged in
  * @return bool
  */
 function isLoggedIn() {
@@ -140,7 +140,7 @@ function isLoggedIn() {
 }
 
 /**
- * Verifie si l'utilisateur est un patient
+ * Checks whether the user is a patient
  * @return bool
  */
 function isPatient() {
@@ -148,7 +148,7 @@ function isPatient() {
 }
 
 /**
- * Verifie si l'utilisateur est un praticien
+ * Checks whether the user is a practitioner
  * @return bool
  */
 function isPractitioner() {
@@ -156,7 +156,7 @@ function isPractitioner() {
 }
 
 /**
- * Redirige vers la page de connexion si non authentifie
+ * Redirects to the login page if not authenticated
  */
 function requireLogin() {
     if (!isLoggedIn()) {
@@ -166,7 +166,7 @@ function requireLogin() {
 }
 
 /**
- * Redirige vers la page de connexion si non patient
+ * Redirects to the login page if not a patient
  */
 function requirePatient() {
     requireLogin();
@@ -177,9 +177,9 @@ function requirePatient() {
 }
 
 /**
- * Envoie une reponse JSON
- * @param mixed $data Donnees a envoyer
- * @param int $statusCode Code HTTP
+ * Sends a JSON response
+ * @param mixed $data Data to send
+ * @param int $statusCode HTTP status code
  */
 function sendJSON($data, $statusCode = 200) {
     http_response_code($statusCode);
@@ -189,17 +189,17 @@ function sendJSON($data, $statusCode = 200) {
 }
 
 /**
- * Envoie une erreur JSON
- * @param string $message Message d'erreur
- * @param int $statusCode Code HTTP
+ * Sends a JSON error
+ * @param string $message Error message
+ * @param int $statusCode HTTP status code
  */
 function sendError($message, $statusCode = 400) {
     sendJSON(['success' => false, 'error' => $message], $statusCode);
 }
 
 /**
- * Envoie un succes JSON
- * @param mixed $data Donnees a envoyer
+ * Sends a JSON success response
+ * @param mixed $data Data to send
  */
 function sendSuccess($data = null) {
     $response = ['success' => true];
@@ -210,7 +210,7 @@ function sendSuccess($data = null) {
 }
 
 /**
- * Nettoie et securise une chaine
+ * Cleans and sanitizes a string
  * @param string $string
  * @return string
  */
@@ -219,15 +219,15 @@ function cleanString($string) {
 }
 
 /**
- * Calcule la distance entre deux points GPS (en km)
+ * Calculates the distance between two GPS points (in km)
  * @param float $lat1
  * @param float $lon1
  * @param float $lat2
  * @param float $lon2
- * @return float Distance en kilometres
+ * @return float Distance in kilometers
  */
 function calculateDistance($lat1, $lon1, $lat2, $lon2) {
-    $earthRadius = 6371; // Rayon de la Terre en km
+    $earthRadius = 6371; // Earth's radius in km
     
     $latDiff = deg2rad($lat2 - $lat1);
     $lonDiff = deg2rad($lon2 - $lon1);
@@ -242,17 +242,17 @@ function calculateDistance($lat1, $lon1, $lat2, $lon2) {
 }
 
 // =====================================================
-// CONSTANTES
+// CONSTANTS
 // =====================================================
 
-// Constantes de statuts des rendez-vous
+// Appointment status constants
 define('APPOINTMENT_STATUS_PENDING', 1);
 define('APPOINTMENT_STATUS_CONFIRMED', 2);
 define('APPOINTMENT_STATUS_CANCELLED', 3);
 define('APPOINTMENT_STATUS_COMPLETED', 4);
 
 /**
- * Traduire les noms de jours en francais
+ * Translate day names into French
  */
 function translateDayToFrench($day) {
     $days = [
@@ -268,7 +268,7 @@ function translateDayToFrench($day) {
 }
 
 /**
- * Traduire les noms de mois en francais
+ * Translate month names into French
  */
 function translateMonthToFrench($month) {
     $months = [

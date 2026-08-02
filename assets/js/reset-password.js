@@ -1,9 +1,9 @@
 /* ========================================
-   RESET-PASSWORD.JS - MOT DE PASSE OUBLIÉ
-   Gestion de la réinitialisation du mot de passe
+   RESET-PASSWORD.JS - FORGOTTEN PASSWORD
+   Password reset handling
    ======================================== */
 
-import { 
+import {
     validerEmail,
     validerMotdepasse,
     notificationErreur,
@@ -13,20 +13,20 @@ import {
     logDev
 } from './utils.js';
 
-// ========== GESTION DES ÉTAPES ==========
+// ========== STEP HANDLING ==========
 
 /**
- * Affiche une étape spécifique
- * @param {string} idEtape - L'ID de l'étape à afficher
+ * Shows a specific step
+ * @param {string} idEtape - The ID of the step to show
  */
 function afficherEtape(idEtape) {
-    // Récupération de toutes les étapes
+    // Get all steps
     const etapes = document.querySelectorAll('.etape');
-    
-    // Masquage de toutes les étapes
+
+    // Hide all steps
     etapes.forEach(etape => etape.classList.remove('active'));
-    
-    // Affichage de l'étape sélectionnée
+
+    // Show the selected step
     const etapeCible = document.getElementById(idEtape);
     if (etapeCible) {
         etapeCible.classList.add('active');
@@ -34,86 +34,86 @@ function afficherEtape(idEtape) {
     }
 }
 
-// ========== ÉTAPE 1 : DEMANDE DE RÉINITIALISATION ==========
+// ========== STEP 1: RESET REQUEST ==========
 
 /**
- * Traite la demande de réinitialisation
- * @param {Event} e - L'événement de soumission
+ * Handles the reset request
+ * @param {Event} e - The submit event
  */
 function soumettreDemandeReset(e) {
     e.preventDefault();
-    
-    // Récupération de l'email
+
+    // Get the email
     const email = document.getElementById('emailReset').value.trim();
-    
-    // Validation du format email
+
+    // Validate the email format
     if (!validerEmail(email)) {
         notificationErreur('Veuillez entrer une adresse email valide');
         return;
     }
-    
+
     logDev(`Demande de réinitialisation pour: ${email}`, 'info');
-    
-    // TODO: Appel API pour envoyer l'email de réinitialisation
+
+    // TODO: API call to send the reset email
     console.log('Envoi de l\'email de réinitialisation à:', email);
-    
-    // Simulation d'un appel API
+
+    // Simulated API call
     setTimeout(() => {
-        // Affichage de l'email dans l'étape de confirmation
+        // Show the email in the confirmation step
         document.getElementById('emailConfirme').textContent = email;
-        
-        // Passage à l'étape de confirmation
+
+        // Move to the confirmation step
         afficherEtape('etapeConfirmation');
-        
+
         notificationSucces('Email envoyé avec succès !');
     }, 500);
 }
 
-// ========== ÉTAPE 2 : CONFIRMATION ET RENVOI ==========
+// ========== STEP 2: CONFIRMATION AND RESEND ==========
 
 /**
- * Renvoie l'email de réinitialisation
+ * Resends the reset email
  */
 function renvoyerEmail() {
-    // Récupération de l'email confirmé
+    // Get the confirmed email
     const email = document.getElementById('emailConfirme').textContent;
-    
+
     logDev(`Renvoi de l'email à: ${email}`, 'info');
-    
-    // TODO: Appel API pour renvoyer l'email
+
+    // TODO: API call to resend the email
     console.log('Renvoi de l\'email de réinitialisation à:', email);
-    
+
     notificationSucces(`Un nouvel email vient d'être envoyé à ${email}`);
 }
 
-// Rendre la fonction accessible globalement
+// Make the function globally accessible
 window.renvoyerEmail = renvoyerEmail;
 
-// ========== ÉTAPE 3 : NOUVEAU MOT DE PASSE ==========
+// ========== STEP 3: NEW PASSWORD ==========
 
 /**
- * Met à jour l'indicateur de force du mot de passe en temps réel
+ * Updates the password strength indicator in real time
  */
 function mettreAJourForceMotdepasse() {
     const motdepasse = document.getElementById('nouveauMotdepasse').value;
     const barreForce = document.getElementById('strengthLevel');
     const texteForce = document.getElementById('strengthText');
-    
-    // Si le champ est vide, réinitialiser
+
+    // If the field is empty, reset
     if (!motdepasse) {
         barreForce.className = 'strength-level';
         texteForce.textContent = '';
         return;
     }
-    
-    // Utilisation de la fonction de validation du utils.js
+
+    // Use the validation function from utils.js
     const resultat = validerMotdepasse(motdepasse);
-    
-    // Mise à jour de l'affichage
+
+    // Update the display
     barreForce.className = `strength-level ${resultat.niveau}`;
     texteForce.textContent = resultat.message;
-    
-    // Couleurs selon le niveau
+
+    // Colors based on the level
     const couleurs = {
         'faible': '#ef4444',
         'moyen': '#f59e0b',
@@ -123,71 +123,71 @@ function mettreAJourForceMotdepasse() {
 }
 
 /**
- * Traite la soumission du nouveau mot de passe
- * @param {Event} e - L'événement de soumission
+ * Handles submission of the new password
+ * @param {Event} e - The submit event
  */
 function soumettrNouveauMotdepasse(e) {
     e.preventDefault();
-    
-    // Récupération des valeurs
+
+    // Get the values
     const motdepasse = document.getElementById('nouveauMotdepasse').value;
     const confirmation = document.getElementById('confirmationNouveauMotdepasse').value;
-    
-    // Validation de la longueur
+
+    // Validate the length
     if (motdepasse.length < 8) {
         notificationErreur('Le mot de passe doit contenir au moins 8 caractères');
         return;
     }
-    
-    // Vérification de la correspondance
+
+    // Check that they match
     if (motdepasse !== confirmation) {
         notificationErreur('Les mots de passe ne correspondent pas');
         return;
     }
-    
+
     logDev('Nouveau mot de passe défini', 'success');
-    
-    // TODO: Appel API pour enregistrer le nouveau mot de passe
+
+    // TODO: API call to save the new password
     console.log('Enregistrement du nouveau mot de passe');
-    
-    // Simulation d'un appel API
+
+    // Simulated API call
     setTimeout(() => {
-        // Passage à l'étape de succès
+        // Move to the success step
         afficherEtape('etapeSucces');
-        
+
         notificationSucces('Mot de passe réinitialisé avec succès !');
     }, 500);
 }
 
-// ========== GESTION DES PARAMÈTRES URL ==========
+// ========== URL PARAMETER HANDLING ==========
 
 /**
- * Vérifie si un token est présent dans l'URL
- * Si oui, affiche directement l'étape de nouveau mot de passe
+ * Checks whether a token is present in the URL
+ * If so, shows the new password step directly
  */
 function verifierTokenURL() {
     const token = getURLParam('token');
-    
+
     if (token) {
         logDev(`Token détecté: ${token}`, 'info');
-        
-        // TODO: Valider le token auprès du serveur
+
+        // TODO: Validate the token with the server
         console.log('Validation du token:', token);
-        
-        // Affichage de l'étape 3
+
+        // Show step 3
         afficherEtape('etapeNouveauMotdepasse');
     } else {
-        // Pas de token, afficher l'étape 1
+        // No token, show step 1
         afficherEtape('etapeEmail');
     }
 }
 
-// ========== FONCTION DE TEST (DÉVELOPPEMENT) ==========
+// ========== TEST FUNCTION (DEVELOPMENT) ==========
 
 /**
- * Fonction pour tester directement une étape spécifique
- * Utile pour le développement et les tests
- * @param {number} numeroEtape - Numéro de l'étape (1, 2, 3 ou 4)
+ * Function to directly test a specific step
+ * Useful for development and testing
+ * @param {number} numeroEtape - Step number (1, 2, 3 or 4)
  */
 function testerEtape(numeroEtape) {
     const etapes = {
@@ -196,60 +196,60 @@ function testerEtape(numeroEtape) {
         3: 'etapeNouveauMotdepasse',
         4: 'etapeSucces'
     };
-    
+
     if (etapes[numeroEtape]) {
         afficherEtape(etapes[numeroEtape]);
-        
-        // Si étape 2, remplir l'email de test
+
+        // If step 2, fill in a test email
         if (numeroEtape === 2) {
             document.getElementById('emailConfirme').textContent = 'test@exemple.com';
         }
-        
+
         logDev(`Test: Étape ${numeroEtape} affichée`, 'success');
     } else {
         console.error('Numéro d\'étape invalide. Utilisez 1, 2, 3 ou 4.');
     }
 }
 
-// Rendre la fonction accessible globalement pour les tests
+// Make the function globally accessible for testing
 window.testerEtape = testerEtape;
 
-// ========== INITIALISATION ==========
+// ========== INITIALIZATION ==========
 
 document.addEventListener('DOMContentLoaded', function() {
     logDev('Page de réinitialisation du mot de passe chargée', 'success');
     console.log('💡 Astuce: Utilisez testerEtape(1-4) dans la console pour tester les différentes étapes');
-    
-    // Vérification du token dans l'URL
+
+    // Check the token in the URL
     verifierTokenURL();
-    
-    // Gestion des formulaires
+
+    // Set up forms
     const formDemandeReset = document.getElementById('formDemandeReset');
     const formNouveauMotdepasse = document.getElementById('formNouveauMotdepasse');
     const champNouveauMotdepasse = document.getElementById('nouveauMotdepasse');
-    
+
     if (formDemandeReset) {
         formDemandeReset.addEventListener('submit', soumettreDemandeReset);
     }
-    
+
     if (formNouveauMotdepasse) {
         formNouveauMotdepasse.addEventListener('submit', soumettrNouveauMotdepasse);
     }
-    
-    // Vérification de la force du mot de passe en temps réel
+
+    // Check password strength in real time
     if (champNouveauMotdepasse) {
         champNouveauMotdepasse.addEventListener('input', mettreAJourForceMotdepasse);
     }
-    
-    // Gestion de la touche Entrée
+
+    // Handle the Enter key
     ajouterListenerEntree('emailReset', () => {
         formDemandeReset.dispatchEvent(new Event('submit'));
     });
-    
+
     ajouterListenerEntree('nouveauMotdepasse', () => {
         document.getElementById('confirmationNouveauMotdepasse').focus();
     });
-    
+
     ajouterListenerEntree('confirmationNouveauMotdepasse', () => {
         formNouveauMotdepasse.dispatchEvent(new Event('submit'));
     });

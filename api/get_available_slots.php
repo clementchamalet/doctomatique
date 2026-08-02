@@ -1,13 +1,13 @@
 <?php
 /**
- * API pour obtenir les creneaux disponibles d'un praticien - VERSION PROPRE
+ * API to get a practitioner's available slots - CLEAN VERSION
  * Endpoint: /api/get_available_slots.php
- * Methode: GET
- * Parametres:
- *  - practitioner_id: ID du praticien (requis)
- *  - structure_id: ID de la structure (requis)
- *  - date_start: Date de debut (optionnel, format: YYYY-MM-DD)
- *  - date_end: Date de fin (optionnel, format: YYYY-MM-DD)
+ * Method: GET
+ * Parameters:
+ *  - practitioner_id: Practitioner ID (required)
+ *  - structure_id: Facility ID (required)
+ *  - date_start: Start date (optional, format: YYYY-MM-DD)
+ *  - date_end: End date (optional, format: YYYY-MM-DD)
  */
 
 require_once __DIR__ . '/../pages/config.php';
@@ -16,7 +16,7 @@ header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 
-// Verification des parametres requis
+// Check required parameters
 if (!isset($_GET['practitioner_id']) || empty($_GET['practitioner_id'])) {
     sendError("L'identifiant du praticien est requis");
 }
@@ -28,11 +28,11 @@ if (!isset($_GET['structure_id']) || empty($_GET['structure_id'])) {
 $practitionerId = intval($_GET['practitioner_id']);
 $structureId = intval($_GET['structure_id']);
 
-// Gestion des dates
+// Handle dates
 $dateStart = isset($_GET['date_start']) ? $_GET['date_start'] : date('Y-m-d');
 $dateEnd = isset($_GET['date_end']) ? $_GET['date_end'] : date('Y-m-d', strtotime('+14 days'));
 
-// Validation du format des dates
+// Validate the date format
 if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateStart) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateEnd)) {
     sendError("Format de date invalide. Utilisez le format YYYY-MM-DD");
 }
@@ -43,7 +43,7 @@ try {
         throw new Exception("Erreur de connexion a la base de donnees");
     }
 
-    // Verification de l'existence du praticien et de la structure
+    // Check that the practitioner and facility exist
     $sqlCheck = "
         SELECT 1
         FROM praticiens_structures
@@ -61,7 +61,7 @@ try {
         sendError("Cette combinaison praticien/structure n'existe pas", 404);
     }
 
-    // Recuperation des creneaux disponibles
+    // Get the available slots
     $sqlSlots = "
         SELECT 
             cd.id,
@@ -88,13 +88,13 @@ try {
 
     $slots = $stmt->fetchAll();
 
-    // Groupement des creneaux par date
+    // Group slots by date
     $slotsByDate = [];
     foreach ($slots as $slot) {
         $date = $slot['date_creneau'];
         
         if (!isset($slotsByDate[$date])) {
-            // Informations sur la date
+            // Date info
             $dateObj = new DateTime($date);
             $dayNameEn = $dateObj->format('l');
             $monthNameEn = $dateObj->format('F');
@@ -113,7 +113,7 @@ try {
             ];
         }
 
-        // Calcul de l'heure de fin
+        // Calculate the end time
         $startTime = new DateTime($slot['debut']);
         $endTime = clone $startTime;
         $endTime->add(new DateInterval('PT' . $slot['duree_minute'] . 'M'));
@@ -127,10 +127,10 @@ try {
         ];
     }
 
-    // Conversion en tableau indexe
+    // Convert to an indexed array
     $slotsArray = array_values($slotsByDate);
 
-    // Recuperation des informations du praticien et de la structure
+    // Get the practitioner and facility info
     $sqlInfo = "
         SELECT 
             u.prenom,

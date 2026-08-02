@@ -12,13 +12,12 @@ $pagesRendezvous = ['rdv.php', 'desistement'];
 $pagesStats = ['professional.php', 'statistiques.php'];
 $pagesParametres = ['parametres.php'];
 
-$_SESSION['user_id'] = 2;
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'secretaire') {
     header('Location: index.php');
     exit;
 }
 
-// Récupérer les infos de la secrétaire et de sa structure
+// Get the secretary's info and their facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.prenom, u.nom, s.id as structure_id, s.nom as structure_nom
@@ -31,7 +30,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $secretaire = mysqli_fetch_assoc($result);
 
-// Si pas de structure trouvée, rediriger
+// If no facility found, redirect
 if (!$secretaire) {
     header("Location: index.php");
     exit;
@@ -39,7 +38,7 @@ if (!$secretaire) {
 
 $structure_id = $secretaire['structure_id'];
 
-// Récupérer la liste des praticiens de l'établissement
+// Get the list of practitioners at the facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT DISTINCT p.utilisateur_id, u.prenom, u.nom
@@ -58,16 +57,16 @@ while ($row = mysqli_fetch_assoc($result)) {
     $praticiens_liste[] = $row;
 }
 
-// Déterminer le praticien sélectionné (null = établissement entier)
+// Determine the selected practitioner (null = entire facility)
 $praticien_selectionne = isset($_GET['praticien']) && $_GET['praticien'] !== '' ? intval($_GET['praticien']) : null;
 
-// Filtres
+// Filters
 $filtre_statut = isset($_GET['statut']) ? $_GET['statut'] : 'tous';
 $recherche = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-// Construire la requête SQL
+// Build the SQL query
 if ($praticien_selectionne) {
-    // Filtrage par praticien spécifique
+    // Filter by specific practitioner
     $sql = "SELECT 
                 r.id,
                 r.patient_id,
@@ -92,7 +91,7 @@ if ($praticien_selectionne) {
     $params = [$praticien_selectionne];
     $types = "i";
 } else {
-    // Filtrage par établissement
+    // Filter by facility
     $sql = "SELECT 
                 r.id,
                 r.patient_id,
@@ -122,14 +121,14 @@ if ($praticien_selectionne) {
     $types = "i";
 }
 
-// Filtre par statut
+// Filter by status
 if ($filtre_statut !== 'tous') {
     $sql .= " AND s.description = ?";
     $params[] = $filtre_statut;
     $types .= "s";
 }
 
-// Filtre de recherche
+// Search filter
 if ($recherche !== '') {
     $sql .= " AND (u.prenom LIKE ? OR u.nom LIKE ? OR m.description LIKE ?)";
     $recherche_param = "%$recherche%";
@@ -146,7 +145,7 @@ mysqli_stmt_bind_param($stmt, $types, ...$params);
 mysqli_stmt_execute($stmt);
 $result_rdv = mysqli_stmt_get_result($stmt);
 
-// Organiser les RDV par catégorie
+// Organize appointments by category
 $rdv_aujourd_hui = [];
 $rdv_futurs = [];
 $rdv_passes = [];
@@ -159,13 +158,13 @@ $fin_aujourd_hui->setTime(23, 59, 59);
 while ($row = mysqli_fetch_assoc($result_rdv)) {
     $date_rdv = new DateTime($row['debut']);
     
-    // Formater les informations
+    // Format the info
     $row['date_format'] = $date_rdv->format('d/m/Y');
     $row['heure_format'] = $date_rdv->format('H:i');
     setlocale(LC_TIME, 'fr_FR.UTF-8');
     $row['jour_semaine'] = strftime('%A', $date_rdv->getTimestamp());
     
-    // Déterminer si c'est aujourd'hui, futur ou passé
+    // Determine whether it's today, future, or past
     if ($date_rdv >= $aujourd_hui && $date_rdv <= $fin_aujourd_hui) {
         $rdv_aujourd_hui[] = $row;
     } elseif ($date_rdv > $fin_aujourd_hui) {
@@ -175,16 +174,16 @@ while ($row = mysqli_fetch_assoc($result_rdv)) {
     }
 }
 
-// Inverser l'ordre des RDV passés pour avoir les plus récents en premier
+// Reverse the order of past appointments so the most recent come first
 $rdv_passes = array_reverse($rdv_passes);
 
-// Statistiques
+// Statistics
 $total_rdv = count($rdv_aujourd_hui) + count($rdv_futurs) + count($rdv_passes);
 $total_aujourd_hui = count($rdv_aujourd_hui);
 $total_futurs = count($rdv_futurs);
 $total_passes = count($rdv_passes);
 
-// Obtenir le nom du praticien sélectionné
+// Get the selected practitioner's name
 $nom_praticien = null;
 if ($praticien_selectionne) {
     foreach ($praticiens_liste as $prat) {
@@ -209,7 +208,7 @@ if ($praticien_selectionne) {
     <link rel="stylesheet" href="../assets/css/style_sec.css">  
 </head>
 <body>
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -224,7 +223,7 @@ if ($praticien_selectionne) {
         </nav>
     </header>
 
-    <!-- ========== LAYOUT PRINCIPAL ========== -->
+    <!-- ========== MAIN LAYOUT ========== -->
     <div class="pro-layout">
         
         <!-- ========== SIDEBAR NAVIGATION ========== -->
@@ -257,7 +256,7 @@ if ($praticien_selectionne) {
             </nav>
         </aside>
 
-        <!-- ========== CONTENU PRINCIPAL ========== -->
+        <!-- ========== MAIN CONTENT ========== -->
         <main class="pro-main">
             <div class="rdv-page-header">
                 <div class="rdv-title-section">
@@ -280,7 +279,7 @@ if ($praticien_selectionne) {
                 </div>
             </div>
 
-            <!-- Sélecteur de praticien -->
+            <!-- Practitioner selector -->
             <div class="praticien-selector">
                 <label for="praticien-select">👨‍⚕️ Afficher les rendez-vous pour :</label>
                 <select id="praticien-select">
@@ -294,7 +293,7 @@ if ($praticien_selectionne) {
                 </select>
             </div>
 
-            <!-- Stats rapides -->
+            <!-- Quick stats -->
             <div class="rdv-stats">
                 <div class="rdv-stat-card rdv-stat-past">
                     <span class="stat-card-icon">✅</span>
@@ -319,7 +318,7 @@ if ($praticien_selectionne) {
                 </div>
             </div>
 
-            <!-- Barre de filtres et recherche -->
+            <!-- Filter and search bar -->
             <div class="filters-container">
                 <form method="GET" action="rdv.php" class="filters-form">
                     <?php if ($praticien_selectionne): ?>
@@ -365,9 +364,9 @@ if ($praticien_selectionne) {
                 </form>
             </div>
 
-            <!-- Liste des RDV -->
+            <!-- Appointment list -->
             <div class="rdv-container">
-                <!-- RDV Aujourd'hui -->
+                <!-- Today's appointments -->
                 <?php if (count($rdv_aujourd_hui) > 0): ?>
                     <div class="rdv-section">
                         <h2 class="rdv-section-title">
@@ -377,7 +376,7 @@ if ($praticien_selectionne) {
                         </h2>
                         <div class="rdv-list">
                             <?php foreach ($rdv_aujourd_hui as $rdv): 
-                                // Déterminer la classe de statut
+                                // Determine the status class
                                 $statut_class = '';
                                 switch (strtolower($rdv['statut'] ?? '')) {
                                     case 'confirmé':
@@ -463,7 +462,7 @@ if ($praticien_selectionne) {
                     </div>
                 <?php endif; ?>
 
-                <!-- RDV Futurs -->
+                <!-- Upcoming appointments -->
                 <?php if (count($rdv_futurs) > 0): ?>
                     <div class="rdv-section">
                         <h2 class="rdv-section-title">
@@ -558,7 +557,7 @@ if ($praticien_selectionne) {
                     </div>
                 <?php endif; ?>
 
-                <!-- RDV Passés -->
+                <!-- Past appointments -->
                 <?php if (count($rdv_passes) > 0): ?>
                     <div class="rdv-section">
                         <h2 class="rdv-section-title">
@@ -653,7 +652,7 @@ if ($praticien_selectionne) {
                     </div>
                 <?php endif; ?>
 
-                <!-- Aucun RDV -->
+                <!-- No appointments -->
                 <?php if ($total_rdv === 0): ?>
                     <div class="rdv-empty">
                         <div class="empty-icon">📋</div>
@@ -679,7 +678,7 @@ if ($praticien_selectionne) {
         </main>
     </div>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -714,7 +713,7 @@ if ($praticien_selectionne) {
     </footer>
 
     <script>
-        // Auto-submit lors du changement de praticien
+        // Auto-submit when the practitioner changes
         document.getElementById('praticien-select').addEventListener('change', function() {
             const praticienId = this.value;
             const url = new URL(window.location);

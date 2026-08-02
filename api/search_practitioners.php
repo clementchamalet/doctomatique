@@ -1,14 +1,14 @@
 <?php
 /**
- * API de recherche de praticiens - VERSION COMPLÈTE AVEC LOCALISATION (CORRIGÉE)
+ * Practitioner search API - FULL VERSION WITH LOCATION (FIXED)
  * Endpoint: /api/search_practitioners.php
- * Methode: GET
- * Parametres:
- *  - search: Texte de recherche (nom, prenom, specialite)
- *  - specialty: ID de la specialite (optionnel)
- *  - user_lat: Latitude utilisateur (optionnel, pour calcul distance)
- *  - user_lon: Longitude utilisateur (optionnel, pour calcul distance)
- *  - max_distance: Distance maximale en km (optionnel, filtre par distance)
+ * Method: GET
+ * Parameters:
+ *  - search: Search text (name, first name, specialty)
+ *  - specialty: Specialty ID (optional)
+ *  - user_lat: User latitude (optional, for distance calculation)
+ *  - user_lon: User longitude (optional, for distance calculation)
+ *  - max_distance: Maximum distance in km (optional, filters by distance)
  */
 
 require_once __DIR__ . '/../pages/config.php';
@@ -22,14 +22,14 @@ try {
         throw new Exception("Erreur de connexion à la base de données");
     }
 
-    // Récupérer les paramètres
+    // Get the parameters
     $search = isset($_GET['search']) ? trim($_GET['search']) : '';
     $specialty = isset($_GET['specialty']) ? intval($_GET['specialty']) : null;
     $userLat = isset($_GET['user_lat']) ? floatval($_GET['user_lat']) : null;
     $userLon = isset($_GET['user_lon']) ? floatval($_GET['user_lon']) : null;
     $maxDistance = isset($_GET['max_distance']) ? floatval($_GET['max_distance']) : null;
 
-    // Requête SQL pour obtenir les praticiens avec leurs structures
+    // SQL query to get practitioners with their facilities
     $sql = "
         SELECT DISTINCT
             p.utilisateur_id,
@@ -64,7 +64,7 @@ try {
 
     $params = [];
 
-    // Filtre par recherche texte
+    // Filter by search text
     if (!empty($search)) {
         $sql .= " AND (
             CONCAT(u.prenom, ' ', u.nom) LIKE ? 
@@ -78,7 +78,7 @@ try {
         $params[] = '%' . $search . '%';
     }
 
-    // Filtre par spécialité
+    // Filter by specialty
     if ($specialty) {
         $sql .= " AND sm.id = ?";
         $params[] = $specialty;
@@ -90,19 +90,19 @@ try {
     $stmt->execute($params);
     $results = $stmt->fetchAll();
 
-    // Traiter les résultats
+    // Process the results
     $practitioners = [];
     $practitionerMap = [];
 
     foreach ($results as $row) {
         $practId = intval($row['utilisateur_id']);
         
-        // Créer la structure si elle existe
+        // Create the facility if it exists
         $structure = null;
         if ($row['structure_id'] && $row['latitude'] && $row['longitude']) {
             $distance = null;
             
-            // Calculer la distance si geoloc utilisateur fournie
+            // Calculate the distance if the user's location was provided
             if ($userLat !== null && $userLon !== null) {
                 $distance = calculateDistance(
                     $userLat, 
@@ -111,7 +111,7 @@ try {
                     floatval($row['longitude'])
                 );
                 
-                // Filtrer par distance max si spécifié
+                // Filter by max distance if specified
                 if ($maxDistance !== null && $distance > $maxDistance) {
                     continue;
                 }
@@ -130,7 +130,7 @@ try {
             ];
         }
 
-        // Vérifier si ce praticien est déjà dans la map
+        // Check whether this practitioner is already in the map
         if (!isset($practitionerMap[$practId])) {
             $specialties = [];
             if ($row['specialites_list']) {
@@ -163,7 +163,7 @@ try {
             ];
         }
 
-        // Ajouter la structure si elle existe et n'est pas en doublon
+        // Add the facility if it exists and isn't a duplicate
         if ($structure) {
             $isDuplicate = false;
             foreach ($practitionerMap[$practId]['structures'] as $existingStruct) {
@@ -178,10 +178,10 @@ try {
         }
     }
 
-    // Convertir en array indexé
+    // Convert to an indexed array
     $practitioners = array_values($practitionerMap);
 
-    // Trier par distance (si distance calculée)
+    // Sort by distance (if distance was calculated)
     if ($userLat !== null && $userLon !== null) {
         usort($practitioners, function($a, $b) {
             $distA = PHP_INT_MAX;

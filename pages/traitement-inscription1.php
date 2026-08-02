@@ -1,11 +1,11 @@
 <?php
 
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 
 require 'config.php';
 
-// Vérifier que le formulaire a été soumis
+// Ensure the form was submitted
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: inscription.php');
     exit;
@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $conn = get_db();
 
-// Récupérer les données du formulaire
+// Get form data
 $type_compte = $_POST['type_compte'];
 $email = trim($_POST['email']);
 $nom = trim($_POST['nom']);
@@ -22,30 +22,30 @@ $telephone = trim($_POST['telephone']);
 $mot_de_passe = $_POST['mot_de_passe'];
 $confirmation_mot_de_passe = $_POST['confirmation_mot_de_passe'];
 
-// Validation des données
+// Validate data
 $erreurs = [];
 
-// Vérifier que tous les champs sont remplis
+// Check that all fields are filled in
 if (empty($type_compte) || empty($email) || empty($nom) || empty($prenom) || empty($telephone) || empty($mot_de_passe)) {
     $erreurs[] = "Tous les champs sont obligatoires";
 }
 
-// Vérifier que l'email est valide
+// Check that the email is valid
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $erreurs[] = "L'email n'est pas valide";
 }
 
-// Vérifier que les mots de passe correspondent
+// Check that the passwords match
 if ($mot_de_passe !== $confirmation_mot_de_passe) {
     $erreurs[] = "Les mots de passe ne correspondent pas";
 }
 
-// Vérifier que le mot de passe fait au moins 4 caractères
+// Check that the password is at least 4 characters long
 if (strlen($mot_de_passe) < 4) {
     $erreurs[] = "Le mot de passe doit contenir au moins 4 caractères";
 }
 
-// Vérifier que l'email n'existe pas déjà dans la BDD (avec requête préparée)
+// Check that the email doesn't already exist in the DB (using a prepared statement)
 $sql_check_email = "SELECT id FROM utilisateurs WHERE email = ?";
 $stmt_check = mysqli_prepare($conn, $sql_check_email);
 mysqli_stmt_bind_param($stmt_check, "s", $email);
@@ -57,7 +57,7 @@ if (mysqli_num_rows($result_check) > 0) {
 }
 mysqli_stmt_close($stmt_check);
 
-// S'il y a des erreurs, afficher et ARRÊTER l'exécution
+// If there are errors, display them and STOP execution
 if (!empty($erreurs)) {
     echo $erreurs[0] . '
         <br>
@@ -67,19 +67,19 @@ if (!empty($erreurs)) {
     exit;
 }
 
-// Hasher le mot de passe
-$mot_de_passe_hash = password_hash($mot_de_passe, PASSWORD_DEFAULT); 
+// Hash the password
+$mot_de_passe_hash = password_hash($mot_de_passe, PASSWORD_DEFAULT);
 
-// Insérer l'utilisateur dans la BDD
+// Insert the user into the DB
 $sql_insert = "INSERT INTO utilisateurs (email, mot_de_passe, nom, prenom, telephone, actif) VALUES (?, ?, ?, ?, ?, 1)";
 $stmt_insert = mysqli_prepare($conn, $sql_insert);
 mysqli_stmt_bind_param($stmt_insert, "sssss", $email, $mot_de_passe_hash, $nom, $prenom, $telephone);
 
 if (mysqli_stmt_execute($stmt_insert)) {
-    // Récupérer l'ID de l'utilisateur nouvellement créé
+    // Get the ID of the newly created user
     $user_id = mysqli_insert_id($conn);
-    
-    // Récupérer l'ID du rôle correspondant au type de compte
+
+    // Get the role ID matching the account type
     $sql_role = "SELECT id FROM roles WHERE LOWER(nom) = ?";
     $stmt_role = mysqli_prepare($conn, $sql_role);
     $type_compte_lower = strtolower($type_compte);
@@ -91,23 +91,23 @@ if (mysqli_stmt_execute($stmt_insert)) {
         $role = mysqli_fetch_assoc($result_role);
         $role_id = $role['id'];
         
-        // Associer l'utilisateur au rôle dans la table utilisateurs_roles
+        // Link the user to the role in the utilisateurs_roles table
         $sql_assoc = "INSERT INTO utilisateurs_roles (utilisateur_id, role_id) VALUES (?, ?)";
         $stmt_assoc = mysqli_prepare($conn, $sql_assoc);
         mysqli_stmt_bind_param($stmt_assoc, "ii", $user_id, $role_id);
         mysqli_stmt_execute($stmt_assoc);
         mysqli_stmt_close($stmt_assoc);
 
-        // Si ce n'est pas un patient, l'associer aussi au rôle patient
+        // If not a patient, also link to the patient role
         if ($type_compte_lower != 'patient') {
-            // Trouver l'ID du rôle 'patient'
+            // Find the 'patient' role ID
             $sql_id_patient = "SELECT id FROM roles WHERE LOWER(nom) = 'patient'";
             $result_id_patient = mysqli_query($conn, $sql_id_patient);
-            
+
             if (mysqli_num_rows($result_id_patient) > 0) {
                 $id_patient = mysqli_fetch_assoc($result_id_patient);
-                
-                // Associer l'ID du rôle patient à l'utilisateur
+
+                // Link the patient role ID to the user
                 $sql_assoc2 = "INSERT INTO utilisateurs_roles (utilisateur_id, role_id) VALUES (?, ?)";
                 $stmt_assoc2 = mysqli_prepare($conn, $sql_assoc2);
                 mysqli_stmt_bind_param($stmt_assoc2, "ii", $user_id, $id_patient['id']);
@@ -123,7 +123,7 @@ if (mysqli_stmt_execute($stmt_insert)) {
     mysqli_stmt_close($stmt_role);
     mysqli_stmt_close($stmt_insert);
     
-    // Afficher le succès
+    // Show success
 
     if ($type_compte_lower == 'patient') {
         echo '
@@ -184,7 +184,7 @@ if (mysqli_stmt_execute($stmt_insert)) {
     }
 
     if ($type_compte_lower == 'praticien') {
-        // Récupérer les spécialités disponibles pour le select
+        // Get the available specialties for the select
         $sql_specialites = "SELECT id, nom FROM specialites_medecine ORDER BY nom ASC";
         $result_specialites = mysqli_query($conn, $sql_specialites);
         
@@ -195,7 +195,7 @@ if (mysqli_stmt_execute($stmt_insert)) {
             }
         }
         
-        // Récupérer les structures de santé disponibles pour le select
+        // Get the available healthcare facilities for the select
         $sql_structures = "SELECT id, nom FROM structures_sante ORDER BY nom ASC";
         $result_structures = mysqli_query($conn, $sql_structures);
         
@@ -286,7 +286,7 @@ if (mysqli_stmt_execute($stmt_insert)) {
     }
 
     elseif ($type_compte_lower == 'secretaire') {
-        // Récupérer les types de structures disponibles
+        // Get the available facility types
         $sql_types = "SELECT id, description FROM type_struct ORDER BY description ASC";
         $result_types = mysqli_query($conn, $sql_types);
         

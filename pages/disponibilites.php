@@ -35,7 +35,7 @@ mysqli_stmt_execute($stmt);
 $res = mysqli_stmt_get_result($stmt);
 $praticien = mysqli_fetch_assoc($res);
 
-/* Récupérer les spécialités */
+/* Get the specialties */
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT sm.nom

@@ -14,13 +14,12 @@ $pagesRendezvous = ['rdv_sec.php', 'desistement_sec.php'];
 $pagesStats = ['professional_sec.php', 'statistiques_sec.php'];
 $pagesParametres = ['parametres_sec.php'];
 
-$_SESSION['user_id'] = 2;
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'secretaire') {
     header('Location: index.php');
     exit;
 }
 
-// Récupérer les infos de la secrétaire et de sa structure
+// Get the secretary's info and their facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.prenom, u.nom, s.id as structure_id, s.nom as structure_nom
@@ -33,7 +32,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $secretaire = mysqli_fetch_assoc($result);
 
-// Si pas de structure trouvée, rediriger
+// If no facility found, redirect
 if (!$secretaire) {
     header("Location: index.php");
     exit;
@@ -41,7 +40,7 @@ if (!$secretaire) {
 
 $structure_id = $secretaire['structure_id'];
 
-// Récupérer la liste des praticiens de l'établissement
+// Get the list of practitioners at the facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT DISTINCT p.utilisateur_id, u.prenom, u.nom
@@ -60,16 +59,16 @@ while ($row = mysqli_fetch_assoc($result)) {
     $praticiens_liste[] = $row;
 }
 
-// Déterminer le praticien sélectionné (null = établissement entier)
+// Determine the selected practitioner (null = entire facility)
 $praticien_selectionne = isset($_GET['praticien']) && $_GET['praticien'] !== '' ? intval($_GET['praticien']) : null;
 
-// Filtres
+// Filters
 $recherche = isset($_GET['search']) ? trim($_GET['search']) : '';
 $tri = isset($_GET['tri']) ? $_GET['tri'] : 'nom';
 
-// Construire la requête SQL pour récupérer les patients
+// Build the SQL query to get the patients
 if ($praticien_selectionne) {
-    // Patients d'un praticien spécifique
+    // Patients of a specific practitioner
     $sql = "SELECT DISTINCT
                 u.id,
                 u.prenom,
@@ -95,7 +94,7 @@ if ($praticien_selectionne) {
     $params = [$praticien_selectionne, $praticien_selectionne];
     $types = "ii";
 } else {
-    // Patients de l'établissement
+    // Patients of the facility
     $sql = "SELECT DISTINCT
                 u.id,
                 u.prenom,
@@ -121,7 +120,7 @@ if ($praticien_selectionne) {
     $types = "ii";
 }
 
-// Filtre de recherche
+// Search filter
 if ($recherche !== '') {
     $sql .= " AND (u.prenom LIKE ? OR u.nom LIKE ? OR u.email LIKE ? OR u.telephone LIKE ?)";
     $recherche_param = "%$recherche%";
@@ -134,7 +133,7 @@ if ($recherche !== '') {
 
 $sql .= " GROUP BY u.id, u.prenom, u.nom, u.telephone, u.email, p.date_naissance, g.description";
 
-// Tri
+// Sorting
 switch ($tri) {
     case 'nom':
         $sql .= " ORDER BY u.nom ASC, u.prenom ASC";
@@ -154,7 +153,7 @@ $result_patients = mysqli_stmt_get_result($stmt);
 
 $patients = [];
 while ($row = mysqli_fetch_assoc($result_patients)) {
-    // Calculer l'âge
+    // Calculate the age
     if ($row['date_naissance']) {
         $date_naissance = new DateTime($row['date_naissance']);
         $aujourd_hui = new DateTime();
@@ -163,7 +162,7 @@ while ($row = mysqli_fetch_assoc($result_patients)) {
         $row['age'] = null;
     }
     
-    // Formater le dernier RDV
+    // Format the last appointment
     if ($row['dernier_rdv']) {
         $dernier_rdv = new DateTime($row['dernier_rdv']);
         $row['dernier_rdv_format'] = $dernier_rdv->format('d/m/Y');
@@ -174,7 +173,7 @@ while ($row = mysqli_fetch_assoc($result_patients)) {
     $patients[] = $row;
 }
 
-// Obtenir le nom du praticien sélectionné
+// Get the selected practitioner's name
 $nom_praticien = null;
 if ($praticien_selectionne) {
     foreach ($praticiens_liste as $prat) {
@@ -199,7 +198,7 @@ if ($praticien_selectionne) {
     <link rel="stylesheet" href="../assets/css/style_sec.css">
 </head>
 <body>
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -214,7 +213,7 @@ if ($praticien_selectionne) {
         </nav>
     </header>
 
-    <!-- ========== LAYOUT PRINCIPAL ========== -->
+    <!-- ========== MAIN LAYOUT ========== -->
     <div class="pro-layout">
         
         <!-- ========== SIDEBAR NAVIGATION ========== -->
@@ -247,7 +246,7 @@ if ($praticien_selectionne) {
             </nav>
         </aside>
 
-        <!-- ========== CONTENU PRINCIPAL ========== -->
+        <!-- ========== MAIN CONTENT ========== -->
         <main class="pro-main">
             <div class="patients-page-header">
                 <div class="patients-title-section">
@@ -266,7 +265,7 @@ if ($praticien_selectionne) {
                 </div>
             </div>
 
-            <!-- Sélecteur de praticien -->
+            <!-- Practitioner selector -->
             <div class="praticien-selector">
                 <label for="praticien-select">👨‍⚕️ Afficher les patients de :</label>
                 <select id="praticien-select">
@@ -280,7 +279,7 @@ if ($praticien_selectionne) {
                 </select>
             </div>
 
-            <!-- Barre de recherche et filtres -->
+            <!-- Search bar and filters -->
             <div class="patients-filters">
                 <form method="GET" action="patients.php" class="search-form">
                     <?php if ($praticien_selectionne): ?>
@@ -320,7 +319,7 @@ if ($praticien_selectionne) {
                 </div>
             </div>
 
-            <!-- Liste des patients -->
+            <!-- Patient list -->
             <div class="patients-container">
                 <?php if (count($patients) > 0): ?>
                     <div class="patients-grid">
@@ -414,7 +413,7 @@ if ($praticien_selectionne) {
         </main>
     </div>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -449,7 +448,7 @@ if ($praticien_selectionne) {
     </footer>
 
     <script>
-        // Auto-submit lors du changement de praticien
+        // Auto-submit when the practitioner changes
         document.getElementById('praticien-select').addEventListener('change', function() {
             const praticienId = this.value;
             const url = new URL(window.location);

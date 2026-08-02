@@ -1,11 +1,11 @@
 <?php
 /**
- * API d'autocomplete - Récupère villes et spécialités
+ * Autocomplete API - Gets cities and specialties
  * Endpoint: /api/autocomplete.php
- * Methode: GET
- * Parametres:
- *  - type: 'cities' ou 'specialties'
- *  - query: Texte de recherche
+ * Method: GET
+ * Parameters:
+ *  - type: 'cities' or 'specialties'
+ *  - query: Search text
  */
 
 require_once __DIR__ . '/../pages/config.php';
@@ -23,7 +23,7 @@ try {
     $query = isset($_GET['query']) ? trim($_GET['query']) : '';
 
     if ($type === 'cities') {
-        // Récupérer les villes
+        // Get the cities
         $sql = "
             SELECT DISTINCT s.ville
             FROM structures_sante s
@@ -49,7 +49,7 @@ try {
         sendSuccess(['results' => $cities]);
     } 
     else if ($type === 'specialties') {
-        // Récupérer les spécialités
+        // Get the specialties
         $sql = "
             SELECT DISTINCT sm.id, sm.nom
             FROM specialites_medecine sm

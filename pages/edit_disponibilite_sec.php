@@ -12,13 +12,12 @@ $pagesRendezvous = ['rdv_sec.php', 'desistement_sec.php'];
 $pagesStats = ['professional_sec.php', 'statistiques_sec.php'];
 $pagesParametres = ['parametres_sec.php'];
 
-$_SESSION['user_id'] = 2;
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'secretaire') {
     header('Location: index.php');
     exit;
 }
 
-// Récupérer les infos de la secrétaire et de sa structure
+// Get the secretary's info and their facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.prenom, u.nom, s.id as structure_id, s.nom as structure_nom
@@ -31,7 +30,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $secretaire = mysqli_fetch_assoc($result);
 
-// Si pas de structure trouvée, rediriger
+// If no facility found, redirect
 if (!$secretaire) {
     header("Location: index.php");
     exit;
@@ -41,7 +40,7 @@ $structure_id = $secretaire['structure_id'];
 $dispoId = intval($_GET['id']);
 $praticien_param = isset($_GET['praticien']) ? intval($_GET['praticien']) : null;
 
-// Charger la disponibilité (non réservée) et vérifier qu'elle appartient à un praticien de l'établissement
+// Load the (unbooked) availability slot and verify it belongs to a practitioner at the facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT c.id, c.debut, c.duree_minute, c.praticien_id, u.prenom, u.nom
@@ -67,7 +66,7 @@ if (!$dispo) {
 
 $success = false;
 
-// Traitement du formulaire
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $date = $_POST['date'];
     $heure = $_POST['heure'];
@@ -105,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../assets/css/modifier_disponibilites.css">
 </head>
 <body>
-   <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+   <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -119,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </nav>
     </header>
-    <!-- ========== LAYOUT PRINCIPAL ========== -->
+    <!-- ========== MAIN LAYOUT ========== -->
     <div class="pro-layout">
         
         <!-- ========== SIDEBAR NAVIGATION ========== -->
@@ -152,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </nav>
         </aside>
 
-        <!-- ========== CONTENU PRINCIPAL ========== -->
+        <!-- ========== MAIN CONTENT ========== -->
         <main class="pro-main">
             <h1>✏️ Modifier la disponibilité
                 <?php if ($dispo): ?>
@@ -199,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
         </main>
     </div>
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">

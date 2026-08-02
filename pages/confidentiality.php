@@ -25,36 +25,36 @@ else {
 </head>
 <body>
 
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
-            <!-- Logo principal avec lien vers l'accueil -->
+            <!-- Main logo linking to home -->
             <a href="../index.php" class="logo">
                 <img src="../assets/images/logo.png" alt="Logo Doctomatique">
                 <span>Doctomatique</span>
             </a>
             
-            <!-- Navigation principale -->
+            <!-- Main navigation -->
             <div class="nav-links">
-                <!-- Lien vers l'espace professionnel -->
+                <!-- Link to the professional area -->
                 <a href="patient.php">Espace patient</a>
                 
-                <!-- Bouton de connexion -->
+                <!-- Login button -->
                 <a href=<?php echo '"' . $link . '"' ; ?> class="btn-connexion"><?php echo $affichage ; ?></a>
             </div>
         </nav>
     </header>
 
-    <!-- ========== CONTENU PRINCIPAL ========== -->
+    <!-- ========== MAIN CONTENT ========== -->
     <main>
         <div class="privacy-container">
             
-            <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+            <!-- ========== PAGE HEADER ========== -->
             <div class="privacy-hero">
-                <!-- Titre principal de la page -->
+                <!-- Main page title -->
                 <h1>Politique de Confidentialité</h1>
                 
-                <!-- Date de dernière mise à jour -->
+                <!-- Last updated date -->
                 <p class="date">Dernière mise à jour : 10 décembre 2025</p>
             </div>
 
@@ -71,10 +71,10 @@ else {
                 </p>
             </div>
 
-            <!-- ========== CONTENU DE LA POLITIQUE ========== -->
+            <!-- ========== POLICY CONTENT ========== -->
             <div class="privacy-content">
                 
-                <!-- ========== SECTION 1 : RESPONSABLE DU TRAITEMENT ========== -->
+                <!-- ========== SECTION 1: DATA CONTROLLER ========== -->
                 <div class="privacy-section">
                     <h2>1. Responsable du Traitement</h2>
                     
@@ -82,7 +82,7 @@ else {
                         Le responsable du traitement des données est :
                     </p>
                     
-                    <!-- Encadré d'informations -->
+                    <!-- Info box -->
                     <div class="highlight-box">
                         <strong>Doctomatique</strong><br>
                         Association loi 1901 à but non lucratif<br>
@@ -96,7 +96,7 @@ else {
                     </p>
                 </div>
 
-                <!-- ========== SECTION 2 : DONNÉES COLLECTÉES ========== -->
+                <!-- ========== SECTION 2: DATA COLLECTED ========== -->
                 <div class="privacy-section">
                     <h2>2. Données Collectées</h2>
                     
@@ -104,7 +104,7 @@ else {
                         Nous collectons uniquement les données nécessaires au fonctionnement de notre service :
                     </p>
                     
-                    <!-- Sous-section : Patients -->
+                    <!-- Subsection: Patients -->
                     <h3>Pour les Patients</h3>
                     
                     <table class="data-table">
@@ -144,7 +144,7 @@ else {
                         </tbody>
                     </table>
 
-                    <!-- Sous-section : Praticiens -->
+                    <!-- Subsection: Practitioners -->
                     <h3>Pour les Praticiens</h3>
                     
                     <table class="data-table">
@@ -179,14 +179,14 @@ else {
                         </tbody>
                     </table>
 
-                    <!-- Note importante sur les données de santé -->
+                    <!-- Important note on health data -->
                     <div class="highlight-box">
                         <strong>⚕️ Données de santé :</strong> Nous ne collectons JAMAIS de données 
                         médicales. Les informations de santé restent confidentielles entre vous et votre praticien.
                     </div>
                 </div>
 
-                <!-- ========== SECTION 3 : UTILISATION DES DONNÉES ========== -->
+                <!-- ========== SECTION 3: DATA USAGE ========== -->
                 <div class="privacy-section">
                     <h2>3. Utilisation des Données</h2>
                     
@@ -194,7 +194,7 @@ else {
                         Vos données personnelles sont utilisées exclusivement pour :
                     </p>
                     
-                    <!-- Liste des utilisations -->
+                    <!-- List of uses -->
                     <ul>
                         <li><strong>Gestion de votre compte :</strong> Création, authentification et mise à jour de votre profil</li>
                         <li><strong>Prise de rendez-vous :</strong> Faciliter la réservation et la gestion de vos consultations</li>
@@ -205,7 +205,7 @@ else {
                     </ul>
                 </div>
 
-                <!-- ========== SECTION 4 : PARTAGE DES DONNÉES ========== -->
+                <!-- ========== SECTION 4: DATA SHARING ========== -->
                 <div class="privacy-section">
                     <h2>4. Partage des Données</h2>
                     
@@ -214,7 +214,7 @@ else {
                         partagées uniquement dans les cas suivants :
                     </p>
                     
-                    <!-- Liste des cas de partage -->
+                    <!-- List of sharing cases -->
                     <ul>
                         <li><strong>Avec les praticiens :</strong> Uniquement les informations nécessaires 
                             à la prise de rendez-vous (nom, coordonnées, historique RDV)</li>
@@ -223,14 +223,14 @@ else {
                         <li><strong>Obligations légales :</strong> Si requis par la loi ou une autorité judiciaire</li>
                     </ul>
                     
-                    <!-- Note sur le partage avec les praticiens -->
+                    <!-- Note on sharing with practitioners -->
                     <div class="highlight-box">
                         Tous nos partenaires sont soumis à des accords stricts de confidentialité et 
                         ne peuvent utiliser vos données qu'aux fins pour lesquelles nous les leur transmettons.
                     </div>
                 </div>
 
-                <!-- ========== SECTION 5 : SÉCURITÉ DES DONNÉES ========== -->
+                <!-- ========== SECTION 5: DATA SECURITY ========== -->
                 <div class="privacy-section">
                     <h2>5. Sécurité des Données</h2>
                     
@@ -239,7 +239,7 @@ else {
                         pour protéger vos données :
                     </p>
                     
-                    <!-- Liste des mesures de sécurité -->
+                    <!-- List of security measures -->
                     <ul>
                         <li><strong>Chiffrement :</strong> Toutes les communications sont chiffrées</li>
                         <li><strong>Hébergement certifié HDS :</strong> Serveurs sécurisés et conformes aux 
@@ -253,7 +253,7 @@ else {
                     </ul>
                 </div>
 
-                <!-- ========== SECTION 6 : CONSERVATION DES DONNÉES ========== -->
+                <!-- ========== SECTION 6: DATA RETENTION ========== -->
                 <div class="privacy-section">
                     <h2>6. Conservation des Données</h2>
                     
@@ -261,7 +261,7 @@ else {
                         Nous conservons vos données pendant les durées suivantes :
                     </p>
                     
-                    <!-- Liste des durées de conservation -->
+                    <!-- List of retention periods -->
                     <ul>
                         <li><strong>Comptes actifs :</strong> Tant que votre compte est actif</li>
                         <li><strong>Après suppression du compte :</strong> 90 jours (possibilité de récupération)</li>
@@ -271,7 +271,7 @@ else {
                     </ul>
                 </div>
 
-                <!-- ========== SECTION 7 : VOS DROITS ========== -->
+                <!-- ========== SECTION 7: YOUR RIGHTS ========== -->
                 <div class="privacy-section">
                     <h2>7. Vos Droits</h2>
                     
@@ -279,7 +279,7 @@ else {
                         Conformément au RGPD, vous disposez des droits suivants :
                     </p>
                     
-                    <!-- Liste ordonnée des droits -->
+                    <!-- Ordered list of rights -->
                     <ol>
                         <li><strong>Droit d'accès :</strong> Obtenir une copie de vos données personnelles</li>
                         <li><strong>Droit de rectification :</strong> Corriger vos données inexactes ou incomplètes</li>
@@ -290,7 +290,7 @@ else {
                         <li><strong>Droit de retirer votre consentement :</strong> À tout moment</li>
                     </ol>
 
-                    <!-- Encadré pour exercer ses droits -->
+                    <!-- Box for exercising your rights -->
                     <div class="highlight-box">
                         <strong>Pour exercer vos droits :</strong><br>
                         Envoyez un email à rgpd@doctomatique.fr avec une copie de votre pièce d'identité. 
@@ -303,7 +303,7 @@ else {
                     </p>
                 </div>
 
-                <!-- ========== SECTION 8 : COOKIES ========== -->
+                <!-- ========== SECTION 8: COOKIES ========== -->
                 <div class="privacy-section">
                     <h2>8. Cookies</h2>
                     
@@ -311,7 +311,7 @@ else {
                         Nous utilisons des cookies pour :
                     </p>
                     
-                    <!-- Liste des types de cookies -->
+                    <!-- List of cookie types -->
                     <ul>
                         <li><strong>Cookies essentiels :</strong> Nécessaires au fonctionnement du site 
                             (session, sécurité)</li>
@@ -325,7 +325,7 @@ else {
                     </p>
                 </div>
 
-                <!-- ========== SECTION 9 : TRANSFERTS INTERNATIONAUX ========== -->
+                <!-- ========== SECTION 9: INTERNATIONAL TRANSFERS ========== -->
                 <div class="privacy-section">
                     <h2>9. Transferts Internationaux</h2>
                     
@@ -335,7 +335,7 @@ else {
                     </p>
                 </div>
 
-                <!-- ========== SECTION 10 : MINEURS ========== -->
+                <!-- ========== SECTION 10: MINORS ========== -->
                 <div class="privacy-section">
                     <h2>10. Mineurs</h2>
                     
@@ -346,7 +346,7 @@ else {
                     </p>
                 </div>
 
-                <!-- ========== SECTION 11 : MODIFICATIONS ========== -->
+                <!-- ========== SECTION 11: CHANGES ========== -->
                 <div class="privacy-section">
                     <h2>11. Modifications</h2>
                     
@@ -357,7 +357,7 @@ else {
                     </p>
                 </div>
 
-                <!-- ========== SECTION 12 : CONTACT ========== -->
+                <!-- ========== SECTION 12: CONTACT ========== -->
                 <div class="privacy-section">
                     <h2>12. Contact</h2>
                     
@@ -365,7 +365,7 @@ else {
                         Pour toute question concernant cette politique de confidentialité :
                     </p>
                     
-                    <!-- Liste des moyens de contact -->
+                    <!-- List of contact methods -->
                     <ul>
                         <li>Email : rgpd@doctomatique.fr</li>
                         <li>Courrier : Doctomatique - DPO, 123 Avenue de la Santé, 75015 Paris</li>
@@ -377,7 +377,7 @@ else {
         </div>
     </main>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">

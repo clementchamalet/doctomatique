@@ -25,10 +25,10 @@ else {
 </head>
 <body>
 
-    <!-- ========== EN-TÊTE ========== -->
+    <!-- ========== HEADER ========== -->
     <header>
         <nav>
-            <!-- Logo principal -->
+            <!-- Main logo -->
             <a href="../index.php" class="logo">
                 <img src="../assets/images/logo.png" alt="Logo Doctomatique">
                 <span>Doctomatique</span>
@@ -42,7 +42,7 @@ else {
         </nav>
     </header>
 
-    <!-- ========== CONTENU PRINCIPAL ========== -->
+    <!-- ========== MAIN CONTENT ========== -->
     <main>
         <div class="tarifs-container">
 
@@ -55,7 +55,7 @@ else {
                 </p>
             </div>
 
-            <!-- Bannière transparence -->
+            <!-- Transparency banner -->
             <div class="transparency-banner">
                 <h2>💚 Notre Engagement de Transparence</h2>
                 <p>
@@ -70,11 +70,11 @@ else {
                 </p>
             </div>
 
-            <!-- Titre des formules -->
+            <!-- Plans title -->
             <h2 class="section-title">Choisissez Votre Formule</h2>
             <br>
 
-            <!-- Grille des prix -->
+            <!-- Pricing grid -->
             <div class="pricing-grid">
 
                 <!-- Patients -->
@@ -103,7 +103,7 @@ else {
                     </div>
                 </div>
 
-                <!-- Practicien solo -->
+                <!-- Solo practitioner -->
                 <div class="pricing-card featured">
                     <div class="pricing-header">
                         <h3>Praticien Solo</h3>
@@ -131,7 +131,7 @@ else {
                     </div>
                 </div>
 
-                <!-- Cabinet médical -->
+                <!-- Medical practice -->
                 <div class="pricing-card">
                     <div class="pricing-header">
                         <h3>Cabinet Médical</h3>
@@ -160,7 +160,7 @@ else {
                 </div>
             </div>
 
-            <!-- Tableau des coûts -->
+            <!-- Cost table -->
             <div class="cost-breakdown">
                 <h2>📊 Répartition détaillée de nos coûts : exemple pour 19€</h2>
 
@@ -187,7 +187,7 @@ else {
                 </p>
             </div>
 
-            <!-- FAQ tarifs -->
+            <!-- Pricing FAQ -->
             <div class="faq-section">
                 <h2>Questions Fréquentes sur les Tarifs</h2>
 
@@ -226,7 +226,7 @@ else {
         </div>
     </main>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">

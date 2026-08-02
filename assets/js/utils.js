@@ -1,14 +1,14 @@
 /* ========================================
-   UTILS.JS - FONCTIONS UTILITAIRES
-   Fonctions réutilisables dans tout le projet
+   UTILS.JS - UTILITY FUNCTIONS
+   Functions reusable across the whole project
    ======================================== */
 
 // ========== VALIDATION ==========
 
 /**
- * Valide le format d'une adresse email
- * @param {string} email - L'adresse email à valider
- * @returns {boolean} - true si l'email est valide, false sinon
+ * Validates the format of an email address
+ * @param {string} email - The email address to validate
+ * @returns {boolean} - true if the email is valid, false otherwise
  */
 export function validerEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -16,30 +16,30 @@ export function validerEmail(email) {
 }
 
 /**
- * Valide la force d'un mot de passe
- * @param {string} motdepasse - Le mot de passe à valider
+ * Validates the strength of a password
+ * @param {string} motdepasse - The password to validate
  * @returns {Object} - { isValid, score, niveau, message }
  */
 export function validerMotdepasse(motdepasse) {
     let score = 0;
-    
-    // Longueur minimale
+
+    // Minimum length
     if (motdepasse.length >= 8) score++;
     if (motdepasse.length >= 12) score++;
-    
-    // Contient des lettres minuscules
+
+    // Contains lowercase letters
     if (/[a-z]/.test(motdepasse)) score++;
-    
-    // Contient des lettres majuscules
+
+    // Contains uppercase letters
     if (/[A-Z]/.test(motdepasse)) score++;
-    
-    // Contient des chiffres
+
+    // Contains digits
     if (/[0-9]/.test(motdepasse)) score++;
-    
-    // Contient des caractères spéciaux
+
+    // Contains special characters
     if (/[^a-zA-Z0-9]/.test(motdepasse)) score++;
-    
-    // Détermination du niveau
+
+    // Determine the strength level
     let niveau, message;
     if (score <= 2) {
         niveau = 'faible';
@@ -51,7 +51,7 @@ export function validerMotdepasse(motdepasse) {
         niveau = 'fort';
         message = 'Mot de passe fort';
     }
-    
+
     return {
         isValid: motdepasse.length >= 8,
         score,
@@ -61,9 +61,9 @@ export function validerMotdepasse(motdepasse) {
 }
 
 /**
- * Valide qu'un champ n'est pas vide
- * @param {string} value - La valeur à valider
- * @returns {boolean} - true si non vide, false sinon
+ * Validates that a field is not empty
+ * @param {string} value - The value to validate
+ * @returns {boolean} - true if not empty, false otherwise
  */
 export function validerChampNonVide(value) {
     return value && value.trim().length > 0;
@@ -72,56 +72,56 @@ export function validerChampNonVide(value) {
 // ========== NOTIFICATIONS ==========
 
 /**
- * Affiche une notification (à améliorer avec une librairie comme Toastify)
- * @param {string} message - Le message à afficher
+ * Displays a notification (to be improved with a library like Toastify)
+ * @param {string} message - The message to display
  * @param {string} type - Type: 'success', 'error', 'warning', 'info'
  */
 export function afficherNotification(message, type = 'info') {
-    // Pour l'instant, utilise alert
-    // TODO: Remplacer par une vraie notification visuelle
-    
+    // For now, uses alert
+    // TODO: Replace with an actual visual notification
+
     const prefix = {
         'success': '✓ ',
         'error': '✗ ',
         'warning': '⚠ ',
         'info': 'ℹ '
     }[type] || '';
-    
+
     alert(prefix + message);
-    
-    // Alternative avec console coloré en développement
+
+    // Colored console alternative for development
     const styles = {
         'success': 'color: #10b981; font-weight: bold;',
         'error': 'color: #ef4444; font-weight: bold;',
         'warning': 'color: #f59e0b; font-weight: bold;',
         'info': 'color: #3b82f6; font-weight: bold;'
     };
-    
+
     console.log(`%c${prefix}${message}`, styles[type] || '');
 }
 
 /**
- * Affiche une notification de succès
- * @param {string} message - Le message de succès
+ * Displays a success notification
+ * @param {string} message - The success message
  */
 export function notificationSucces(message) {
     afficherNotification(message, 'success');
 }
 
 /**
- * Affiche une notification d'erreur
- * @param {string} message - Le message d'erreur
+ * Displays an error notification
+ * @param {string} message - The error message
  */
 export function notificationErreur(message) {
     afficherNotification(message, 'error');
 }
 
-// ========== GESTION DES FORMULAIRES ==========
+// ========== FORM HANDLING ==========
 
 /**
- * Récupère toutes les valeurs d'un formulaire
- * @param {string} formId - L'ID du formulaire
- * @returns {Object} - Objet avec les valeurs des champs
+ * Gets all values from a form
+ * @param {string} formId - The form's ID
+ * @returns {Object} - Object with the field values
  */
 export function recupererValeursFormulaire(formId) {
     const form = document.getElementById(formId);
@@ -129,20 +129,20 @@ export function recupererValeursFormulaire(formId) {
         console.error(`Formulaire "${formId}" introuvable`);
         return null;
     }
-    
+
     const formData = new FormData(form);
     const values = {};
-    
+
     for (let [key, value] of formData.entries()) {
         values[key] = value;
     }
-    
+
     return values;
 }
 
 /**
- * Réinitialise un formulaire
- * @param {string} formId - L'ID du formulaire
+ * Resets a form
+ * @param {string} formId - The form's ID
  */
 export function reinitialiserFormulaire(formId) {
     const form = document.getElementById(formId);
@@ -152,9 +152,9 @@ export function reinitialiserFormulaire(formId) {
 }
 
 /**
- * Active/désactive un bouton de soumission
- * @param {string} buttonId - L'ID du bouton
- * @param {boolean} actif - true pour activer, false pour désactiver
+ * Enables/disables a submit button
+ * @param {string} buttonId - The button's ID
+ * @param {boolean} actif - true to enable, false to disable
  */
 export function toggleBoutonSoumission(buttonId, actif) {
     const button = document.getElementById(buttonId);
@@ -165,12 +165,12 @@ export function toggleBoutonSoumission(buttonId, actif) {
     }
 }
 
-// ========== GESTION DES ÉVÉNEMENTS CLAVIER ==========
+// ========== KEYBOARD EVENT HANDLING ==========
 
 /**
- * Ajoute un listener pour la touche Entrée sur un champ
- * @param {string} elementId - L'ID de l'élément
- * @param {Function} callback - La fonction à exécuter
+ * Adds a listener for the Enter key on a field
+ * @param {string} elementId - The element's ID
+ * @param {Function} callback - The function to run
  */
 export function ajouterListenerEntree(elementId, callback) {
     const element = document.getElementById(elementId);
@@ -185,8 +185,8 @@ export function ajouterListenerEntree(elementId, callback) {
 }
 
 /**
- * Gère la navigation au clavier entre champs
- * @param {Array<string>} fieldIds - Tableau des IDs des champs dans l'ordre
+ * Handles keyboard navigation between fields
+ * @param {Array<string>} fieldIds - Array of field IDs in order
  */
 export function gererNavigationClavier(fieldIds) {
     fieldIds.forEach((fieldId, index) => {
@@ -195,15 +195,15 @@ export function gererNavigationClavier(fieldIds) {
             field.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    
-                    // Si c'est le dernier champ, soumettre le formulaire
+
+                    // If this is the last field, submit the form
                     if (index === fieldIds.length - 1) {
                         const form = field.closest('form');
                         if (form) {
                             form.dispatchEvent(new Event('submit'));
                         }
                     } else {
-                        // Sinon, passer au champ suivant
+                        // Otherwise, move to the next field
                         const nextField = document.getElementById(fieldIds[index + 1]);
                         if (nextField) {
                             nextField.focus();
@@ -215,12 +215,12 @@ export function gererNavigationClavier(fieldIds) {
     });
 }
 
-// ========== GESTION DU DOM ==========
+// ========== DOM HANDLING ==========
 
 /**
- * Affiche/masque un élément
- * @param {string} elementId - L'ID de l'élément
- * @param {boolean} visible - true pour afficher, false pour masquer
+ * Shows/hides an element
+ * @param {string} elementId - The element's ID
+ * @param {boolean} visible - true to show, false to hide
  */
 export function toggleElement(elementId, visible) {
     const element = document.getElementById(elementId);
@@ -230,9 +230,9 @@ export function toggleElement(elementId, visible) {
 }
 
 /**
- * Ajoute une classe CSS à un élément
- * @param {string} elementId - L'ID de l'élément
- * @param {string} className - Le nom de la classe
+ * Adds a CSS class to an element
+ * @param {string} elementId - The element's ID
+ * @param {string} className - The class name
  */
 export function ajouterClasse(elementId, className) {
     const element = document.getElementById(elementId);
@@ -242,9 +242,9 @@ export function ajouterClasse(elementId, className) {
 }
 
 /**
- * Retire une classe CSS d'un élément
- * @param {string} elementId - L'ID de l'élément
- * @param {string} className - Le nom de la classe
+ * Removes a CSS class from an element
+ * @param {string} elementId - The element's ID
+ * @param {string} className - The class name
  */
 export function retirerClasse(elementId, className) {
     const element = document.getElementById(elementId);
@@ -254,9 +254,9 @@ export function retirerClasse(elementId, className) {
 }
 
 /**
- * Bascule une classe CSS sur un élément
- * @param {string} elementId - L'ID de l'élément
- * @param {string} className - Le nom de la classe
+ * Toggles a CSS class on an element
+ * @param {string} elementId - The element's ID
+ * @param {string} className - The class name
  */
 export function toggleClasse(elementId, className) {
     const element = document.getElementById(elementId);
@@ -265,12 +265,12 @@ export function toggleClasse(elementId, className) {
     }
 }
 
-// ========== MANIPULATION DE TEXTE ==========
+// ========== TEXT MANIPULATION ==========
 
 /**
- * Capitalise la première lettre d'une chaîne
- * @param {string} str - La chaîne à capitaliser
- * @returns {string} - La chaîne capitalisée
+ * Capitalizes the first letter of a string
+ * @param {string} str - The string to capitalize
+ * @returns {string} - The capitalized string
  */
 export function capitaliser(str) {
     if (!str) return '';
@@ -278,22 +278,22 @@ export function capitaliser(str) {
 }
 
 /**
- * Tronque un texte à une longueur donnée
- * @param {string} text - Le texte à tronquer
- * @param {number} maxLength - La longueur maximale
- * @returns {string} - Le texte tronqué
+ * Truncates a text to a given length
+ * @param {string} text - The text to truncate
+ * @param {number} maxLength - The maximum length
+ * @returns {string} - The truncated text
  */
 export function tronquerTexte(text, maxLength) {
     if (!text || text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
 }
 
-// ========== FORMATAGE DE DATES ==========
+// ========== DATE FORMATTING ==========
 
 /**
- * Formate une date en format français
- * @param {Date|string} date - La date à formater
- * @returns {string} - La date formatée (ex: "12 décembre 2025")
+ * Formats a date in French format
+ * @param {Date|string} date - The date to format
+ * @returns {string} - The formatted date (e.g. "12 décembre 2025")
  */
 export function formaterDate(date) {
     const d = new Date(date);
@@ -302,21 +302,21 @@ export function formaterDate(date) {
 }
 
 /**
- * Formate une heure
- * @param {Date|string} date - La date contenant l'heure
- * @returns {string} - L'heure formatée (ex: "14:30")
+ * Formats a time
+ * @param {Date|string} date - The date containing the time
+ * @returns {string} - The formatted time (e.g. "14:30")
  */
 export function formaterHeure(date) {
     const d = new Date(date);
     return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 }
 
-// ========== GESTION DU STOCKAGE LOCAL ==========
+// ========== LOCAL STORAGE HANDLING ==========
 
 /**
- * Sauvegarde une donnée dans le localStorage
- * @param {string} key - La clé
- * @param {any} value - La valeur (sera convertie en JSON)
+ * Saves data to localStorage
+ * @param {string} key - The key
+ * @param {any} value - The value (will be converted to JSON)
  */
 export function sauvegarderLocal(key, value) {
     try {
@@ -327,9 +327,9 @@ export function sauvegarderLocal(key, value) {
 }
 
 /**
- * Récupère une donnée du localStorage
- * @param {string} key - La clé
- * @returns {any} - La valeur récupérée (ou null)
+ * Gets data from localStorage
+ * @param {string} key - The key
+ * @returns {any} - The retrieved value (or null)
  */
 export function recupererLocal(key) {
     try {
@@ -342,8 +342,8 @@ export function recupererLocal(key) {
 }
 
 /**
- * Supprime une donnée du localStorage
- * @param {string} key - La clé
+ * Removes data from localStorage
+ * @param {string} key - The key
  */
 export function supprimerLocal(key) {
     try {
@@ -353,12 +353,12 @@ export function supprimerLocal(key) {
     }
 }
 
-// ========== GESTION DES PARAMÈTRES URL ==========
+// ========== URL PARAMETER HANDLING ==========
 
 /**
- * Récupère un paramètre de l'URL
- * @param {string} paramName - Le nom du paramètre
- * @returns {string|null} - La valeur du paramètre ou null
+ * Gets a parameter from the URL
+ * @param {string} paramName - The parameter name
+ * @returns {string|null} - The parameter value or null
  */
 export function getURLParam(paramName) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -366,8 +366,8 @@ export function getURLParam(paramName) {
 }
 
 /**
- * Récupère tous les paramètres de l'URL
- * @returns {Object} - Objet avec tous les paramètres
+ * Gets all URL parameters
+ * @returns {Object} - Object with all parameters
  */
 export function getAllURLParams() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -381,8 +381,8 @@ export function getAllURLParams() {
 // ========== DEBUGGING ==========
 
 /**
- * Log en couleur dans la console (pour le développement)
- * @param {string} message - Le message à logger
+ * Logs to the console in color (for development)
+ * @param {string} message - The message to log
  * @param {string} type - Type: 'info', 'success', 'warning', 'error'
  */
 export function logDev(message, type = 'info') {
@@ -392,6 +392,6 @@ export function logDev(message, type = 'info') {
         'warning': 'color: #f59e0b; font-weight: bold;',
         'error': 'color: #ef4444; font-weight: bold;'
     };
-    
+
     console.log(`%c[DEV] ${message}`, styles[type] || styles.info);
 }

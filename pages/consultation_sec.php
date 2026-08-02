@@ -12,13 +12,12 @@ $pagesRendezvous = ['rdv_sec.php', 'desistement_sec.php'];
 $pagesStats = ['professional_sec.php', 'statistiques_sec.php'];
 $pagesParametres = ['parametres_sec.php'];
 
-$_SESSION['user_id'] = 2;
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'secretaire') {
     header('Location: index.php');
     exit;
 }
 
-// Récupérer les infos de la secrétaire et de sa structure
+// Get the secretary's info and their facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.prenom, u.nom, s.id as structure_id, s.nom as structure_nom
@@ -31,7 +30,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $secretaire = mysqli_fetch_assoc($result);
 
-// Si pas de structure trouvée, rediriger
+// If no facility found, redirect
 if (!$secretaire) {
     header("Location: index.php");
     exit;
@@ -39,15 +38,15 @@ if (!$secretaire) {
 
 $structure_id = $secretaire['structure_id'];
 
-// Récupérer l'ID du rendez-vous OU l'ID du patient
+// Get the appointment ID OR the patient ID
 $rdv_id = isset($_GET['rdv_id']) ? intval($_GET['rdv_id']) : 0;
 $patient_id = isset($_GET['patient_id']) ? intval($_GET['patient_id']) : 0;
 $praticien_param = isset($_GET['praticien']) ? intval($_GET['praticien']) : null;
 
-// Si on a un patient_id, récupérer le dernier rendez-vous de ce patient dans l'établissement
+// If we have a patient_id, get that patient's most recent appointment at this facility
 if ($patient_id && !$rdv_id) {
     if ($praticien_param) {
-        // Dernier RDV avec le praticien spécifique
+        // Most recent appointment with the specific practitioner
         $stmt = mysqli_prepare(
             $connexion,
             "SELECT r.id
@@ -61,7 +60,7 @@ if ($patient_id && !$rdv_id) {
         );
         mysqli_stmt_bind_param($stmt, "iii", $patient_id, $structure_id, $praticien_param);
     } else {
-        // Dernier RDV dans l'établissement
+        // Most recent appointment at the facility
         $stmt = mysqli_prepare(
             $connexion,
             "SELECT r.id
@@ -91,7 +90,7 @@ if (!$rdv_id) {
     exit;
 }
 
-// Récupérer les informations complètes du rendez-vous et vérifier qu'il appartient à l'établissement
+// Get the full appointment info and verify it belongs to the facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT 
@@ -137,7 +136,7 @@ if (!$rdv) {
     exit;
 }
 
-// === TRAITEMENT UPLOAD DE DOCUMENT (stockage en base64 dans url) ===
+// === DOCUMENT UPLOAD HANDLING (stored as base64 in url) ===
 $upload_message = '';
 $upload_error = '';
 
@@ -157,30 +156,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_document'])) {
         $taille_fichier = $fichier['size'];
         $tmp_name = $fichier['tmp_name'];
         
-        // Vérifier la taille (max 5 Mo pour base64)
+        // Check the size (max 5 MB for base64)
         if ($taille_fichier > 5 * 1024 * 1024) {
             $upload_error = "Le fichier est trop volumineux (max 5 Mo)";
         } else {
-            // Extensions autorisées
+            // Allowed extensions
             $extensions_autorisees = ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx', 'txt'];
             $extension = strtolower(pathinfo($nom_fichier, PATHINFO_EXTENSION));
             
             if (!in_array($extension, $extensions_autorisees)) {
                 $upload_error = "Type de fichier non autorisé. Formats acceptés : " . implode(', ', $extensions_autorisees);
             } else {
-                // Lire le contenu du fichier
+                // Read the file contents
                 $contenu_fichier = file_get_contents($tmp_name);
                 
-                // Déterminer le type MIME
+                // Determine the MIME type
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 $mime_type = finfo_file($finfo, $tmp_name);
                 finfo_close($finfo);
                 
-                // Encoder en base64 et créer une data URL
+                // Encode as base64 and build a data URL
                 $base64 = base64_encode($contenu_fichier);
                 $data_url = "data:$mime_type;base64,$base64";
                 
-                // Créer une description enrichie avec les métadonnées
+                // Build an enriched description with the metadata
                 $meta_info = json_encode([
                     'nom_fichier' => $nom_fichier,
                     'type_mime' => $mime_type,
@@ -190,7 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_document'])) {
                 
                 $description_complete = $description . "\n[META]" . $meta_info;
                 
-                // Insérer dans la base de données
+                // Insert into the database
                 $stmt = mysqli_prepare(
                     $connexion,
                     "INSERT INTO documents_patients (patient_id, expediteur, titre, description, url) 
@@ -218,7 +217,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_document'])) {
     }
 }
 
-// Récupérer les notes de consultation (en lecture seule pour la secrétaire)
+// Get the consultation notes (read-only for the secretary)
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT notes, id
@@ -232,7 +231,7 @@ mysqli_stmt_execute($stmt);
 $result_notes = mysqli_stmt_get_result($stmt);
 $notes_existantes = mysqli_fetch_assoc($result_notes);
 
-// Récupérer l'historique des rendez-vous du patient dans l'établissement
+// Get the patient's appointment history at the facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT 
@@ -264,7 +263,7 @@ while ($row = mysqli_fetch_assoc($result_historique)) {
     $historique[] = $row;
 }
 
-// Récupérer les documents du patient
+// Get the patient's documents
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT 
@@ -286,7 +285,7 @@ $result_docs = mysqli_stmt_get_result($stmt);
 
 $documents = [];
 while ($row = mysqli_fetch_assoc($result_docs)) {
-    // Extraire les métadonnées de la description
+    // Extract the metadata from the description
     $meta = null;
     $description_clean = $row['description'];
     
@@ -303,7 +302,7 @@ while ($row = mysqli_fetch_assoc($result_docs)) {
     $documents[] = $row;
 }
 
-// Calculer l'âge du patient
+// Calculate the patient's age
 $age = '';
 if ($rdv['date_naissance']) {
     $date_naissance = new DateTime($rdv['date_naissance']);
@@ -311,7 +310,7 @@ if ($rdv['date_naissance']) {
     $age = $aujourd_hui->diff($date_naissance)->y . ' ans';
 }
 
-// Fonction pour formater la taille des fichiers
+// Function to format file sizes
 function formatTaille($bytes) {
     if ($bytes >= 1048576) {
         return number_format($bytes / 1048576, 2) . ' Mo';
@@ -335,7 +334,7 @@ function formatTaille($bytes) {
     <link rel="stylesheet" href="../assets/css/consultation.css">
 </head>
 <body>
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -350,7 +349,7 @@ function formatTaille($bytes) {
         </nav>
     </header>
 
-    <!-- ========== LAYOUT PRINCIPAL ========== -->
+    <!-- ========== MAIN LAYOUT ========== -->
     <div class="pro-layout">
         
         <!-- ========== SIDEBAR NAVIGATION ========== -->
@@ -383,7 +382,7 @@ function formatTaille($bytes) {
             </nav>
         </aside>
 
-        <!-- ========== CONTENU PRINCIPAL ========== -->
+        <!-- ========== MAIN CONTENT ========== -->
         <main class="pro-main">
             <?php if (isset($_GET['upload']) && $_GET['upload'] === 'success'): ?>
                 <div class="upload-message">✓ Document uploadé avec succès</div>
@@ -421,7 +420,7 @@ function formatTaille($bytes) {
             </div>
 
             <div class="main-grid">
-                <!-- COLONNE GAUCHE : Informations patient -->
+                <!-- LEFT COLUMN: Patient info -->
                 <div class="left-column">
                     <div class="info-card">
                         <h2 class="card-title">👤 Informations patient</h2>
@@ -499,11 +498,11 @@ function formatTaille($bytes) {
                         </div>
                     <?php endif; ?>
 
-                    <!-- SECTION DOCUMENTS -->
+                    <!-- DOCUMENTS SECTION -->
                     <div class="info-card">
                         <h2 class="card-title">📎 Documents du patient</h2>
                         
-                        <!-- Formulaire d'upload -->
+                        <!-- Upload form -->
                         <div class="upload-form">
                             <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1rem;">📤 Ajouter un document</h3>
                             <form method="POST" enctype="multipart/form-data">
@@ -534,7 +533,7 @@ function formatTaille($bytes) {
                             </form>
                         </div>
 
-                        <!-- Liste des documents -->
+                        <!-- Document list -->
                         <?php if (count($documents) > 0): ?>
                             <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1rem;">📁 Documents existants (<?= count($documents) ?>)</h3>
                             <div class="documents-list">
@@ -574,7 +573,7 @@ function formatTaille($bytes) {
                     </div>
                 </div>
 
-                <!-- COLONNE DROITE : Notes de consultation (lecture seule) -->
+                <!-- RIGHT COLUMN: Consultation notes (read-only) -->
                 <div class="right-column">
                     <div class="info-card">
                         <h2 class="card-title">📝 Notes de consultation</h2>
@@ -602,7 +601,7 @@ function formatTaille($bytes) {
         </main>
     </div>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">

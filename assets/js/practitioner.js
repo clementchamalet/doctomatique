@@ -1,9 +1,9 @@
 /**
- * Module details praticien et reservation
- * Gère l'affichage des infos, creneaux et reservation
+ * Practitioner details and booking module
+ * Handles the display of info, slots, and booking
  */
 
-// ========== ETAT ==========
+// ========== STATE ==========
 const state = {
     practitioner: null,
     selectedStructure: null,
@@ -12,12 +12,12 @@ const state = {
     map: null
 };
 
-// ========== INITIALISATION ==========
+// ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', () => {
     loadPractitionerDetails();
 });
 
-// ========== CHARGEMENT DES DETAILS ==========
+// ========== LOADING DETAILS ==========
 async function loadPractitionerDetails() {
     try {
         const params = new URLSearchParams();
@@ -33,7 +33,7 @@ async function loadPractitionerDetails() {
             state.practitioner = data.data.practitioner;
             displayPractitioner();
             
-            // Pre-selection de la structure si specifiee
+            // Pre-select the facility if specified
             if (window.STRUCTURE_ID) {
                 document.getElementById('selectStructure').value = window.STRUCTURE_ID;
                 onStructureChange();
@@ -48,28 +48,28 @@ async function loadPractitionerDetails() {
     }
 }
 
-// ========== AFFICHAGE ==========
+// ========== DISPLAY ==========
 function displayPractitioner() {
     const p = state.practitioner;
 
-    // Nom
+    // Name
     document.getElementById('practitionerName').textContent = p.name;
     document.title = `Dr ${p.name} - Doctomatique`;
 
-    // Specialites
+    // Specialties
     const specialtiesText = p.specialties.map(s => s.name).join(', ');
     document.getElementById('practitionerSpecialties').textContent = specialtiesText;
 
-    // Biographie
+    // Biography
     document.getElementById('practitionerBio').textContent = p.biography || 'Aucune présentation disponible.';
 
-    // Structures
+    // Facilities
     displayStructures();
 
-    // Avis
+    // Reviews
     displayReviews();
 
-    // Affichage du contenu
+    // Display the content
     document.getElementById('loadingSpinner').style.display = 'none';
     document.getElementById('practitionerContent').style.display = 'block';
 }
@@ -81,7 +81,7 @@ function displayStructures() {
     container.innerHTML = '';
     
     state.practitioner.structures.forEach(structure => {
-        // Carte structure
+        // Facility card
         const card = document.createElement('div');
         card.className = 'structure-card';
         card.innerHTML = `
@@ -99,7 +99,7 @@ function displayStructures() {
         `;
         container.appendChild(card);
 
-        // Option dans le select
+        // Option in the select
         const option = document.createElement('option');
         option.value = structure.id;
         option.textContent = `${structure.name}`;
@@ -110,7 +110,7 @@ function displayStructures() {
         select.appendChild(option);
     });
 
-    // Event listener pour le changement de structure
+    // Event listener for the facility change
     select.addEventListener('change', onStructureChange);
 }
 
@@ -145,7 +145,7 @@ function displayReviews() {
     });
 }
 
-// ========== CRENEAUX ==========
+// ========== SLOTS ==========
 async function onStructureChange() {
     const structureId = document.getElementById('selectStructure').value;
     
@@ -224,7 +224,7 @@ function displaySlots() {
     });
 }
 
-// ========== RESERVATION ==========
+// ========== BOOKING ==========
 function selectSlot(slot, day) {
     if (!window.IS_LOGGED_IN) {
         if (confirm('Vous devez être connecté pour réserver. Voulez-vous vous connecter ?')) {
@@ -274,7 +274,7 @@ function showBookingModal() {
     document.getElementById('btnCancelBooking').onclick = closeBookingModal;
     document.getElementById('bookingForm').onsubmit = handleBookingSubmit;
     
-    // Fermeture en cliquant a l'exterieur
+    // Close by clicking outside
     modal.onclick = (e) => {
         if (e.target === modal) closeBookingModal();
     };
@@ -335,7 +335,7 @@ function showBookingSuccess() {
     };
 }
 
-// ========== UTILITAIRES ==========
+// ========== UTILITIES ==========
 function getDayName(dateStr) {
     const days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
     const date = new Date(dateStr);

@@ -1,7 +1,7 @@
 <?php
 /**
- * API pour obtenir les détails complets d'un praticien
- * Version corrigée pour correspondre à la vraie structure de la BD
+ * API to get a practitioner's full details
+ * Fixed version to match the actual DB structure
  */
 
 header('Content-Type: application/json; charset=utf-8');
@@ -25,7 +25,7 @@ try {
         throw new Exception("Erreur de connexion à la base de données");
     }
 
-    // Récupération des informations du praticien (SANS les colonnes qui n'existent pas)
+    // Get the practitioner's info (WITHOUT the columns that don't exist)
     $sql = "
         SELECT 
             p.utilisateur_id as praticien_id,
@@ -49,7 +49,7 @@ try {
         throw new Exception("Praticien non trouvé");
     }
 
-    // Récupération des spécialités
+    // Get the specialties
     $sqlSpecialties = "
         SELECT sm.id, sm.nom
         FROM praticiens_specialites ps
@@ -62,7 +62,7 @@ try {
     $specialties = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if (!$specialties) $specialties = [];
 
-    // Récupération des structures (SANS code_postal, latitude, longitude qui n'existent pas)
+    // Get the facilities (WITHOUT code_postal, latitude, longitude, which don't exist)
     $sqlStructures = "
         SELECT 
             s.id,
@@ -81,7 +81,7 @@ try {
     $structures = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if (!$structures) $structures = [];
 
-    // Récupération des avis
+    // Get the reviews
     $sqlReviews = "
         SELECT 
             a.id,
@@ -102,14 +102,14 @@ try {
     $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if (!$reviews) $reviews = [];
 
-    // Calcul de la note moyenne
+    // Calculate the average rating
     $avgRating = null;
     if (count($reviews) > 0) {
         $totalRating = array_sum(array_column($reviews, 'evaluation'));
         $avgRating = round($totalRating / count($reviews), 1);
     }
 
-    // Comptage des créneaux disponibles (SANS est_reserve et structure_id qui n'existent pas)
+    // Count the available slots (WITHOUT est_reserve and structure_id, which don't exist)
     $structuresWithSlots = [];
     foreach ($structures as $structure) {
         $sqlSlots = "
@@ -134,7 +134,7 @@ try {
         ];
     }
 
-    // Formatage de la réponse
+    // Format the response
     $response = [
         'practitioner' => [
             'id' => intval($practitioner['praticien_id']),

@@ -1,13 +1,13 @@
 <?php
 /**
- * API pour reserver un rendez-vous - VERSION PROPRE
+ * API to book an appointment - CLEAN VERSION
  * Endpoint: /api/book_appointment.php
- * Methode: POST
- * Authentification: Requise (patient connecte)
- * Body JSON:
- *  - slot_id: ID du creneau (requis)
- *  - reason_id: ID du motif de consultation (requis)
- *  - notes: Notes du patient (optionnel)
+ * Method: POST
+ * Authentication: Required (logged-in patient)
+ * JSON Body:
+ *  - slot_id: Slot ID (required)
+ *  - reason_id: Consultation reason ID (required)
+ *  - notes: Patient notes (optional)
  */
 
 require_once __DIR__ . '/../pages/config.php';
@@ -17,18 +17,18 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
-// Gestion de la requete OPTIONS pour CORS
+// Handle the OPTIONS request for CORS
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
-// Verification de la methode
+// Check the method
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendError("Methode non autorisee. Utilisez POST", 405);
 }
 
-// Verification de l'authentification
+// Check authentication
 if (!isLoggedIn()) {
     sendError("Vous devez etre connecte pour reserver un rendez-vous", 401);
 }
@@ -37,14 +37,14 @@ if (!isPatient()) {
     sendError("Seuls les patients peuvent reserver des rendez-vous", 403);
 }
 
-// Recuperation des donnees JSON
+// Get the JSON data
 $input = json_decode(file_get_contents('php://input'), true);
 
 if (!$input) {
     sendError("Donnees JSON invalides");
 }
 
-// Validation des champs requis
+// Validate required fields
 if (!isset($input['slot_id']) || empty($input['slot_id'])) {
     sendError("L'identifiant du creneau est requis");
 }
@@ -66,10 +66,10 @@ try {
         throw new Exception("Erreur de connexion a la base de donnees");
     }
 
-    // Debut de la transaction
+    // Start the transaction
     $pdo->beginTransaction();
 
-    // Verification que le creneau existe et est disponible
+    // Check that the slot exists and is available
     $sqlCheckSlot = "
         SELECT 
             cd.id,
@@ -106,7 +106,7 @@ try {
         sendError("Ce creneau a deja ete reserve par un autre patient", 409);
     }
 
-    // Verification que le patient n'a pas deja un rendez-vous a la meme heure
+    // Check that the patient doesn't already have an appointment at the same time
     $sqlCheckConflict = "
         SELECT r.id
         FROM rendezvous r
@@ -127,7 +127,7 @@ try {
         sendError("Vous avez deja un rendez-vous prevu a cette date et heure", 409);
     }
 
-    // Verification que le motif existe
+    // Check that the reason exists
     $sqlCheckReason = "SELECT id FROM motif WHERE id = :reason_id";
     $stmt = $pdo->prepare($sqlCheckReason);
     $stmt->execute(['reason_id' => $reasonId]);
@@ -137,7 +137,7 @@ try {
         sendError("Le motif de consultation selectionne est invalide", 400);
     }
 
-    // Marquer le creneau comme reserve
+    // Mark the slot as booked
     $sqlUpdateSlot = "
         UPDATE creneaux_disponibilite
         SET est_reserve = 1
@@ -147,7 +147,7 @@ try {
     $stmt = $pdo->prepare($sqlUpdateSlot);
     $stmt->execute(['slot_id' => $slotId]);
 
-    // Creer le rendez-vous
+    // Create the appointment
     $sqlCreateAppointment = "
         INSERT INTO rendezvous (
             patient_id,
@@ -184,15 +184,15 @@ try {
 
     $appointmentId = $pdo->lastInsertId();
 
-    // Validation de la transaction
+    // Commit the transaction
     $pdo->commit();
 
-    // Calcul de l'heure de fin
+    // Calculate the end time
     $startTime = new DateTime($slot['debut']);
     $endTime = clone $startTime;
     $endTime->add(new DateInterval('PT' . $slot['duree_minute'] . 'M'));
 
-    // Retour de la confirmation
+    // Return the confirmation
     sendSuccess([
         'appointment' => [
             'id' => intval($appointmentId),

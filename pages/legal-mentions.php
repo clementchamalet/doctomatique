@@ -25,43 +25,43 @@ else {
 </head>
 <body>
 
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
-            <!-- Logo principal avec lien vers l'accueil -->
+            <!-- Main logo linking to home -->
             <a href="../index.php" class="logo">
                 <img src="../assets/images/logo.png" alt="Logo Doctomatique">
                 <span>Doctomatique</span>
             </a>
             
-            <!-- Navigation principale -->
+            <!-- Main navigation -->
             <div class="nav-links">
-                <!-- Lien vers l'espace professionnel -->
+                <!-- Link to the professional area -->
                 <a href="patient.php">Espace patient</a>
                 
-                <!-- Bouton de connexion -->
+                <!-- Login button -->
                 <a href=<?php echo '"' . $link . '"' ; ?> class="btn-connexion"><?php echo $affichage ; ?></a>
             </div>
         </nav>
     </header>
 
-    <!-- ========== CONTENU PRINCIPAL ========== -->
+    <!-- ========== MAIN CONTENT ========== -->
     <main>
         <div class="legal-container">
             
-            <!-- ========== EN-TÊTE DE LA PAGE LÉGALE ========== -->
+            <!-- ========== LEGAL PAGE HEADER ========== -->
             <div class="legal-hero">
-                <!-- Titre principal de la page -->
+                <!-- Main page title -->
                 <h1>Mentions Légales</h1>
                 
-                <!-- Date de dernière mise à jour -->
+                <!-- Last updated date -->
                 <p class="date">Dernière mise à jour : 10 décembre 2025</p>
             </div>
 
-            <!-- ========== CONTENU DES MENTIONS LÉGALES ========== -->
+            <!-- ========== LEGAL NOTICE CONTENT ========== -->
             <div class="legal-content">
                 
-                <!-- ========== SECTION 1 : ÉDITEUR DU SITE ========== -->
+                <!-- ========== SECTION 1: SITE PUBLISHER ========== -->
                 <div class="legal-section">
                     <h2>1. Éditeur du Site</h2>
                     
@@ -69,7 +69,7 @@ else {
                         Le site web <strong>Doctomatique</strong> (ci-après "le Site") est édité par :
                     </p>
                     
-                    <!-- Encadré d'informations -->
+                    <!-- Info box -->
                     <div class="info-box">
                         <p><strong>Doctomatique</strong></p>
                         <p>Association loi 1901 à but non lucratif</p>
@@ -81,7 +81,7 @@ else {
                     </div>
                 </div>
 
-                <!-- ========== SECTION 2 : HÉBERGEMENT ========== -->
+                <!-- ========== SECTION 2: HOSTING ========== -->
                 <div class="legal-section">
                     <h2>2. Hébergement</h2>
                     
@@ -89,7 +89,7 @@ else {
                         Le site Doctomatique est hébergé par :
                     </p>
                     
-                    <!-- Encadré d'informations sur l'hébergeur -->
+                    <!-- Hosting provider info box -->
                     <div class="info-box">
                         <p><strong>OVH SAS</strong></p>
                         <p>2 rue Kellermann, 59100 Roubaix, France</p>
@@ -104,7 +104,7 @@ else {
                     </p>
                 </div>
 
-                <!-- ========== SECTION 3 : PROPRIÉTÉ INTELLECTUELLE ========== -->
+                <!-- ========== SECTION 3: INTELLECTUAL PROPERTY ========== -->
                 <div class="legal-section">
                     <h2>3. Propriété Intellectuelle</h2>
                     
@@ -128,7 +128,7 @@ else {
                     </p>
                 </div>
 
-                <!-- ========== SECTION 4 : PROTECTION DES DONNÉES PERSONNELLES ========== -->
+                <!-- ========== SECTION 4: PERSONAL DATA PROTECTION ========== -->
                 <div class="legal-section">
                     <h2>4. Protection des Données Personnelles</h2>
                     
@@ -142,7 +142,7 @@ else {
                         Pour exercer ces droits, vous pouvez nous contacter :
                     </p>
                     
-                    <!-- Liste des moyens de contact -->
+                    <!-- List of contact methods -->
                     <ul>
                         <li>Par email : rgpd@doctomatique.fr</li>
                         <li>Par courrier : Doctomatique - DPO, 123 Avenue de la Santé, 75015 Paris</li>
@@ -155,7 +155,7 @@ else {
                     </p>
                 </div>
 
-                <!-- ========== SECTION 5 : COOKIES ========== -->
+                <!-- ========== SECTION 5: COOKIES ========== -->
                 <div class="legal-section">
                     <h2>5. Cookies</h2>
                     
@@ -171,7 +171,7 @@ else {
                     </p>
                 </div>
 
-                <!-- ========== SECTION 6 : RESPONSABILITÉ ========== -->
+                <!-- ========== SECTION 6: LIABILITY ========== -->
                 <div class="legal-section">
                     <h2>6. Responsabilité</h2>
                     
@@ -185,7 +185,7 @@ else {
                         Doctomatique ne saurait être tenue responsable :
                     </p>
                     
-                    <!-- Liste des limitations de responsabilité -->
+                    <!-- List of liability limitations -->
                     <ul>
                         <li>Des erreurs ou omissions dans le contenu du Site</li>
                         <li>Des dommages directs ou indirects résultant de l'utilisation du Site</li>
@@ -201,7 +201,7 @@ else {
                     </p>
                 </div>
 
-                <!-- ========== SECTION 7 : LIENS HYPERTEXTES ========== -->
+                <!-- ========== SECTION 7: HYPERLINKS ========== -->
                 <div class="legal-section">
                     <h2>7. Liens Hypertextes</h2>
                     
@@ -218,7 +218,7 @@ else {
                     </p>
                 </div>
 
-                <!-- ========== SECTION 8 : LOI APPLICABLE ET JURIDICTION ========== -->
+                <!-- ========== SECTION 8: APPLICABLE LAW AND JURISDICTION ========== -->
                 <div class="legal-section">
                     <h2>8. Loi Applicable et Juridiction</h2>
                     
@@ -229,7 +229,7 @@ else {
                     </p>
                 </div>
 
-                <!-- ========== SECTION 9 : MÉDIATION ========== -->
+                <!-- ========== SECTION 9: MEDIATION ========== -->
                 <div class="legal-section">
                     <h2>9. Médiation</h2>
                     
@@ -238,7 +238,7 @@ else {
                         un dispositif de médiation de la consommation. L'entité de médiation retenue est :
                     </p>
                     
-                    <!-- Encadré d'informations sur la médiation -->
+                    <!-- Mediation info box -->
                     <div class="info-box">
                         <p><strong>Centre de médiation de la consommation</strong></p>
                         <p>Email : contact@cm-conso.fr</p>
@@ -246,7 +246,7 @@ else {
                     </div>
                 </div>
 
-                <!-- ========== SECTION 10 : CONTACT ========== -->
+                <!-- ========== SECTION 10: CONTACT ========== -->
                 <div class="legal-section">
                     <h2>10. Contact</h2>
                     
@@ -254,7 +254,7 @@ else {
                         Pour toute question concernant ces mentions légales, vous pouvez nous contacter :
                     </p>
                     
-                    <!-- Liste des moyens de contact -->
+                    <!-- List of contact methods -->
                     <ul>
                         <li>Email : contact@doctomatique.fr</li>
                         <li>Formulaire de contact : <a href="help.php" 
@@ -267,7 +267,7 @@ else {
         </div>
     </main>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">

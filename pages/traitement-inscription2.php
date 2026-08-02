@@ -1,11 +1,11 @@
 <?php
 
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 
 require 'config.php';
 
-// Verifier que le formulaire a ete soumis
+// Ensure the form was submitted
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: inscription.php');
     exit;
@@ -13,21 +13,21 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $conn = get_db();
 
-// Recuperer les donnees du formulaire
+// Get form data
 $user_id = $_POST['user_id'];
 $date_naissance = $_POST['date_naissance'];
-$genre_description = $_POST['genre']; // On recoit 'homme', 'femme', ou 'autre'
+$genre_description = $_POST['genre']; // Receives 'homme', 'femme', or 'autre'
 $adresse = trim($_POST['adresse']);
 $contact_urgence = trim($_POST['contact_urgence']);
 
-// Validation des donnees communes
+// Validate common data
 $erreurs = [];
 
 if (empty($user_id) || empty($date_naissance) || empty($genre_description) || empty($adresse) || empty($contact_urgence)) {
     $erreurs[] = "Tous les champs sont obligatoires";
 }
 
-// Verifier que l'utilisateur existe
+// Check that the user exists
 $sql_check = "SELECT id FROM utilisateurs WHERE id = ?";
 $stmt_check = mysqli_prepare($conn, $sql_check);
 mysqli_stmt_bind_param($stmt_check, "i", $user_id);
@@ -47,7 +47,7 @@ if (!empty($erreurs)) {
     exit;
 }
 
-// Mapper les valeurs du formulaire vers les valeurs de la BD
+// Map form values to DB values
 $genre_map = [
     'homme' => 'M',
     'femme' => 'F',
@@ -56,7 +56,7 @@ $genre_map = [
 
 $genre_db_value = $genre_map[strtolower($genre_description)] ?? $genre_description;
 
-// Recuperer l'ID du genre depuis la table 'genre'
+// Get the gender ID from the 'genre' table
 $sql_genre = "SELECT id FROM genre WHERE LOWER(description) = LOWER(?)";
 $stmt_genre = mysqli_prepare($conn, $sql_genre);
 mysqli_stmt_bind_param($stmt_genre, "s", $genre_db_value);
@@ -75,7 +75,7 @@ if (mysqli_num_rows($result_genre) > 0) {
 }
 mysqli_stmt_close($stmt_genre);
 
-// Inserer dans la table patients (car tout le monde est patient)
+// Insert into the patients table (everyone is a patient)
 $sql_insert_patient = "INSERT INTO patients (utilisateur_id, date_naissance, genre, adresse, contact_urgence) VALUES (?, ?, ?, ?, ?)";
 $stmt_patient = mysqli_prepare($conn, $sql_insert_patient);
 mysqli_stmt_bind_param($stmt_patient, "isiss", $user_id, $date_naissance, $genre_id, $adresse, $contact_urgence);
@@ -86,7 +86,7 @@ if (!mysqli_stmt_execute($stmt_patient)) {
 }
 mysqli_stmt_close($stmt_patient);
 
-// Recuperer le(s) role(s) de l'utilisateur
+// Get the user's role(s)
 $sql_roles = "SELECT r.nom FROM roles r INNER JOIN utilisateurs_roles ur ON r.id = ur.role_id WHERE ur.utilisateur_id = ?";
 $stmt_roles = mysqli_prepare($conn, $sql_roles);
 mysqli_stmt_bind_param($stmt_roles, "i", $user_id);
@@ -99,14 +99,14 @@ while ($row = mysqli_fetch_assoc($result_roles)) {
 }
 mysqli_stmt_close($stmt_roles);
 
-// Si l'utilisateur est un praticien
+// If the user is a practitioner
 if (in_array('praticien', $roles)) {
     $numero_licence = isset($_POST['numero_licence']) ? trim($_POST['numero_licence']) : null;
     $biographie = isset($_POST['biographie']) ? trim($_POST['biographie']) : null;
     $specialite_id = isset($_POST['specialite']) ? intval($_POST['specialite']) : null;
     $structure_id = isset($_POST['structure']) ? intval($_POST['structure']) : null;
     
-    // Validation : le numero de licence est obligatoire
+    // Validation: the license number is required
     if (!$numero_licence) {
         echo '<p>Le numéro de licence est obligatoire pour un praticien</p>
         <form action="inscription.php">
@@ -115,7 +115,7 @@ if (in_array('praticien', $roles)) {
         exit;
     }
     
-    // Validation : la spécialité est obligatoire
+    // Validation: the specialty is required
     if (!$specialite_id) {
         echo '<p>La spécialité médicale est obligatoire pour un praticien</p>
         <form action="inscription.php">
@@ -124,7 +124,7 @@ if (in_array('praticien', $roles)) {
         exit;
     }
     
-    // Validation : la structure est obligatoire
+    // Validation: the facility is required
     if (!$structure_id) {
         echo '<p>La structure médicale est obligatoire pour un praticien</p>
         <form action="inscription.php">
@@ -133,7 +133,7 @@ if (in_array('praticien', $roles)) {
         exit;
     }
     
-    // Vérifier que la spécialité existe dans la BD
+    // Check that the specialty exists in the DB
     $sql_check_specialite = "SELECT id FROM specialites_medecine WHERE id = ?";
     $stmt_check_specialite = mysqli_prepare($conn, $sql_check_specialite);
     mysqli_stmt_bind_param($stmt_check_specialite, "i", $specialite_id);
@@ -149,7 +149,7 @@ if (in_array('praticien', $roles)) {
     }
     mysqli_stmt_close($stmt_check_specialite);
     
-    // Vérifier que la structure existe dans la BD
+    // Check that the facility exists in the DB
     $sql_check_structure = "SELECT id FROM structures_sante WHERE id = ?";
     $stmt_check_structure = mysqli_prepare($conn, $sql_check_structure);
     mysqli_stmt_bind_param($stmt_check_structure, "i", $structure_id);
@@ -165,7 +165,7 @@ if (in_array('praticien', $roles)) {
     }
     mysqli_stmt_close($stmt_check_structure);
     
-    // Insérer dans la table praticiens
+    // Insert into the praticiens table
     $sql_insert_praticien = "INSERT INTO praticiens (utilisateur_id, numero_licence, biographie) VALUES (?, ?, ?)";
     $stmt_praticien = mysqli_prepare($conn, $sql_insert_praticien);
     mysqli_stmt_bind_param($stmt_praticien, "iss", $user_id, $numero_licence, $biographie);
@@ -176,7 +176,7 @@ if (in_array('praticien', $roles)) {
     }
     mysqli_stmt_close($stmt_praticien);
     
-    // Insérer l'association praticien-spécialité dans la table praticiens_specialites
+    // Insert the practitioner-specialty association into praticiens_specialites
     $sql_insert_specialite = "INSERT INTO praticiens_specialites (praticien_id, specialite_id) VALUES (?, ?)";
     $stmt_specialite = mysqli_prepare($conn, $sql_insert_specialite);
     mysqli_stmt_bind_param($stmt_specialite, "ii", $user_id, $specialite_id);
@@ -187,7 +187,7 @@ if (in_array('praticien', $roles)) {
     }
     mysqli_stmt_close($stmt_specialite);
     
-    // Insérer l'association praticien-structure dans la table praticiens_structures
+    // Insert the practitioner-facility association into praticiens_structures
     $sql_insert_structure = "INSERT INTO praticiens_structures (praticien_id, structure_id) VALUES (?, ?)";
     $stmt_insert_structure = mysqli_prepare($conn, $sql_insert_structure);
     mysqli_stmt_bind_param($stmt_insert_structure, "ii", $user_id, $structure_id);
@@ -199,7 +199,7 @@ if (in_array('praticien', $roles)) {
     mysqli_stmt_close($stmt_insert_structure);
 }
 
-// Si l'utilisateur est un secretaire
+// If the user is a secretary
 if (in_array('secretaire', $roles)) {
     $nom_etablissement = isset($_POST['nom_etablissement']) ? trim($_POST['nom_etablissement']) : null;
     $adresse_etablissement = isset($_POST['adresse_etablissement']) ? trim($_POST['adresse_etablissement']) : null;
@@ -208,7 +208,7 @@ if (in_array('secretaire', $roles)) {
     $type_etablissement_id = isset($_POST['type_etablissement']) ? intval($_POST['type_etablissement']) : null;
     $tel_etablissement = isset($_POST['tel_etablissement']) ? trim($_POST['tel_etablissement']) : null;
     
-    // Validation des champs obligatoires
+    // Validate required fields
     if (!$nom_etablissement || !$adresse_etablissement || !$code_postal || !$ville || !$type_etablissement_id || !$tel_etablissement) {
         echo '<p>Tous les champs de l\'établissement sont obligatoires</p>
         <form action="inscription.php">
@@ -217,7 +217,7 @@ if (in_array('secretaire', $roles)) {
         exit;
     }
     
-    // Vérifier que le type d'établissement existe dans la BD
+    // Check that the facility type exists in the DB
     $sql_check_type = "SELECT id FROM type_struct WHERE id = ?";
     $stmt_check_type = mysqli_prepare($conn, $sql_check_type);
     mysqli_stmt_bind_param($stmt_check_type, "i", $type_etablissement_id);
@@ -233,7 +233,7 @@ if (in_array('secretaire', $roles)) {
     }
     mysqli_stmt_close($stmt_check_type);
     
-    // Insérer la structure de santé avec tous les champs
+    // Insert the healthcare facility with all fields
     $sql_insert_structure = "INSERT INTO structures_sante (nom, type, adresse, code_postal, ville, telephone, secretaire_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt_structure = mysqli_prepare($conn, $sql_insert_structure);
     mysqli_stmt_bind_param($stmt_structure, "sisissi", $nom_etablissement, $type_etablissement_id, $adresse_etablissement, $code_postal, $ville, $tel_etablissement, $user_id);
@@ -247,7 +247,7 @@ if (in_array('secretaire', $roles)) {
 
 mysqli_close($conn);
 
-// Afficher le message de succes et rediriger vers login
+// Show the success message and redirect to login
 echo '
 <!DOCTYPE html>
 <html lang="fr">

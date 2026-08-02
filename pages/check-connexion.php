@@ -1,12 +1,12 @@
 <?php
 
-//Mini script pour check si le utilisateur est connecté
+//Mini script to check whether the user is logged in
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Vérifier si l'utilisateur est connecté
+// Check whether the user is logged in
 if (!isset($_SESSION['user_id'])) {
     echo '
 
@@ -38,9 +38,9 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 
-//Si l'utilisateur est connecté, vous pouvez utilisez la variable : $_SESSION['role'], elle stocke le rôle de la personne 
-//                                                                              -> "praticien" si c'est un docteur qui se co
-//                                                                              -> "secretaire" si c'est un secretaire qui se co
-//                                                                              -> "patient" si c'est ni un docteur ni un secretaire
+//If the user is logged in, you can use the $_SESSION['role'] variable, which stores their role:
+//                                                                              -> "praticien" if it's a doctor logged in
+//                                                                              -> "secretaire" if it's a secretary logged in
+//                                                                              -> "patient" if neither a doctor nor a secretary
 
 ?>

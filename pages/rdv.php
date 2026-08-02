@@ -12,7 +12,7 @@ $pagesRendezvous = ['rdv.php', 'desistement'];
 $pagesStats = ['professional.php', 'statistiques.php'];
 $pagesParametres = ['parametres.php'];
 
-// Vérifier que l'utilisateur est un praticien
+// Check that the user is a practitioner
 $stmt = mysqli_prepare($connexion, "SELECT 1 FROM praticiens WHERE utilisateur_id = ?");
 mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
 mysqli_stmt_execute($stmt);
@@ -23,7 +23,7 @@ if (mysqli_num_rows($result) === 0) {
     exit;
 }
 
-// Récupérer les infos du praticien
+// Get the practitioner's info
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.prenom, u.nom
@@ -36,7 +36,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $praticien = mysqli_fetch_assoc($result);
 
-// Récupérer les spécialités
+// Get the specialties
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT sm.nom
@@ -53,11 +53,11 @@ while ($row = mysqli_fetch_assoc($res)) {
     $specialites[] = $row['nom'];
 }
 
-// Filtres
+// Filters
 $filtre_statut = isset($_GET['statut']) ? $_GET['statut'] : 'tous';
 $recherche = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-// Construire la requête SQL
+// Build the SQL query
 $sql = "SELECT 
             r.id,
             r.patient_id,
@@ -82,14 +82,14 @@ $sql = "SELECT
 $params = [$_SESSION['user_id']];
 $types = "i";
 
-// Filtre par statut
+// Filter by status
 if ($filtre_statut !== 'tous') {
     $sql .= " AND s.description = ?";
     $params[] = $filtre_statut;
     $types .= "s";
 }
 
-// Filtre de recherche
+// Search filter
 if ($recherche !== '') {
     $sql .= " AND (u.prenom LIKE ? OR u.nom LIKE ? OR m.description LIKE ?)";
     $recherche_param = "%$recherche%";
@@ -106,7 +106,7 @@ mysqli_stmt_bind_param($stmt, $types, ...$params);
 mysqli_stmt_execute($stmt);
 $result_rdv = mysqli_stmt_get_result($stmt);
 
-// Organiser les RDV par catégorie
+// Organize appointments by category
 $rdv_aujourd_hui = [];
 $rdv_futurs = [];
 $rdv_passes = [];
@@ -119,12 +119,12 @@ $fin_aujourd_hui->setTime(23, 59, 59);
 while ($row = mysqli_fetch_assoc($result_rdv)) {
     $date_rdv = new DateTime($row['debut']);
     
-    // Formater les informations
+    // Format the info
     $row['date_format'] = $date_rdv->format('d/m/Y');
     $row['heure_format'] = $date_rdv->format('H:i');
     $row['jour_semaine'] = strftime('%A', $date_rdv->getTimestamp());
     
-    // Déterminer si c'est aujourd'hui, futur ou passé
+    // Determine whether it's today, future, or past
     if ($date_rdv >= $aujourd_hui && $date_rdv <= $fin_aujourd_hui) {
         $rdv_aujourd_hui[] = $row;
     } elseif ($date_rdv > $fin_aujourd_hui) {
@@ -134,10 +134,10 @@ while ($row = mysqli_fetch_assoc($result_rdv)) {
     }
 }
 
-// Inverser l'ordre des RDV passés pour avoir les plus récents en premier
+// Reverse the order of past appointments so the most recent come first
 $rdv_passes = array_reverse($rdv_passes);
 
-// Statistiques
+// Statistics
 $total_rdv = count($rdv_aujourd_hui) + count($rdv_futurs) + count($rdv_passes);
 $total_aujourd_hui = count($rdv_aujourd_hui);
 $total_futurs = count($rdv_futurs);
@@ -156,7 +156,7 @@ $total_passes = count($rdv_passes);
     <link rel="stylesheet" href="../assets/css/rdv.css">
 </head>
 <body>
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -170,7 +170,7 @@ $total_passes = count($rdv_passes);
         </nav>
     </header>
 
-    <!-- ========== LAYOUT PRINCIPAL ========== -->
+    <!-- ========== MAIN LAYOUT ========== -->
     <div class="pro-layout">
         
         <!-- ========== SIDEBAR NAVIGATION ========== -->
@@ -207,7 +207,7 @@ $total_passes = count($rdv_passes);
             </nav>
         </aside>
 
-        <!-- ========== CONTENU PRINCIPAL ========== -->
+        <!-- ========== MAIN CONTENT ========== -->
         <main class="pro-main">
             <div class="rdv-page-header">
                 <div class="rdv-title-section">
@@ -224,7 +224,7 @@ $total_passes = count($rdv_passes);
                 </div>
             </div>
 
-            <!-- Stats rapides -->
+            <!-- Quick stats -->
             <div class="rdv-stats">
                 <div class="rdv-stat-card rdv-stat-past">
                     <span class="stat-card-icon">✅</span>
@@ -249,7 +249,7 @@ $total_passes = count($rdv_passes);
                 </div>
             </div>
 
-            <!-- Barre de filtres et recherche -->
+            <!-- Filter and search bar -->
             <div class="filters-container">
                 <form method="GET" action="rdv.php" class="filters-form">
                     <div class="search-input-wrapper">
@@ -291,9 +291,9 @@ $total_passes = count($rdv_passes);
                 </form>
             </div>
 
-            <!-- Liste des RDV -->
+            <!-- Appointment list -->
             <div class="rdv-container">
-                <!-- RDV Aujourd'hui -->
+                <!-- Today's appointments -->
                 <?php if (count($rdv_aujourd_hui) > 0): ?>
                     <div class="rdv-section">
                         <h2 class="rdv-section-title">
@@ -303,7 +303,7 @@ $total_passes = count($rdv_passes);
                         </h2>
                         <div class="rdv-list">
                             <?php foreach ($rdv_aujourd_hui as $rdv): 
-                                // Déterminer la classe de statut
+                                // Determine the status class
                                 $statut_class = '';
                                 switch (strtolower($rdv['statut'] ?? '')) {
                                     case 'confirmé':
@@ -384,7 +384,7 @@ $total_passes = count($rdv_passes);
                     </div>
                 <?php endif; ?>
 
-                <!-- RDV Futurs -->
+                <!-- Upcoming appointments -->
                 <?php if (count($rdv_futurs) > 0): ?>
                     <div class="rdv-section">
                         <h2 class="rdv-section-title">
@@ -394,7 +394,7 @@ $total_passes = count($rdv_passes);
                         </h2>
                         <div class="rdv-list">
                             <?php foreach ($rdv_futurs as $rdv): 
-                                // Déterminer la classe de statut
+                                // Determine the status class
                                 $statut_class = '';
                                 switch (strtolower($rdv['statut'] ?? '')) {
                                     case 'confirmé':
@@ -475,7 +475,7 @@ $total_passes = count($rdv_passes);
                     </div>
                 <?php endif; ?>
 
-                <!-- RDV Passés -->
+                <!-- Past appointments -->
                 <?php if (count($rdv_passes) > 0): ?>
                     <div class="rdv-section">
                         <h2 class="rdv-section-title">
@@ -485,7 +485,7 @@ $total_passes = count($rdv_passes);
                         </h2>
                         <div class="rdv-list">
                             <?php foreach ($rdv_passes as $rdv): 
-                                // Déterminer la classe de statut
+                                // Determine the status class
                                 $statut_class = '';
                                 switch (strtolower($rdv['statut'] ?? '')) {
                                     case 'confirmé':
@@ -566,7 +566,7 @@ $total_passes = count($rdv_passes);
                     </div>
                 <?php endif; ?>
 
-                <!-- Aucun RDV -->
+                <!-- No appointments -->
                 <?php if ($total_rdv === 0): ?>
                     <div class="rdv-empty">
                         <div class="empty-icon">📋</div>
@@ -592,7 +592,7 @@ $total_passes = count($rdv_passes);
         </main>
     </div>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">

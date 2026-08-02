@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Détruire toutes les variables de session admin
+// Destroy all admin session variables
 unset($_SESSION['admin_id']);
 unset($_SESSION['admin_email']);
 unset($_SESSION['admin_prenom']);
@@ -10,7 +10,7 @@ unset($_SESSION['is_admin']);
 
 session_destroy();
 
-// Rediriger vers la page de connexion admin
+// Redirect to the admin login page
 header('Location: admin-login.php');
 exit;
 ?>

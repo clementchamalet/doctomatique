@@ -1,11 +1,11 @@
 <?php
 /**
- * API pour obtenir les rendez-vous d'un patient - VERSION PROPRE
+ * API to get a patient's appointments - CLEAN VERSION
  * Endpoint: /api/get_user_appointments.php
- * Methode: GET
- * Authentification: Requise (patient connecte)
- * Parametres:
- *  - status: Filtre par statut (optionnel: 'upcoming', 'past', 'cancelled')
+ * Method: GET
+ * Authentication: Required (logged-in patient)
+ * Parameters:
+ *  - status: Filter by status (optional: 'upcoming', 'past', 'cancelled')
  */
 
 require_once __DIR__ . '/../pages/config.php';
@@ -14,7 +14,7 @@ header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 
-// Verification de l'authentification
+// Check authentication
 if (!isLoggedIn()) {
     sendError("Vous devez etre connecte pour consulter vos rendez-vous", 401);
 }
@@ -32,7 +32,7 @@ try {
         throw new Exception("Erreur de connexion a la base de donnees");
     }
 
-    // Construction de la requete de base
+    // Build the base query
     $sql = "
         SELECT 
             r.id as appointment_id,
@@ -66,7 +66,7 @@ try {
 
     $params = ['patient_id' => $patientId];
 
-    // Filtre par statut
+    // Filter by status
     switch ($statusFilter) {
         case 'upcoming':
             $sql .= " AND cd.debut >= NOW() AND r.statut IN (" . APPOINTMENT_STATUS_PENDING . ", " . APPOINTMENT_STATUS_CONFIRMED . ")";
@@ -85,7 +85,7 @@ try {
     $stmt->execute($params);
     $appointments = $stmt->fetchAll();
 
-    // Formatage des resultats
+    // Format the results
     $formattedAppointments = [];
     $now = new DateTime();
 
@@ -135,7 +135,7 @@ try {
         ];
     }
 
-    // Statistiques
+    // Statistics
     $stats = [
         'total' => count($formattedAppointments),
         'upcoming' => 0,

@@ -1,13 +1,13 @@
 /* ========================================
-   PROFESSIONNEL.JS - ESPACE PROFESSIONNEL
-   Gestion du tableau de bord praticien
+   PROFESSIONAL.JS - PRACTITIONER AREA
+   Practitioner dashboard management
    ======================================== */
 
 import { logDev } from './utils.js';
 
-// ========== DONNÉES MOCKÉES ========== 
+// ========== MOCK DATA ==========
 
-// Informations du praticien connecté
+// Connected practitioner info
 const PRATICIEN_ACTUEL = {
     id: 1,
     nom: "Dr. Sophie Martin",
@@ -17,11 +17,11 @@ const PRATICIEN_ACTUEL = {
     adresse: "15 Rue de la République, 59000 Lille",
     photo: "https://i.pravatar.cc/150?img=1",
     tarifConsultation: 25,
-    dureeConsultation: 30, // en minutes
+    dureeConsultation: 30, // in minutes
     numeroOrdre: "59001234567"
 };
 
-// Rendez-vous mockés
+// Mock appointments
 const RENDEZ_VOUS_MOCK = [
     {
         id: 1,
@@ -185,7 +185,7 @@ const RENDEZ_VOUS_MOCK = [
     }
 ];
 
-// Patients mockés
+// Mock patients
 const PATIENTS_MOCK = [
     {
         id: 101,
@@ -264,7 +264,7 @@ const PATIENTS_MOCK = [
     }
 ];
 
-// Disponibilités du praticien
+// Practitioner availability
 const DISPONIBILITES_MOCK = {
     lundi: { actif: true, horaires: [{ debut: "09:00", fin: "12:00" }, { debut: "14:00", fin: "18:00" }] },
     mardi: { actif: true, horaires: [{ debut: "09:00", fin: "12:00" }, { debut: "14:00", fin: "18:00" }] },
@@ -275,30 +275,30 @@ const DISPONIBILITES_MOCK = {
     dimanche: { actif: false, horaires: [] }
 };
 
-// Congés et exceptions
+// Time off and exceptions
 const CONGES_MOCK = [
     { debut: "2025-12-24", fin: "2025-12-26", motif: "Vacances Noël" },
     { debut: "2025-12-31", fin: "2026-01-02", motif: "Vacances Nouvel An" }
 ];
 
-// ========== VARIABLES GLOBALES ==========
+// ========== GLOBAL VARIABLES ==========
 let currentView = 'dashboard';
 let currentDate = new Date();
 let calendarView = 'week'; // week, day, month
 let rendezVousFiltres = [...RENDEZ_VOUS_MOCK];
 let filtreStatut = 'tous';
 
-// ========== INITIALISATION ==========
+// ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
     logDev('Page espace professionnel chargée', 'success');
     
-    // Affichage des informations du praticien
+    // Display practitioner info
     afficherInfosPraticien();
     
-    // Chargement du dashboard par défaut
+    // Load default dashboard
     afficherSection('dashboard');
     
-    // Event listeners sur la navigation
+    // Navigation event listeners
     document.querySelectorAll('.pro-nav-item').forEach(item => {
         item.addEventListener('click', function(e) {
             e.preventDefault();
@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Event listeners calendrier
+    // Calendar event listeners
     const prevWeekBtn = document.getElementById('prevWeek');
     const nextWeekBtn = document.getElementById('nextWeek');
     const todayBtn = document.getElementById('todayBtn');
@@ -316,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (nextWeekBtn) nextWeekBtn.addEventListener('click', () => changerSemaine(1));
     if (todayBtn) todayBtn.addEventListener('click', allerAujourdhui);
     
-    // Event listeners vues calendrier
+    // Calendar view event listeners
     document.querySelectorAll('.view-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             calendarView = this.dataset.view;
@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Event listeners filtres rendez-vous
+    // Appointment filter event listeners
     document.querySelectorAll('.filter-chip').forEach(chip => {
         chip.addEventListener('click', function() {
             filtreStatut = this.dataset.status;
@@ -339,11 +339,11 @@ document.addEventListener('DOMContentLoaded', function() {
     logDev('Espace professionnel initialisé', 'success');
 });
 
-// ========== AFFICHAGE DES SECTIONS ==========
+// ========== SECTION DISPLAY ==========
 function afficherSection(section) {
     currentView = section;
     
-    // Mise à jour de la navigation
+    // Update navigation
     document.querySelectorAll('.pro-nav-item').forEach(item => {
         item.classList.remove('active');
         if (item.dataset.section === section) {
@@ -351,18 +351,18 @@ function afficherSection(section) {
         }
     });
     
-    // Masquage de toutes les sections
+    // Hide all sections
     document.querySelectorAll('.pro-section').forEach(sec => {
         sec.classList.remove('active');
     });
     
-    // Affichage de la section demandée
+    // Show the requested section
     const sectionElement = document.getElementById(`section-${section}`);
     if (sectionElement) {
         sectionElement.classList.add('active');
     }
     
-    // Chargement du contenu selon la section
+    // Load content based on the section
     switch(section) {
         case 'dashboard':
             chargerDashboard();
@@ -387,7 +387,7 @@ function afficherSection(section) {
     logDev(`Section "${section}" affichée`, 'info');
 }
 
-// ========== INFORMATIONS DU PRATICIEN ==========
+// ========== PRACTITIONER INFO ==========
 function afficherInfosPraticien() {
     document.getElementById('proNom').textContent = PRATICIEN_ACTUEL.nom;
     document.getElementById('proSpecialite').textContent = PRATICIEN_ACTUEL.specialite;
@@ -395,21 +395,21 @@ function afficherInfosPraticien() {
 
 // ========== DASHBOARD ==========
 function chargerDashboard() {
-    // Calcul des statistiques
+    // Compute statistics
     const aujourdhui = new Date().toISOString().split('T')[0];
     const rdvAujourdhui = RENDEZ_VOUS_MOCK.filter(rdv => rdv.date === aujourdhui);
     const rdvConfirmes = RENDEZ_VOUS_MOCK.filter(rdv => rdv.statut === 'confirmed').length;
     const rdvEnAttente = RENDEZ_VOUS_MOCK.filter(rdv => rdv.statut === 'pending').length;
     const nbPatientsTotal = PATIENTS_MOCK.length;
     
-    // Calcul du taux de remplissage (exemple simplifié)
-    const creneauxDispos = 20; // Nombre de créneaux disponibles par jour
+    // Compute fill rate (simplified example)
+    const creneauxDispos = 20; // Number of available slots per day
     const tauxRemplissage = Math.round((rdvAujourdhui.length / creneauxDispos) * 100);
     
-    // Calcul des revenus du mois (simulation)
+    // Compute monthly revenue (simulation)
     const revenusEstimes = rdvConfirmes * PRATICIEN_ACTUEL.tarifConsultation;
     
-    // Mise à jour de l'interface
+    // Update the UI
     document.getElementById('statRdvJour').textContent = rdvAujourdhui.length;
     document.getElementById('statRdvConfirmes').textContent = rdvConfirmes;
     document.getElementById('statRdvEnAttente').textContent = rdvEnAttente;
@@ -417,7 +417,7 @@ function chargerDashboard() {
     document.getElementById('statTauxRemplissage').textContent = tauxRemplissage + '%';
     document.getElementById('statRevenus').textContent = revenusEstimes + ' €';
     
-    // Affichage des prochains rendez-vous
+    // Display upcoming appointments
     const prochains = RENDEZ_VOUS_MOCK
         .filter(rdv => new Date(rdv.date) >= new Date())
         .sort((a, b) => {
@@ -443,18 +443,18 @@ function chargerDashboard() {
     logDev('Dashboard chargé', 'success');
 }
 
-// ========== CALENDRIER ==========
+// ========== CALENDAR ==========
 function afficherCalendrier() {
     const container = document.getElementById('calendarGrid');
     if (!container) return;
     
-    // Mise à jour du titre
+    // Update the title
     const title = document.getElementById('calendarTitle');
     if (title) {
         title.textContent = formatMoisAnnee(currentDate);
     }
     
-    // Affichage selon la vue
+    // Display based on the view
     if (calendarView === 'week') {
         afficherVueSemaine(container);
     }
@@ -466,23 +466,23 @@ function afficherVueSemaine(container) {
     const debutSemaine = getDebutSemaine(currentDate);
     const jours = [];
     
-    // Génération des 7 jours de la semaine
+    // Generate the 7 days of the week
     for (let i = 0; i < 7; i++) {
         const jour = new Date(debutSemaine);
         jour.setDate(debutSemaine.getDate() + i);
         jours.push(jour);
     }
     
-    // Horaires de consultation (8h - 19h)
+    // Consultation hours (8am - 7pm)
     const horaires = [];
     for (let h = 8; h <= 18; h++) {
         horaires.push(`${h.toString().padStart(2, '0')}:00`);
     }
     
-    // Construction de la grille
+    // Build the grid
     let html = '<div class="week-view">';
     
-    // En-tête avec les jours
+    // Header with the days
     html += '<div class="week-header time-col"></div>';
     jours.forEach(jour => {
         const isToday = jour.toISOString().split('T')[0] === new Date().toISOString().split('T')[0];
@@ -496,7 +496,7 @@ function afficherVueSemaine(container) {
         `;
     });
     
-    // Lignes pour chaque horaire
+    // Rows for each time slot
     horaires.forEach(heure => {
         html += `<div class="time-slot"><div class="time-label">${heure}</div></div>`;
         
@@ -533,7 +533,7 @@ function allerAujourdhui() {
     afficherCalendrier();
 }
 
-// ========== LISTE DES RENDEZ-VOUS ==========
+// ========== APPOINTMENT LIST ==========
 function afficherListeRendezVous() {
     filtrerRendezVous();
 }
@@ -545,7 +545,7 @@ function filtrerRendezVous() {
         rendezVousFiltres = RENDEZ_VOUS_MOCK.filter(rdv => rdv.statut === filtreStatut);
     }
     
-    // Tri par date et heure
+    // Sort by date and time
     rendezVousFiltres.sort((a, b) => {
         const dateA = new Date(`${a.date}T${a.heureDebut}`);
         const dateB = new Date(`${b.date}T${b.heureDebut}`);
@@ -634,7 +634,7 @@ function afficherListePatients() {
     logDev(`${PATIENTS_MOCK.length} patients affichés`, 'success');
 }
 
-// ========== DISPONIBILITÉS ==========
+// ========== AVAILABILITY ==========
 function afficherDisponibilites() {
     const jours = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
     const container = document.getElementById('disponibilitesGrid');
@@ -681,7 +681,7 @@ function afficherDisponibilites() {
     container.innerHTML = html;
 }
 
-// ========== PARAMÈTRES ==========
+// ========== SETTINGS ==========
 function afficherParametres() {
     const container = document.getElementById('parametresContent');
     if (!container) return;
@@ -735,7 +735,7 @@ function afficherParametres() {
     `;
 }
 
-// ========== ACTIONS SUR LES RENDEZ-VOUS ==========
+// ========== APPOINTMENT ACTIONS ==========
 window.afficherDetailsRdv = function(id) {
     const rdv = RENDEZ_VOUS_MOCK.find(r => r.id === id);
     if (!rdv) return;
@@ -776,7 +776,7 @@ window.afficherDetailsPatient = function(id) {
     alert(`Détails du patient\n\nNom: ${patient.nom}\nÂge: ${age} ans\nTéléphone: ${patient.telephone}\nEmail: ${patient.email}\nConsultations: ${patient.nombreConsultations}\nAllergies: ${patient.allergies.join(', ') || 'Aucune'}`);
 };
 
-// ========== FONCTIONS UTILITAIRES ==========
+// ========== UTILITY FUNCTIONS ==========
 function formatDate(dateStr) {
     const date = new Date(dateStr);
     const options = { weekday: 'short', day: 'numeric', month: 'short' };
@@ -810,7 +810,7 @@ function formatStatut(statut) {
 function getDebutSemaine(date) {
     const d = new Date(date);
     const jour = d.getDay();
-    const diff = d.getDate() - jour + (jour === 0 ? -6 : 1); // Lundi
+    const diff = d.getDate() - jour + (jour === 0 ? -6 : 1); // Monday
     return new Date(d.setDate(diff));
 }
 

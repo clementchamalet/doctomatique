@@ -96,7 +96,7 @@ function setupEventListeners() {
         btnSearch.addEventListener('click', performSearch);
     }
 
-    // Fermer autocomplete si click ailleurs
+    // Close autocomplete when clicking elsewhere
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.autocomplete-wrapper')) {
             closeAllAutocompletes();
@@ -109,7 +109,7 @@ async function showAutocompleteSpecialties(query) {
     if (!list) return;
 
     if (!query) {
-        // Afficher toutes les spécialités
+        // Show all specialties
         const response = await fetch('../api/autocomplete.php?type=specialties');
         const data = await response.json();
         if (data.success) {
@@ -130,7 +130,7 @@ async function showAutocompleteCities(query) {
     if (!list) return;
 
     if (!query) {
-        // Afficher toutes les villes
+        // Show all cities
         const response = await fetch('../api/autocomplete.php?type=cities');
         const data = await response.json();
         if (data.success) {
@@ -227,7 +227,7 @@ async function performSearch() {
         if (data.success) {
             state.practitioners = data.data.practitioners;
             
-            // Filtrer par spécialité (si le texte contient la spécialité)
+            // Filter by specialty (if the text contains the specialty)
             if (state.filters.specialtyText) {
                 state.practitioners = state.practitioners.filter(p => {
                     if (!p.specialties || p.specialties.length === 0) return false;
@@ -239,7 +239,7 @@ async function performSearch() {
                 });
             }
             
-            // Filtrer par ville
+            // Filter by city
             if (state.filters.city) {
                 state.practitioners = state.practitioners.filter(p => {
                     if (!p.structures || p.structures.length === 0) return false;

@@ -1,25 +1,25 @@
 /**
- * AGENDA.JS - Script pour la gestion de l'agenda
- * Génère et affiche l'agenda hebdomadaire avec les rendez-vous et disponibilités
+ * AGENDA.JS - Schedule management script
+ * Generates and displays the weekly agenda with appointments and availability
  */
 
-// Récupération des données PHP injectées dans le HTML
+// Get the PHP data injected into the HTML
 const rendezvousData = Array.isArray(window.rendezvous) ? window.rendezvous : [];
 const disponibilitesData = Array.isArray(window.disponibilites) ? window.disponibilites : [];
 const debutSemaine = new Date(window.debutSemaine ?? new Date());
 const aujourdhui = new Date().toDateString();
 
 
-// Configuration de l'agenda
+// Agenda configuration
 const CONFIG = {
     HEURE_DEBUT: 8,
     HEURE_FIN: 20,
-    HAUTEUR_HEURE: 80, // pixels par heure
+    HAUTEUR_HEURE: 80, // pixels per hour
     JOURS_SEMAINE: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
 };
 
 /**
- * Classe principale pour gérer l'agenda
+ * Main class for managing the agenda
  */
 class AgendaManager {
     constructor() {
@@ -29,14 +29,14 @@ class AgendaManager {
     }
 
     /**
-     * Initialise l'agenda
+     * Initializes the agenda
      */
     init() {
         this.genererAgenda();
     }
 
     /**
-     * Génère la structure complète de l'agenda
+     * Generates the full agenda structure
      */
     genererAgenda() {
         if (!this.grid) {
@@ -46,24 +46,24 @@ class AgendaManager {
 
         this.grid.innerHTML = '';
 
-        // Générer l'en-tête
+        // Generate the header
         this.genererEnTete();
 
-        // Générer les lignes horaires
+        // Generate the hour rows
         this.genererLignesHoraires();
 
-        // Placer les créneaux
+        // Place the slots
         this.placerCreneaux();
     }
 
     /**
-     * Génère l'en-tête avec les jours de la semaine
+     * Generates the header with the days of the week
      */
     genererEnTete() {
-        // Colonne vide pour les heures
+        // Empty column for the hours
         this.grid.appendChild(this.creerCelluleEnTete('', 'time-column'));
 
-        // Colonnes pour chaque jour
+        // Columns for each day
         for (let i = 0; i < 7; i++) {
             const date = new Date(debutSemaine);
             date.setDate(date.getDate() + i);
@@ -81,13 +81,13 @@ class AgendaManager {
     }
 
     /**
-     * Génère les lignes horaires (de 8h à 20h)
+     * Generates the hour rows (from 8am to 8pm)
      */
     genererLignesHoraires() {
         const totalHeures = CONFIG.HEURE_FIN - CONFIG.HEURE_DEBUT;
         const hauteurJournee = totalHeures * CONFIG.HAUTEUR_HEURE;
 
-        // === Colonne des heures (une seule grande colonne) ===
+        // === Hour column (a single large column) ===
         const timeColumn = document.createElement('div');
         timeColumn.className = 'time-column-container';
         timeColumn.style.height = `${hauteurJournee}px`;
@@ -105,7 +105,7 @@ class AgendaManager {
             timeColumn.appendChild(label);
         }
 
-        // === Colonnes des jours ===
+        // === Day columns ===
         for (let jour = 0; jour < 7; jour++) {
             const dayCell = document.createElement('div');
             dayCell.className = 'day-column';
@@ -118,7 +118,7 @@ class AgendaManager {
     }
 
     /**
-     * Place tous les créneaux (rendez-vous et disponibilités)
+     * Places all slots (appointments and availability)
      */
     placerCreneaux() {
         console.log("RDV DATA:", this.rendezvous);
@@ -126,7 +126,7 @@ class AgendaManager {
 
         let hasCreneaux = false;
 
-        // Placer les rendez-vous
+        // Place the appointments
         this.rendezvous.forEach(rdv => {
             const creneau = this.creerCreneau(rdv, 'rdv');
             if (creneau) {
@@ -138,7 +138,7 @@ class AgendaManager {
             }
         });
 
-        // Placer les disponibilités
+        // Place the availability slots
         this.disponibilites.forEach(dispo => {
             const creneau = this.creerCreneau(dispo, 'dispo');
             if (creneau) {
@@ -150,19 +150,19 @@ class AgendaManager {
             }
         });
 
-        // Si aucun créneau, afficher un message mais garder la grille visible
-        // La grille reste visible dans tous les cas
+        // If there are no slots, show a message but keep the grid visible
+        // The grid stays visible in all cases
     }
 
     /**
-     * Crée un élément créneau (rendez-vous ou disponibilité)
+     * Creates a slot element (appointment or availability)
      */
     creerCreneau(data, type) {
         const debut = new Date(data.debut);
         const heureDebut = debut.getHours() + debut.getMinutes() / 60;
         const duree = data.duree_minute / 60;
 
-        // Vérifier si le créneau est dans les heures d'affichage
+        // Check whether the slot falls within the displayed hours
         if (heureDebut < CONFIG.HEURE_DEBUT || heureDebut >= CONFIG.HEURE_FIN) {
             return null;
         }
@@ -170,12 +170,12 @@ class AgendaManager {
         const creneau = document.createElement('div');
         creneau.className = `creneau creneau-${type}`;
 
-        // Position verticale basée sur les minutes
+        // Vertical position based on the minutes
         const top = (heureDebut - CONFIG.HEURE_DEBUT) * CONFIG.HAUTEUR_HEURE;
         const hauteur = duree * CONFIG.HAUTEUR_HEURE;
 
         creneau.style.top = `${top}px`;
-        creneau.style.height = `${Math.max(hauteur, 30)}px`; // Hauteur minimale de 30px
+        creneau.style.height = `${Math.max(hauteur, 30)}px`; // Minimum height of 30px
 
         if (type === 'rdv') {
             const heureStr = this.formatHeure(debut);
@@ -199,7 +199,7 @@ class AgendaManager {
     }
 
     /**
-     * Trouve la cellule correspondant à une date/heure
+     * Finds the cell matching a date/time
      */
     trouverCellule(dateStr) {
         const date = new Date(dateStr.replace(' ', 'T'));
@@ -218,7 +218,7 @@ class AgendaManager {
     }
 
     /**
-     * Crée une cellule d'en-tête
+     * Creates a header cell
      */
     creerCelluleEnTete(text, className = '') {
         const cell = document.createElement('div');
@@ -228,7 +228,7 @@ class AgendaManager {
     }
 
     /**
-     * Formate une date en heure (HH:MM)
+     * Formats a date as a time (HH:MM)
      */
     formatHeure(date) {
         const heures = date.getHours().toString().padStart(2, '0');
@@ -237,7 +237,7 @@ class AgendaManager {
     }
 
     /**
-     * Échappe les caractères HTML pour éviter les injections XSS
+     * Escapes HTML characters to prevent XSS injection
      */
     escapeHtml(text) {
         const div = document.createElement('div');
@@ -246,11 +246,11 @@ class AgendaManager {
     }
 }
 
-// Initialisation au chargement de la page
+// Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     const agenda = new AgendaManager();
     agenda.init();
 });
 
-// Export pour utilisation dans d'autres modules si nécessaire
+// Export for use in other modules if needed
 export { AgendaManager, CONFIG };

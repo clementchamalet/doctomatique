@@ -1,11 +1,11 @@
 <?php
 /**
- * API pour annuler un rendez-vous - VERSION PROPRE
+ * API to cancel an appointment - CLEAN VERSION
  * Endpoint: /api/cancel_appointment.php
- * Methode: POST
- * Authentification: Requise (patient connecte)
- * Body JSON:
- *  - appointment_id: ID du rendez-vous (requis)
+ * Method: POST
+ * Authentication: Required (logged-in patient)
+ * JSON Body:
+ *  - appointment_id: Appointment ID (required)
  */
 
 require_once __DIR__ . '/../pages/config.php';
@@ -15,18 +15,18 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
-// Gestion de la requete OPTIONS pour CORS
+// Handle the OPTIONS request for CORS
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
-// Verification de la methode
+// Check the method
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendError("Methode non autorisee. Utilisez POST", 405);
 }
 
-// Verification de l'authentification
+// Check authentication
 if (!isLoggedIn()) {
     sendError("Vous devez etre connecte pour annuler un rendez-vous", 401);
 }
@@ -35,7 +35,7 @@ if (!isPatient()) {
     sendError("Seuls les patients peuvent annuler leurs rendez-vous", 403);
 }
 
-// Recuperation des donnees JSON
+// Get the JSON data
 $input = json_decode(file_get_contents('php://input'), true);
 
 if (!$input || !isset($input['appointment_id'])) {
@@ -53,10 +53,10 @@ try {
         throw new Exception("Erreur de connexion a la base de donnees");
     }
 
-    // Debut de la transaction
+    // Start the transaction
     $pdo->beginTransaction();
 
-    // Verification que le rendez-vous existe et appartient au patient
+    // Check that the appointment exists and belongs to the patient
     $sqlCheck = "
         SELECT 
             r.id,
@@ -85,13 +85,13 @@ try {
         sendError("Ce rendez-vous n'existe pas ou ne vous appartient pas", 404);
     }
 
-    // Verification que le rendez-vous n'est pas deja annule
+    // Check that the appointment isn't already cancelled
     if ($appointment['statut'] == APPOINTMENT_STATUS_CANCELLED) {
         $pdo->rollBack();
         sendError("Ce rendez-vous est deja annule", 400);
     }
 
-    // Verification que le rendez-vous n'est pas dans le passe
+    // Check that the appointment isn't in the past
     $appointmentDate = new DateTime($appointment['debut']);
     $now = new DateTime();
 
@@ -100,7 +100,7 @@ try {
         sendError("Vous ne pouvez pas annuler un rendez-vous passe", 400);
     }
 
-    // Mise a jour du statut du rendez-vous
+    // Update the appointment status
     $sqlUpdateAppointment = "
         UPDATE rendezvous
         SET statut = :status
@@ -113,7 +113,7 @@ try {
         'status' => APPOINTMENT_STATUS_CANCELLED
     ]);
 
-    // Liberation du creneau
+    // Free up the slot
     $sqlUpdateSlot = "
         UPDATE creneaux_disponibilite
         SET est_reserve = 0
@@ -123,7 +123,7 @@ try {
     $stmt = $pdo->prepare($sqlUpdateSlot);
     $stmt->execute(['slot_id' => $appointment['creneaux_id']]);
 
-    // Validation de la transaction
+    // Commit the transaction
     $pdo->commit();
 
     sendSuccess([

@@ -1,27 +1,5 @@
 <?php
     require 'config.php';
-
-    /*
-    $bypass_mode = false;
-    if (isset($_GET['bypass'])) {
-        $bypass_mode = true;
-    }
-
-    
-    if ($bypass_mode && isset($_GET['user'])) {
-        $username = $_GET['user'];
-        $sql      = "SELECT * FROM users WHERE username = '$username'";
-        $result   = mysqli_query(get_db(), $sql);
-
-        if (mysqli_num_rows($result) > 0) {
-            $user                    = mysqli_fetch_assoc($result);
-            $_SESSION['user_id']     = $user['id'];
-            $_SESSION['bypass_mode'] = true;
-            header('Location: index.php');
-            exit;
-        }
-    }*/
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">

@@ -13,19 +13,19 @@ $pagesRendezvous = ['rdv.php', 'desistement.php'];
 $pagesStats = ['professional.php', 'statistiques.php'];
 $pagesParametres = ['parametres.php'];
 
-// Vérifier dans la table structures_sante que la secrétaire existe bien
+// Check in the structures_sante table that the secretary exists
 $stmt = mysqli_prepare($connexion, "SELECT 1 FROM structures_sante WHERE secretaire_id = ?");
 mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
-// Si ce n'est pas le cas alors l'utilisateur n'est pas une secrétaire
+// If not, then the user isn't a secretary
 if (mysqli_num_rows($result) === 0) {
     header("Location: index.php");
     exit;
 }
 
-// Récupérer les infos de la secrétaire et sa structure
+// Get the secretary's info and their facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.prenom, u.nom, s.id as structure_id, s.nom as structure_nom
@@ -38,14 +38,14 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $secretaire = mysqli_fetch_assoc($result);
 
-// Récupérer le structure_id
+// Get the structure_id
 $structure_id = $secretaire['structure_id'];
 
-// ========== CALCUL DES STATISTIQUES DE L'ÉTABLISSEMENT ==========
+// ========== FACILITY STATISTICS CALCULATION ==========
 
 $stats = [];
 
-// 1. Rendez-vous aujourd'hui pour l'établissement
+// 1. Today's appointments for the facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(*) as nb
@@ -59,7 +59,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_aujourdhui'] = mysqli_fetch_assoc($result)['nb'];
 
-// Créneaux disponibles aujourd'hui pour l'établissement
+// Available slots today for the facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(*) as nb
@@ -74,7 +74,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['creneaux_aujourdhui'] = mysqli_fetch_assoc($result)['nb'];
 
-// 2. RDV confirmés cette semaine
+// 2. Confirmed appointments this week
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(*) as nb
@@ -91,7 +91,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_confirmes'] = mysqli_fetch_assoc($result)['nb'];
 
-// RDV confirmés semaine dernière (pour le comparatif)
+// Confirmed appointments last week (for comparison)
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(*) as nb
@@ -109,7 +109,7 @@ $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_confirmes_semaine_derniere'] = mysqli_fetch_assoc($result)['nb'];
 $stats['diff_confirmes'] = $stats['rdv_confirmes'] - $stats['rdv_confirmes_semaine_derniere'];
 
-// 3. Nombre total de patients de l'établissement
+// 3. Total number of patients at the facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(DISTINCT r.patient_id) as nb
@@ -121,7 +121,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['total_patients'] = mysqli_fetch_assoc($result)['nb'];
 
-// Patients ce mois
+// Patients this month
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(DISTINCT r.patient_id) as nb
@@ -136,7 +136,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['patients_ce_mois'] = mysqli_fetch_assoc($result)['nb'];
 
-// Patients mois dernier
+// Patients last month
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT COUNT(DISTINCT r.patient_id) as nb
@@ -152,7 +152,7 @@ $result = mysqli_stmt_get_result($stmt);
 $stats['patients_mois_dernier'] = mysqli_fetch_assoc($result)['nb'];
 $stats['diff_patients'] = $stats['patients_ce_mois'] - $stats['patients_mois_dernier'];
 
-// 4. Taux de remplissage ce mois
+// 4. Fill rate this month
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT 
@@ -173,7 +173,7 @@ $stats['taux_remplissage'] = $taux_data['total_creneaux'] > 0
     ? round(($taux_data['creneaux_reserves'] / $taux_data['total_creneaux']) * 100) 
     : 0;
 
-// Taux mois dernier
+// Rate last month
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT 
@@ -195,7 +195,7 @@ $stats['taux_remplissage_dernier'] = $taux_data_dernier['total_creneaux'] > 0
     : 0;
 $stats['diff_taux'] = $stats['taux_remplissage'] - $stats['taux_remplissage_dernier'];
 
-// Prochains RDV (5 prochains) de l'établissement
+// Upcoming appointments (next 5) for the facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT 
@@ -246,7 +246,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 </head>
 <body>
 
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -261,7 +261,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         </nav>
     </header>
 
-    <!-- ========== LAYOUT PRINCIPAL ========== -->
+    <!-- ========== MAIN LAYOUT ========== -->
     <div class="pro-layout">
         
         <!-- ========== SIDEBAR NAVIGATION ========== -->
@@ -294,7 +294,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             </nav>
         </aside>
 
-        <!-- ========== CONTENU PRINCIPAL ========== -->
+        <!-- ========== MAIN CONTENT ========== -->
         <main class="pro-main">
             <div class="section-header">
                 <h1>Tableau de bord</h1>
@@ -304,7 +304,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 </div>
             </div>
 
-        <!-- Cartes statistiques -->
+        <!-- Stat cards -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-card-header">
@@ -360,7 +360,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             </div>
         </div>
 
-            <!-- Prochains rendez-vous -->
+            <!-- Upcoming appointments -->
             <div class="appointments-list" style="margin-top: 2rem;">
                 <div style="padding: 1.5rem; border-bottom: 1px solid var(--couleur-bordure);">
                     <h3>Prochains rendez-vous</h3>
@@ -403,7 +403,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         </main>
     </div>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">

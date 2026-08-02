@@ -12,7 +12,6 @@ $pagesRendezvous = ['rdv_sec.php', 'desistement_sec.php'];
 $pagesStats = ['professional_sec.php', 'statistiques_sec.php'];
 $pagesParametres = ['parametres_sec.php'];
 
-$_SESSION['user_id'] = 2;
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'secretaire') {
     header('Location: index.php');
     exit;
@@ -31,7 +30,7 @@ mysqli_stmt_execute($stmt);
 $res = mysqli_stmt_get_result($stmt);
 $praticien = mysqli_fetch_assoc($res);
 
-/* Récupérer les spécialités */
+/* Get the specialties */
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT sm.nom

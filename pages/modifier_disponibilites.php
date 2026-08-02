@@ -12,7 +12,7 @@ $pagesRendezvous = ['rdv.php', 'desistement'];
 $pagesStats = ['professional.php', 'statistiques.php'];
 $pagesParametres = ['parametres.php'];
 
-// Vérifier que l'utilisateur est un praticien
+// Check that the user is a practitioner
 $stmt = mysqli_prepare($connexion, "SELECT 1 FROM praticiens WHERE utilisateur_id = ?");
 mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
 mysqli_stmt_execute($stmt);
@@ -23,7 +23,7 @@ if (mysqli_num_rows($result) === 0) {
     exit;
 }
 
-// Récupérer les infos du praticien
+// Get the practitioner's info
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.prenom, u.nom
@@ -36,7 +36,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $praticien = mysqli_fetch_assoc($result);
 
-// Récupérer les spécialités
+// Get the specialties
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT sm.nom
@@ -53,7 +53,7 @@ while ($row = mysqli_fetch_assoc($res)) {
     $specialites[] = $row['nom'];
 }
 
-// Récupérer les disponibilités futures
+// Get the upcoming availability
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT c.id, c.debut, c.duree_minute
@@ -82,7 +82,7 @@ $disponibilites = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <link rel="stylesheet" href="../assets/css/modifier_disponibilites.css">
 </head>
 <body>
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -95,7 +95,7 @@ $disponibilites = mysqli_fetch_all($result, MYSQLI_ASSOC);
             </div>
         </nav>
     </header>
-    <!-- ========== LAYOUT PRINCIPAL ========== -->
+    <!-- ========== MAIN LAYOUT ========== -->
     <div class="pro-layout">
         
         <!-- ========== SIDEBAR NAVIGATION ========== -->
@@ -132,7 +132,7 @@ $disponibilites = mysqli_fetch_all($result, MYSQLI_ASSOC);
             </nav>
         </aside>
 
-        <!-- ========== CONTENU PRINCIPAL ========== -->
+        <!-- ========== MAIN CONTENT ========== -->
         <main class="pro-main">
             <h1>✏️ Modifier mes disponibilités</h1>
 
@@ -174,7 +174,7 @@ $disponibilites = mysqli_fetch_all($result, MYSQLI_ASSOC);
             <a href="agenda.php">← Retour à l’agenda</a>
         </main>
     </div>
-        <!-- ========== PIED DE PAGE ========== -->
+        <!-- ========== FOOTER ========== -->
         <footer>
         <div class="footer-content">
             <div class="footer-section">

@@ -1,7 +1,7 @@
 <?php
 require 'config.php';
 
-// Vérifier que l'utilisateur est connecté en tant qu'admin
+// Check that the user is logged in as admin
 if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
     header('Location: admin-login.php');
     exit;
@@ -9,7 +9,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
 
 $conn = get_db();
 
-// Afficher les messages de succès ou d'erreur
+// Display success or error messages
 $message = '';
 $message_type = '';
 if (isset($_GET['success'])) {

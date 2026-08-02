@@ -13,7 +13,7 @@
     <?php 
     require_once 'config.php';
     
-    // Vérification du paramètre practitioner_id
+    // Check the practitioner_id parameter
     if (!isset($_GET['id']) || empty($_GET['id'])) {
         header('Location: search.php');
         exit;
@@ -23,7 +23,7 @@
     $structureId = isset($_GET['structure']) ? intval($_GET['structure']) : null;
     ?>
     
-    <!-- ========== EN-TETE ========== -->
+    <!-- ========== HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -43,20 +43,20 @@
         </nav>
     </header>
 
-    <!-- ========== CONTENU PRINCIPAL ========== -->
+    <!-- ========== MAIN CONTENT ========== -->
     <main class="practitioner-page">
         <div class="container">
 
-            <!-- Indicateur de chargement -->
+            <!-- Loading indicator -->
             <div id="loadingSpinner" class="loading-spinner">
                 <div class="spinner"></div>
                 <p>Chargement des informations...</p>
             </div>
 
-            <!-- Conteneur principal -->
+            <!-- Main container -->
             <div id="practitionerContent" class="practitioner-content" style="display: none;">
                 
-                <!-- En-tete du praticien simplifiee -->
+                <!-- Simplified practitioner header -->
                 <div class="practitioner-header">
                     <div class="practitioner-info">
                         <h1 id="practitionerName"></h1>
@@ -64,50 +64,50 @@
                     </div>
                 </div>
 
-                <!-- Layout a deux colonnes -->
+                <!-- Two-column layout -->
                 <div class="content-layout">
                     
-                    <!-- Colonne principale -->
+                    <!-- Main column -->
                     <div class="main-column">
                         
-                        <!-- Présentation -->
+                        <!-- About -->
                         <section class="info-section">
                             <h2>Présentation</h2>
                             <div id="practitionerBio" class="bio-text"></div>
                         </section>
 
-                        <!-- Lieux de consultation -->
+                        <!-- Consultation locations -->
                         <section class="info-section">
                             <h2>Lieux de consultation</h2>
                             <div id="structuresList" class="structures-list">
-                                <!-- Rempli dynamiquement -->
+                                <!-- Filled dynamically -->
                             </div>
                         </section>
 
-                        <!-- Avis patients -->
+                        <!-- Patient reviews -->
                         <section class="info-section" id="reviewsSection">
                             <h2>Avis des patients</h2>
                             <div id="reviewsList" class="reviews-list">
-                                <!-- Rempli dynamiquement -->
+                                <!-- Filled dynamically -->
                             </div>
                         </section>
                     </div>
 
-                    <!-- Colonne laterale: Reservation -->
+                    <!-- Sidebar column: Booking -->
                     <aside class="sidebar-column">
                         <div class="booking-card sticky">
                             <h3>Prendre rendez-vous</h3>
                             
-                            <!-- Selection de la structure -->
+                            <!-- Facility selection -->
                             <div class="form-group">
                                 <label for="selectStructure">Lieu de consultation</label>
                                 <select id="selectStructure" class="form-control">
                                     <option value="">Selectionnez un lieu</option>
-                                    <!-- Rempli dynamiquement -->
+                                    <!-- Filled dynamically -->
                                 </select>
                             </div>
 
-                            <!-- Calendrier des disponibilites -->
+                            <!-- Availability calendar -->
                             <div id="slotsContainer" class="slots-container" style="display: none;">
                                 <h4>Creneaux disponibles</h4>
                                 
@@ -121,7 +121,7 @@
                                 </div>
 
                                 <div id="slotsList" class="slots-list">
-                                    <!-- Rempli dynamiquement -->
+                                    <!-- Filled dynamically -->
                                 </div>
                             </div>
 
@@ -138,14 +138,14 @@
         </div>
     </main>
 
-    <!-- Modal de confirmation de reservation -->
+    <!-- Booking confirmation modal -->
     <div id="bookingModal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="modal-close">&times;</span>
             <h2>Confirmer votre rendez-vous</h2>
             
             <div id="bookingSummary" class="booking-summary">
-                <!-- Rempli dynamiquement -->
+                <!-- Filled dynamically -->
             </div>
 
             <form id="bookingForm">
@@ -195,7 +195,7 @@
         </div>
     </div>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -230,14 +230,14 @@
         </div>
     </footer>
 
-    <!-- Passage des parametres PHP vers JavaScript -->
+    <!-- Passing PHP parameters to JavaScript -->
     <script>
         window.PRACTITIONER_ID = <?= $practitionerId ?>;
         window.STRUCTURE_ID = <?= $structureId ?? 'null' ?>;
         window.IS_LOGGED_IN = <?= isLoggedIn() ? 'true' : 'false' ?>;
     </script>
 
-    <!-- JavaScript modulaire -->
+    <!-- Modular JavaScript -->
     <script type="module" src="../assets/js/practitioner.js"></script>
 </body>
 </html>

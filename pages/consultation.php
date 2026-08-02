@@ -12,7 +12,7 @@ $pagesRendezvous = ['rdv.php', 'desistement'];
 $pagesStats = ['professional.php', 'statistiques.php'];
 $pagesParametres = ['parametres.php'];
 
-// Vérifier que l'utilisateur est un praticien
+// Check that the user is a practitioner
 $stmt = mysqli_prepare($connexion, "SELECT 1 FROM praticiens WHERE utilisateur_id = ?");
 mysqli_stmt_bind_param($stmt, "i", $_SESSION['user_id']);
 mysqli_stmt_execute($stmt);
@@ -23,7 +23,7 @@ if (mysqli_num_rows($result) === 0) {
     exit;
 }
 
-// Récupérer les infos du praticien
+// Get the practitioner's info
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.prenom, u.nom
@@ -36,7 +36,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $praticien = mysqli_fetch_assoc($result);
 
-// Récupérer les spécialités
+// Get the specialties
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT sm.nom
@@ -53,11 +53,11 @@ while ($row = mysqli_fetch_assoc($res)) {
     $specialites[] = $row['nom'];
 }
 
-// Récupérer l'ID du rendez-vous OU l'ID du patient
+// Get the appointment ID OR the patient ID
 $rdv_id = isset($_GET['rdv_id']) ? intval($_GET['rdv_id']) : 0;
 $patient_id = isset($_GET['patient_id']) ? intval($_GET['patient_id']) : 0;
 
-// Si on a un patient_id, récupérer le dernier rendez-vous de ce patient
+// If we have a patient_id, get that patient's most recent appointment
 if ($patient_id && !$rdv_id) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -86,7 +86,7 @@ if (!$rdv_id) {
     exit;
 }
 
-// Récupérer les informations complètes du rendez-vous
+// Get the full appointment info
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT 
@@ -127,7 +127,7 @@ if (!$rdv) {
     exit;
 }
 
-// === TRAITEMENT UPLOAD DE DOCUMENT (stockage en base64 dans url) ===
+// === DOCUMENT UPLOAD HANDLING (stored as base64 in url) ===
 $upload_message = '';
 $upload_error = '';
 
@@ -147,30 +147,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_document'])) {
         $taille_fichier = $fichier['size'];
         $tmp_name = $fichier['tmp_name'];
         
-        // Vérifier la taille (max 5 Mo pour base64)
+        // Check the size (max 5 MB for base64)
         if ($taille_fichier > 5 * 1024 * 1024) {
             $upload_error = "Le fichier est trop volumineux (max 5 Mo)";
         } else {
-            // Extensions autorisées
+            // Allowed extensions
             $extensions_autorisees = ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx', 'txt'];
             $extension = strtolower(pathinfo($nom_fichier, PATHINFO_EXTENSION));
             
             if (!in_array($extension, $extensions_autorisees)) {
                 $upload_error = "Type de fichier non autorisé. Formats acceptés : " . implode(', ', $extensions_autorisees);
             } else {
-                // Lire le contenu du fichier
+                // Read the file contents
                 $contenu_fichier = file_get_contents($tmp_name);
                 
-                // Déterminer le type MIME
+                // Determine the MIME type
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 $mime_type = finfo_file($finfo, $tmp_name);
                 finfo_close($finfo);
                 
-                // Encoder en base64 et créer une data URL
+                // Encode as base64 and build a data URL
                 $base64 = base64_encode($contenu_fichier);
                 $data_url = "data:$mime_type;base64,$base64";
                 
-                // Créer une description enrichie avec les métadonnées
+                // Build an enriched description with the metadata
                 $meta_info = json_encode([
                     'nom_fichier' => $nom_fichier,
                     'type_mime' => $mime_type,
@@ -180,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_document'])) {
                 
                 $description_complete = $description . "\n[META]" . $meta_info;
                 
-                // Insérer dans la base de données
+                // Insert into the database
                 $stmt = mysqli_prepare(
                     $connexion,
                     "INSERT INTO documents_patients (patient_id, expediteur, titre, description, url) 
@@ -208,7 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_document'])) {
     }
 }
 
-// Récupérer les notes de consultation
+// Get the consultation notes
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT notes, id
@@ -222,7 +222,7 @@ mysqli_stmt_execute($stmt);
 $result_notes = mysqli_stmt_get_result($stmt);
 $notes_existantes = mysqli_fetch_assoc($result_notes);
 
-// Récupérer l'historique des rendez-vous du patient
+// Get the patient's appointment history
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT 
@@ -249,7 +249,7 @@ while ($row = mysqli_fetch_assoc($result_historique)) {
     $historique[] = $row;
 }
 
-// Récupérer les documents du patient
+// Get the patient's documents
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT 
@@ -271,7 +271,7 @@ $result_docs = mysqli_stmt_get_result($stmt);
 
 $documents = [];
 while ($row = mysqli_fetch_assoc($result_docs)) {
-    // Extraire les métadonnées de la description
+    // Extract the metadata from the description
     $meta = null;
     $description_clean = $row['description'];
     
@@ -288,7 +288,7 @@ while ($row = mysqli_fetch_assoc($result_docs)) {
     $documents[] = $row;
 }
 
-// Traitement du formulaire de notes
+// Handle the notes form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_notes'])) {
     $notes = $_POST['notes'];
     
@@ -311,7 +311,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_notes'])) {
     exit;
 }
 
-// Calculer l'âge du patient
+// Calculate the patient's age
 $age = '';
 if ($rdv['date_naissance']) {
     $date_naissance = new DateTime($rdv['date_naissance']);
@@ -319,7 +319,7 @@ if ($rdv['date_naissance']) {
     $age = $aujourd_hui->diff($date_naissance)->y . ' ans';
 }
 
-// Fonction pour formater la taille des fichiers
+// Function to format file sizes
 function formatTaille($bytes) {
     if ($bytes >= 1048576) {
         return number_format($bytes / 1048576, 2) . ' Mo';
@@ -344,7 +344,7 @@ function formatTaille($bytes) {
 
 </head>
 <body>
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
             <a href="../index.php" class="logo">
@@ -358,7 +358,7 @@ function formatTaille($bytes) {
         </nav>
     </header>
 
-    <!-- ========== LAYOUT PRINCIPAL ========== -->
+    <!-- ========== MAIN LAYOUT ========== -->
     <div class="pro-layout">
         
         <!-- ========== SIDEBAR NAVIGATION ========== -->
@@ -395,7 +395,7 @@ function formatTaille($bytes) {
             </nav>
         </aside>
 
-        <!-- ========== CONTENU PRINCIPAL ========== -->
+        <!-- ========== MAIN CONTENT ========== -->
         <main class="pro-main">
             <?php if (isset($_GET['success'])): ?>
                 <div class="success-message">✓ Notes enregistrées avec succès</div>
@@ -431,7 +431,7 @@ function formatTaille($bytes) {
             </div>
 
             <div class="main-grid">
-                <!-- COLONNE GAUCHE : Informations patient -->
+                <!-- LEFT COLUMN: Patient info -->
                 <div class="left-column">
                     <div class="info-card">
                         <h2 class="card-title">👤 Informations patient</h2>
@@ -508,11 +508,11 @@ function formatTaille($bytes) {
                         </div>
                     <?php endif; ?>
 
-                    <!-- SECTION DOCUMENTS -->
+                    <!-- DOCUMENTS SECTION -->
                     <div class="info-card">
                         <h2 class="card-title">📎 Documents du patient</h2>
                         
-                        <!-- Formulaire d'upload -->
+                        <!-- Upload form -->
                         <div class="upload-form">
                             <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1rem;">📤 Ajouter un document</h3>
                             <form method="POST" enctype="multipart/form-data">
@@ -543,7 +543,7 @@ function formatTaille($bytes) {
                             </form>
                         </div>
                         
-                        <!-- Liste des documents -->
+                        <!-- Document list -->
                         <?php if (count($documents) > 0): ?>
                             <h3 style="margin-bottom: 1rem; font-size: 1rem;">📁 Documents existants (<?= count($documents) ?>)</h3>
                             <div class="documents-list">
@@ -583,7 +583,7 @@ function formatTaille($bytes) {
                     </div>
                 </div>
 
-                <!-- COLONNE DROITE : Notes de consultation -->
+                <!-- RIGHT COLUMN: Consultation notes -->
                 <div class="right-column">
                     <div class="info-card">
                         <h2 class="card-title">📝 Notes de consultation</h2>

@@ -1,7 +1,7 @@
 /**
- * Module formulaire de contact - help.js
- * Gere la soumission du formulaire de contact avec AJAX
- * Enregistre les messages dans assets/messages/
+ * Contact form module - help.js
+ * Handles contact form submission via AJAX
+ * Saves messages to assets/messages/
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -13,34 +13,34 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // Gestion de la soumission du formulaire
+    // Handle form submission
     contactForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // Empecher la soumission normale
+        e.preventDefault(); // Prevent the normal submission
 
-        // Recuperer les valeurs
+        // Get the values
         const nom = document.getElementById('nom').value.trim();
         const email = document.getElementById('email').value.trim();
         const sujet = document.getElementById('sujet').value.trim();
         const message = document.getElementById('message').value.trim();
 
-        // Validation basique cote client
+        // Basic client-side validation
         if (!nom || !email || !sujet || !message) {
             showMessage('Veuillez remplir tous les champs', 'error');
             return;
         }
 
-        // Valider l'email
+        // Validate the email
         if (!isValidEmail(email)) {
             showMessage('Adresse email invalide', 'error');
             return;
         }
 
-        // Soumettre le formulaire via AJAX
+        // Submit the form via AJAX
         submitForm(nom, email, sujet, message);
     });
 
     /**
-     * Valide le format d'une adresse email
+     * Validates the format of an email address
      */
     function isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * Soumet le formulaire au serveur via AJAX
+     * Submits the form to the server via AJAX
      */
     function submitForm(nom, email, sujet, message) {
         const formData = new FormData();
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('sujet', sujet);
         formData.append('message', message);
 
-        // Desactiver le bouton pendant l'envoi
+        // Disable the button while sending
         const submitBtn = contactForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
         submitBtn.disabled = true;
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.status === 'success') {
                 showMessage(data.message, 'success');
-                contactForm.reset(); // Vider le formulaire
+                contactForm.reset(); // Clear the form
             } else {
                 showMessage(data.message, 'error');
             }
@@ -86,24 +86,24 @@ document.addEventListener('DOMContentLoaded', function() {
             showMessage('Une erreur est survenue lors de l\'envoi. Veuillez reessayer.', 'error');
         })
         .finally(() => {
-            // Reactiver le bouton
+            // Re-enable the button
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
         });
     }
 
     /**
-     * Affiche un message de succes ou d'erreur
+     * Displays a success or error message
      */
     function showMessage(text, type) {
         formMessage.textContent = text;
         formMessage.className = 'message';
         formMessage.classList.add(type);
         
-        // Scroll vers le message pour le voir
+        // Scroll to the message so it's visible
         formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-        // Effacer le message apres 5 secondes pour les erreurs, 7 pour les success
+        // Clear the message after 5 seconds for errors, 7 for success
         const duration = type === 'success' ? 7000 : 5000;
         setTimeout(() => {
             formMessage.textContent = '';

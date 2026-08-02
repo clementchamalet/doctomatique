@@ -1,67 +1,64 @@
 # Doctomatique
 
-Application web PHP/MySQL inspiree de Doctolib, realisee dans un cadre pedagogique. Le projet permet de rechercher des praticiens, consulter des disponibilites et gerer des rendez-vous cote patient, praticien, secretaire et administrateur.
+A PHP/MySQL web application inspired by Doctolib, built as a school project. It lets you search for practitioners, check their availability, and manage appointments from the patient, practitioner, secretary, and administrator sides.
 
-## Apercu
+This is a learning project: it has no real patients, no real practitioners, and no real medical or personal data. Any data used is fictional or generated for demonstration purposes.
 
-- `index.php` : page d'accueil
-- `pages/` : pages PHP de l'application
-- `api/` : endpoints AJAX pour la recherche, la prise et l'annulation de rendez-vous
-- `assets/css/` : feuilles de style
-- `assets/js/` : scripts front-end
-- `assets/images/` : images et icones
+## Overview
 
-## Fonctionnalites principales
+- `index.php` — home page
+- `pages/` — the application's PHP pages
+- `api/` — AJAX endpoints for search, booking, and cancelling appointments
+- `assets/css/` — stylesheets
+- `assets/js/` — front-end scripts
+- `assets/images/` — images and icons
 
-- recherche de praticiens par specialite et par ville
-- consultation d'une fiche praticien et de ses creneaux
-- prise et annulation de rendez-vous
-- espace patient
-- espace professionnel
-- espace secretaire
-- espace administrateur
+## Main features
 
-## Prerequis
+- Search for practitioners by specialty and city
+- View a practitioner's profile and available slots
+- Book and cancel appointments
+- Patient area
+- Practitioner area
+- Secretary area
+- Administrator area
 
-- PHP 8.x avec `mysqli` et `pdo_mysql`
-- MySQL ou MariaDB
-- un serveur web local ou le serveur integre PHP
+## Prerequisites
 
-## Installation locale
+- PHP 8.x with the `mysqli` and `pdo_mysql` extensions
+- MySQL or MariaDB
+- A local web server, or PHP's built-in server
 
-1. Cloner ou copier le projet sur votre machine.
-2. Copier `config.local.example.php` vers `config.local.php`.
-3. Renseigner vos identifiants de base de donnees dans `config.local.php`.
-4. Importer votre base de donnees MySQL.
-5. Lancer le projet avec votre environnement habituel.
+## Local installation
 
-Exemple avec le serveur integre PHP :
+1. Clone or copy the project to your machine.
+2. Copy `config.local.example.php` to `config.local.php`.
+3. Fill in your database credentials in `config.local.php`.
+4. Import the MySQL database.
+5. Run the project with your usual setup.
+
+Example using PHP's built-in server:
 
 ```bash
 php -S localhost:8000
 ```
 
-Puis ouvrir `http://localhost:8000`.
+Then open `http://localhost:8000`.
 
 ## Configuration
 
-Le projet charge d'abord les valeurs par defaut definies dans `pages/config.php`, puis applique si besoin :
+The project first loads the default values defined in `pages/config.php`, then applies, if present:
 
-- les variables d'environnement `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`, `DB_CHARSET`, `APP_TIMEZONE`
-- le fichier local non versionne `config.local.php`
+- the environment variables `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`, `DB_CHARSET`, `APP_TIMEZONE`
+- the untracked local file `config.local.php`
 
-Cela permet de garder les secrets hors du depot public.
+This keeps secrets out of the public repository.
 
-## Publication sur GitHub
+## Notes
 
-Avant de publier le projet :
+- This repository is set up to be public without exposing any database credentials.
+- The code has intentionally been kept close to its original structure — this is a small pedagogical project, not a production system.
 
-- verifier que `config.local.php` n'est pas versionne
-- verifier qu'aucune donnee reelle n'est presente dans `assets/messages/`
-- relire les textes legaux si le projet est diffuse publiquement
-- preciser dans la description GitHub qu'il s'agit d'un projet pedagogique inspire d'une plateforme existante
+## License
 
-## Remarques
-
-- Le depot est prepare pour etre public sans exposer les identifiants de base de donnees.
-- Le code a ete garde volontairement proche de sa structure initiale.
+Distributed under the MIT License. See [LICENSE](LICENSE) for details.

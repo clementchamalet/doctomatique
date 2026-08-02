@@ -22,7 +22,7 @@ if (mysqli_num_rows($result) === 0) {
     exit;
 }
 
-// Récupérer les infos du praticien
+// Get the practitioner's info
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.prenom, u.nom
@@ -35,7 +35,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $praticien = mysqli_fetch_assoc($result);
 
-// Récupérer les spécialités
+// Get the specialties
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT sm.nom
@@ -55,11 +55,11 @@ while ($row = mysqli_fetch_assoc($res)) {
 $message = '';
 $message_type = '';
 
-// Traitement du formulaire
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rdv_id'])) {
     $rdv_id = intval($_POST['rdv_id']);
     
-    // Vérifier que le RDV appartient bien au praticien
+    // Check that the appointment really belongs to the practitioner
     $stmt = mysqli_prepare(
         $connexion,
         "SELECT r.id 
@@ -72,14 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rdv_id'])) {
     $result = mysqli_stmt_get_result($stmt);
     
     if (mysqli_num_rows($result) > 0) {
-        // Vérifier si le statut "Désistement" existe, sinon le créer
+        // Check whether the "Désistement" status exists, otherwise create it
         $stmt = mysqli_prepare($connexion, "SELECT id FROM statut WHERE description = 'Désistement'");
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $statut_desistement = mysqli_fetch_assoc($result);
         
         if (!$statut_desistement) {
-            // Créer le statut "Désistement" s'il n'existe pas
+            // Create the "Désistement" status if it doesn't exist
             $stmt = mysqli_prepare($connexion, "INSERT INTO statut (description) VALUES ('Désistement')");
             mysqli_stmt_execute($stmt);
             $statut_id = mysqli_insert_id($connexion);
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rdv_id'])) {
             $statut_id = $statut_desistement['id'];
         }
         
-        // Mettre à jour le statut du rendez-vous vers "Désistement"
+        // Update the appointment status to "Désistement"
         $stmt = mysqli_prepare(
             $connexion,
             "UPDATE rendezvous SET statut = ? WHERE id = ?"
@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rdv_id'])) {
     }
 }
 
-// Paramètres de recherche
+// Search parameters
 $recherche = isset($_GET['search']) ? trim($_GET['search']) : '';
 $type_recherche = isset($_GET['type']) ? $_GET['type'] : 'rdv';
 $date_recherche = isset($_GET['date']) ? $_GET['date'] : '';
@@ -115,7 +115,7 @@ $patient_id = isset($_GET['patient_id']) ? intval($_GET['patient_id']) : 0;
 
 $resultats = [];
 
-// Si on a un patient_id, afficher ses RDV (aujourd'hui + passés)
+// If we have a patient_id, show their appointments (today + past)
 if ($patient_id > 0) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -150,9 +150,9 @@ if ($patient_id > 0) {
         $row['heure_format'] = $date->format('H:i');
         $resultats[] = $row;
     }
-    $type_recherche = 'rdv'; // Forcer l'affichage en mode RDV
+    $type_recherche = 'rdv'; // Force display in appointment mode
 }
-// Recherche par date (aujourd'hui ou passée)
+// Search by date (today or past)
 elseif ($date_recherche !== '' && $type_recherche === 'rdv') {
     $stmt = mysqli_prepare(
         $connexion,
@@ -187,10 +187,10 @@ elseif ($date_recherche !== '' && $type_recherche === 'rdv') {
         $resultats[] = $row;
     }
 }
-// Recherche par texte (nom patient) - Aujourd'hui + passés
+// Search by text (patient name) - Today + past
 elseif ($recherche !== '') {
     if ($type_recherche === 'patient') {
-        // Recherche par patient - Compte les RDV aujourd'hui + passés non désistés
+        // Search by patient - Counts appointments today + past not withdrawn
         $stmt = mysqli_prepare(
             $connexion,
             "SELECT DISTINCT
@@ -220,7 +220,7 @@ elseif ($recherche !== '') {
             $resultats[] = $row;
         }
     } else {
-        // Recherche par RDV (nom) - Aujourd'hui + passés
+        // Search by appointment (name) - Today + past
         $stmt = mysqli_prepare(
             $connexion,
             "SELECT 
@@ -339,7 +339,7 @@ elseif ($recherche !== '') {
                 </div>
             <?php endif; ?>
 
-            <!-- Sélection du type de recherche -->
+            <!-- Search type selection -->
             <div class="search-type-selector">
                 <div class="search-type-tabs">
                     <a href="?type=rdv" 
@@ -353,10 +353,10 @@ elseif ($recherche !== '') {
                 </div>
             </div>
 
-            <!-- Barre de recherche -->
+            <!-- Search bar -->
             <div class="search-container">
                 <?php if ($type_recherche === 'rdv' && $patient_id === 0): ?>
-                    <!-- Recherche par date ou nom pour RDV -->
+                    <!-- Search by date or name for appointments -->
                     <div class="search-dual">
                         <form method="GET" action="desistement.php" class="date-search-form">
                             <input type="hidden" name="type" value="rdv">
@@ -395,7 +395,7 @@ elseif ($recherche !== '') {
                         </form>
                     </div>
                 <?php else: ?>
-                    <!-- Recherche par patient -->
+                    <!-- Search by patient -->
                     <form method="GET" action="desistement.php" class="search-form">
                         <input type="hidden" name="type" value="patient">
                         <div class="search-input-wrapper">
@@ -417,7 +417,7 @@ elseif ($recherche !== '') {
                 <?php endif; ?>
             </div>
 
-            <!-- Résultats -->
+            <!-- Results -->
             <div class="results-container">
                 <?php if ($patient_id > 0 || $recherche !== '' || $date_recherche !== ''): ?>
                     <?php if (count($resultats) > 0): ?>
@@ -431,7 +431,7 @@ elseif ($recherche !== '') {
                         </div>
 
                         <?php if ($type_recherche === 'patient' && $patient_id === 0): ?>
-                            <!-- Résultats par patient -->
+                            <!-- Results by patient -->
                             <div class="results-list">
                                 <?php foreach ($resultats as $patient): ?>
                                     <div class="result-card patient-result">
@@ -450,7 +450,7 @@ elseif ($recherche !== '') {
                                 <?php endforeach; ?>
                             </div>
                         <?php else: ?>
-                            <!-- Résultats par RDV -->
+                            <!-- Results by appointment -->
                             <div class="results-list">
                                 <?php foreach ($resultats as $rdv): ?>
                                     <div class="result-card rdv-result">

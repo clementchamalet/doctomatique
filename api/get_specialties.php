@@ -1,8 +1,8 @@
 <?php
 /**
- * API pour obtenir la liste des specialites medicales
+ * API to get the list of medical specialties
  * Endpoint: /api/get_specialties.php
- * Methode: GET
+ * Method: GET
  */
 
 require_once __DIR__ . '/../pages/config.php';

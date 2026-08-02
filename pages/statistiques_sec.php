@@ -12,13 +12,12 @@ $pagesRendezvous = ['rdv_sec.php', 'desistement_sec.php'];
 $pagesStats = ['professional_sec.php', 'statistiques_sec.php'];
 $pagesParametres = ['parametres_sec.php'];
 
-$_SESSION['user_id'] = 2;
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'secretaire') {
     header('Location: index.php');
     exit;
 }
 
-// Récupérer les infos de la secrétaire et de sa structure
+// Get the secretary's info and their facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT u.prenom, u.nom, s.id as structure_id, s.nom as structure_nom
@@ -31,7 +30,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $secretaire = mysqli_fetch_assoc($result);
 
-// Si pas de structure trouvée, rediriger
+// If no facility found, redirect
 if (!$secretaire) {
     header("Location: index.php");
     exit;
@@ -39,7 +38,7 @@ if (!$secretaire) {
 
 $structure_id = $secretaire['structure_id'];
 
-// Récupérer la liste des praticiens de l'établissement
+// Get the list of practitioners at the facility
 $stmt = mysqli_prepare(
     $connexion,
     "SELECT DISTINCT p.utilisateur_id, u.prenom, u.nom
@@ -58,10 +57,10 @@ while ($row = mysqli_fetch_assoc($result)) {
     $praticiens_liste[] = $row;
 }
 
-// Déterminer le praticien sélectionné (null = établissement entier)
+// Determine the selected practitioner (null = entire facility)
 $praticien_selectionne = isset($_GET['praticien']) && $_GET['praticien'] !== '' ? intval($_GET['praticien']) : null;
 
-// Si un praticien est sélectionné, récupérer ses spécialités
+// If a practitioner is selected, get their specialties
 $specialites_praticien = [];
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
@@ -80,12 +79,12 @@ if ($praticien_selectionne) {
     }
 }
 
-// ========== PÉRIODE SÉLECTIONNÉE ==========
+// ========== SELECTED PERIOD ==========
 $periode = isset($_GET['periode']) ? $_GET['periode'] : 'semaine';
 
-// ========== STATISTIQUES PAR PÉRIODE ==========
+// ========== STATISTICS BY PERIOD ==========
 
-// Fonction pour obtenir les dates selon la période
+// Function to get the dates for a given period
 function getDatesForPeriod($periode) {
     $dates = [];
     switch($periode) {
@@ -114,11 +113,11 @@ function getDatesForPeriod($periode) {
 $dates = getDatesForPeriod($periode);
 $stats = [];
 
-// ========== STATISTIQUES ADAPTÉES ==========
-// Si praticien_selectionne est null : stats de l'établissement
-// Sinon : stats du praticien
+// ========== ADAPTED STATISTICS ==========
+// If praticien_selectionne is null: facility stats
+// Otherwise: practitioner stats
 
-// 1. RDV Total
+// 1. Total appointments
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -144,7 +143,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_total'] = mysqli_fetch_assoc($result)['nb'];
 
-// RDV période précédente
+// Appointments for the previous period
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -171,7 +170,7 @@ $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_total_prev'] = mysqli_fetch_assoc($result)['nb'];
 $stats['diff_rdv_total'] = $stats['rdv_total'] - $stats['rdv_total_prev'];
 
-// 2. RDV Confirmés
+// 2. Confirmed appointments
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -201,7 +200,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_confirmes'] = mysqli_fetch_assoc($result)['nb'];
 
-// Confirmés période précédente
+// Confirmed for the previous period
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -232,7 +231,7 @@ $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_confirmes_prev'] = mysqli_fetch_assoc($result)['nb'];
 $stats['diff_confirmes'] = $stats['rdv_confirmes'] - $stats['rdv_confirmes_prev'];
 
-// 3. RDV Terminés
+// 3. Completed appointments
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -262,7 +261,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_termines'] = mysqli_fetch_assoc($result)['nb'];
 
-// 4. RDV Annulés
+// 4. Cancelled appointments
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -292,7 +291,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_annules'] = mysqli_fetch_assoc($result)['nb'];
 
-// Annulés période précédente
+// Cancelled for the previous period
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -323,7 +322,7 @@ $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_annules_prev'] = mysqli_fetch_assoc($result)['nb'];
 $stats['diff_annules'] = $stats['rdv_annules'] - $stats['rdv_annules_prev'];
 
-// 5. RDV Désistement
+// 5. Withdrawn appointments
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -353,7 +352,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['rdv_desistement'] = mysqli_fetch_assoc($result)['nb'];
 
-// 6. Nouveaux patients
+// 6. New patients
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -379,7 +378,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['nouveaux_patients'] = mysqli_fetch_assoc($result)['nb'];
 
-// Nouveaux patients période précédente
+// New patients for the previous period
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -406,7 +405,7 @@ $result = mysqli_stmt_get_result($stmt);
 $stats['nouveaux_patients_prev'] = mysqli_fetch_assoc($result)['nb'];
 $stats['diff_patients'] = $stats['nouveaux_patients'] - $stats['nouveaux_patients_prev'];
 
-// 7. Total patients uniques
+// 7. Total unique patients
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -429,7 +428,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['total_patients'] = mysqli_fetch_assoc($result)['nb'];
 
-// 8. Taux de remplissage
+// 8. Fill rate
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -465,7 +464,7 @@ $stats['taux_remplissage'] = $taux_data['total_creneaux'] > 0
 $stats['total_creneaux'] = $taux_data['total_creneaux'];
 $stats['creneaux_reserves'] = $taux_data['creneaux_reserves'];
 
-// Taux période précédente
+// Rate for the previous period
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -500,17 +499,17 @@ $stats['taux_remplissage_prev'] = $taux_data_prev['total_creneaux'] > 0
     : 0;
 $stats['diff_taux'] = $stats['taux_remplissage'] - $stats['taux_remplissage_prev'];
 
-// 9. Taux d'annulation
+// 9. Cancellation rate
 $stats['taux_annulation'] = $stats['rdv_total'] > 0 
     ? round(($stats['rdv_annules'] / $stats['rdv_total']) * 100, 1) 
     : 0;
 
-// 10. Revenus estimés
+// 10. Estimated revenue
 $tarif_consultation = 50;
 $stats['revenus'] = $stats['rdv_termines'] * $tarif_consultation;
 $stats['revenus_potentiels'] = $stats['rdv_confirmes'] * $tarif_consultation;
 
-// 11. Durée moyenne des consultations
+// 11. Average consultation duration
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -540,7 +539,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $stats['duree_moyenne'] = round(mysqli_fetch_assoc($result)['moyenne'] ?? 0);
 
-// 12. Top 3 motifs de consultation
+// 12. Top 3 consultation reasons
 if ($praticien_selectionne) {
     $stmt = mysqli_prepare(
         $connexion,
@@ -577,7 +576,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     $stats['top_motifs'][] = $row;
 }
 
-// Fonction pour formatter le titre de la période
+// Function to format the period title
 function getPeriodeTitle($periode, $dates) {
     switch($periode) {
         case 'semaine':
@@ -590,7 +589,7 @@ function getPeriodeTitle($periode, $dates) {
     }
 }
 
-// Obtenir le nom du praticien sélectionné
+// Get the selected practitioner's name
 $nom_praticien = null;
 if ($praticien_selectionne) {
     foreach ($praticiens_liste as $prat) {
@@ -668,7 +667,7 @@ if ($praticien_selectionne) {
                 </div>
             </div>
 
-            <!-- Sélecteur de praticien -->
+            <!-- Practitioner selector -->
             <div class="praticien-selector">
                 <label for="praticien-select">📋 Afficher les statistiques pour :</label>
                 <select id="praticien-select" onchange="this.form.submit()">
@@ -805,7 +804,7 @@ if ($praticien_selectionne) {
     </footer>
 
     <script>
-        // Auto-submit du formulaire lors du changement de praticien
+        // Auto-submit the form when the practitioner changes
         document.getElementById('praticien-select').addEventListener('change', function() {
             const praticienId = this.value;
             const periode = '<?= $periode ?>';
