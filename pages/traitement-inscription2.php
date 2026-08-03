@@ -81,7 +81,8 @@ $stmt_patient = mysqli_prepare($conn, $sql_insert_patient);
 mysqli_stmt_bind_param($stmt_patient, "isiss", $user_id, $date_naissance, $genre_id, $adresse, $contact_urgence);
 
 if (!mysqli_stmt_execute($stmt_patient)) {
-    echo '<p>Erreur lors de l\'insertion dans patients : ' . mysqli_error($conn) . '</p>';
+    error_log('Patient insert failed: ' . mysqli_error($conn));
+    echo '<p>Erreur lors de l\'insertion dans patients</p>';
     exit;
 }
 mysqli_stmt_close($stmt_patient);
@@ -171,7 +172,8 @@ if (in_array('praticien', $roles)) {
     mysqli_stmt_bind_param($stmt_praticien, "iss", $user_id, $numero_licence, $biographie);
     
     if (!mysqli_stmt_execute($stmt_praticien)) {
-        echo '<p>Erreur lors de l\'insertion dans praticiens : ' . mysqli_error($conn) . '</p>';
+        error_log('Practitioner insert failed: ' . mysqli_error($conn));
+        echo '<p>Erreur lors de l\'insertion dans praticiens</p>';
         exit;
     }
     mysqli_stmt_close($stmt_praticien);
@@ -182,7 +184,8 @@ if (in_array('praticien', $roles)) {
     mysqli_stmt_bind_param($stmt_specialite, "ii", $user_id, $specialite_id);
     
     if (!mysqli_stmt_execute($stmt_specialite)) {
-        echo '<p>Erreur lors de l\'insertion de la spécialité : ' . mysqli_error($conn) . '</p>';
+        error_log('Specialty insert failed: ' . mysqli_error($conn));
+        echo '<p>Erreur lors de l\'insertion de la spécialité</p>';
         exit;
     }
     mysqli_stmt_close($stmt_specialite);
@@ -193,7 +196,8 @@ if (in_array('praticien', $roles)) {
     mysqli_stmt_bind_param($stmt_insert_structure, "ii", $user_id, $structure_id);
     
     if (!mysqli_stmt_execute($stmt_insert_structure)) {
-        echo '<p>Erreur lors de l\'insertion de la structure : ' . mysqli_error($conn) . '</p>';
+        error_log('Facility association insert failed: ' . mysqli_error($conn));
+        echo '<p>Erreur lors de l\'insertion de la structure</p>';
         exit;
     }
     mysqli_stmt_close($stmt_insert_structure);
@@ -239,7 +243,8 @@ if (in_array('secretaire', $roles)) {
     mysqli_stmt_bind_param($stmt_structure, "sisissi", $nom_etablissement, $type_etablissement_id, $adresse_etablissement, $code_postal, $ville, $tel_etablissement, $user_id);
     
     if (!mysqli_stmt_execute($stmt_structure)) {
-        echo '<p>Erreur lors de l\'insertion de la structure de sante : ' . mysqli_error($conn) . '</p>';
+        error_log('Healthcare facility insert failed: ' . mysqli_error($conn));
+        echo '<p>Erreur lors de l\'insertion de la structure de sante</p>';
         exit;
     }
     mysqli_stmt_close($stmt_structure);

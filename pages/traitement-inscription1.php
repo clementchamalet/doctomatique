@@ -388,7 +388,8 @@ if (mysqli_stmt_execute($stmt_insert)) {
     
 } else {
     mysqli_stmt_close($stmt_insert);
-    echo 'Erreur lors de l\'inscription : ' . mysqli_error($conn) . '
+    error_log('Registration insert failed: ' . mysqli_error($conn));
+    echo 'Erreur lors de l\'inscription
         <br>
         <form action="inscription.php">
             <button type="submit">Retour à l\'inscription</button>

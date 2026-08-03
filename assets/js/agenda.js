@@ -121,9 +121,6 @@ class AgendaManager {
      * Places all slots (appointments and availability)
      */
     placerCreneaux() {
-        console.log("RDV DATA:", this.rendezvous);
-        console.log("DISPO DATA:", this.disponibilites);
-
         let hasCreneaux = false;
 
         // Place the appointments

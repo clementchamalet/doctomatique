@@ -1,18 +1,18 @@
 # ========================================
-# .gitignore pour Doctomatique
+# .gitignore for Doctomatique
 # ========================================
 
-# ===== DONNEES LOCALES =====
+# ===== LOCAL DATA =====
 assets/messages/*
 !assets/messages/.gitkeep
 
-# ===== CONFIGURATION LOCALE =====
+# ===== LOCAL CONFIGURATION =====
 php.ini
 config.local.php
 .env
 .env.local
 
-# ===== DOSSIERS SYSTÈMES =====
+# ===== SYSTEM FOLDERS =====
 # macOS
 .DS_Store
 .AppleDouble
@@ -23,7 +23,7 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# ===== ÉDITEURS =====
+# ===== EDITORS =====
 # VSCode
 .vscode/
 *.code-workspace
@@ -36,19 +36,19 @@ Desktop.ini
 *.sublime-project
 *.sublime-workspace
 
-# ===== LOGS ET BASES DE DONNEES =====
+# ===== LOGS AND DATABASES =====
 *.log
 *.sql.gz
 *.sqlite
 *.sqlite3
 
-# ===== FICHIERS TEMPORAIRES =====
+# ===== TEMPORARY FILES =====
 *.tmp
 *.temp
 *.bak
 *.swp
 *~
 
-# ===== OUTILS =====
+# ===== TOOLS =====
 vendor/
 node_modules/

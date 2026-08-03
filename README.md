@@ -34,7 +34,9 @@ This is a learning project: it has no real patients, no real practitioners, and 
 1. Clone or copy the project to your machine.
 2. Copy `config.local.example.php` to `config.local.php`.
 3. Fill in your database credentials in `config.local.php`.
-4. Import the MySQL database.
+4. Create a MySQL/MariaDB database and its tables to match the schema
+   expected by the code in `pages/` and `api/` (this repository does not
+   include a schema dump).
 5. Run the project with your usual setup.
 
 Example using PHP's built-in server:

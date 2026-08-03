@@ -24,64 +24,64 @@ else {
 </head>
 <body>
 
-    <!-- ========== EN-TÊTE DE LA PAGE ========== -->
+    <!-- ========== PAGE HEADER ========== -->
     <header>
         <nav>
-            <!-- Logo principal avec lien vers l'accueil -->
+            <!-- Main logo linking back to the home page -->
             <a href="index.php" class="logo">
                 <img src="assets/images/logo.png" alt="Logo Doctomatique">
                 <span>Doctomatique</span>
             </a>
-            
-            <!-- Navigation principale -->
+
+            <!-- Main navigation -->
             <div class="nav-links">
-                <!-- Lien vers l'espace professionnel -->
+                <!-- Link to the patient area -->
                 <a href="pages/patient.php">Espace patient</a>
-                
-                <!-- Bouton de connexion -->
+
+                <!-- Login button -->
                 <a href=<?php echo '"' . $link . '"' ; ?> class="btn-connexion"><?php echo $affichage ; ?></a>
             </div>
         </nav>
     </header>
 
-    <!-- ========== CONTENU PRINCIPAL ========== -->
+    <!-- ========== MAIN CONTENT ========== -->
     <main>
         <div class="container">
-            <!-- Titre principal de la page -->
+            <!-- Main page title -->
             <h1>Trouvez un praticien près de chez vous</h1>
-            
-            <!-- Sous-titre explicatif -->
+
+            <!-- Explanatory subtitle -->
             <p class="subtitle">Réservez votre consultation en quelques clics</p>
 
-            <!-- ========== FORMULAIRE DE RECHERCHE ========== -->
+            <!-- ========== SEARCH FORM ========== -->
             <div class="search-box">
-                <!-- Conteneur des champs de saisie -->
+                <!-- Container for the input fields -->
                 <div class="search-inputs">
-                    <!-- Champ de recherche : praticien/spécialité -->
+                    <!-- Search field: practitioner/specialty -->
                     <div class="input-wrapper">
                         <img src="assets/images/icone-practicien.png" alt="Icône praticien" class="input-icon">
-                        <input 
-                            type="text" 
-                            id="champPraticien" 
+                        <input
+                            type="text"
+                            id="champPraticien"
                             placeholder="Médecin, spécialité, établissement..."
                         >
                     </div>
-                    
-                    <!-- Séparateur vertical entre les deux champs -->
+
+                    <!-- Vertical separator between the two fields -->
                     <div class="separator"></div>
-                    
-                    <!-- Champ de recherche : localisation -->
+
+                    <!-- Search field: location -->
                     <div class="input-wrapper">
                         <img src="assets/images/icone-localisation.png" alt="Icône localisation" class="input-icon">
-                        <input 
-                            type="text" 
-                            id="champLocalisation" 
+                        <input
+                            type="text"
+                            id="champLocalisation"
                             placeholder="Ville, code postal..."
                         >
                     </div>
                 </div>
-                
-                <!-- Bouton de recherche -->
+
+                <!-- Search button -->
                 <button class="btn-search">
                     <img src="assets/images/icone-recherche.png" alt="Icône recherche">
                     Rechercher
@@ -90,23 +90,23 @@ else {
         </div>
     </main>
 
-    <!-- ========== PIED DE PAGE ========== -->
+    <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
-            <!-- Section À propos -->
+            <!-- About section -->
             <div class="footer-section">
                 <h3>Doctomatique</h3>
                 <p>La plateforme de santé qui simplifie votre quotidien</p>
             </div>
-            
-            <!-- Section Patients -->
+
+            <!-- Patients section -->
             <div class="footer-section">
                 <h4>Patients</h4>
                 <a href="pages/help.php">Aide et contact</a>
                 <a href="pages/patient.php">Espace client</a>
             </div>
-            
-            <!-- Section Professionnels -->
+
+            <!-- Professionals section -->
             <div class="footer-section">
                 <h4>Professionnels</h4>
                 <a href="pages/prices.php">Nos solutions</a>
@@ -114,8 +114,8 @@ else {
                 <a href="pages/professional_sec.php">Espace secrétaire</a>
                 <a href="pages/admin-login.php">Espace administrateur</a>
             </div>
-            
-            <!-- Section Informations légales -->
+
+            <!-- Legal information section -->
             <div class="footer-section">
                 <h4>Informations</h4>
                 <a href="pages/about.php">À propos</a>
@@ -123,14 +123,14 @@ else {
                 <a href="pages/confidentiality.php">Confidentialité</a>
             </div>
         </div>
-        
-        <!-- Barre de copyright -->
+
+        <!-- Copyright bar -->
         <div class="footer-bottom">
             <p>&copy; 2025 Doctomatique. Tous droits réservés.</p>
         </div>
     </footer>
 
-    <!-- Fichier JavaScript pour l'autocomplete et la recherche -->
+    <!-- JavaScript file for autocomplete and search -->
     <script src="assets/js/home.js"></script>
 </body>
 </html>

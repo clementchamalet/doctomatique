@@ -210,7 +210,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_document'])) {
                     header("Location: consultation_sec.php?rdv_id=$rdv_id" . ($praticien_param ? "&praticien=$praticien_param" : "") . "&upload=success");
                     exit;
                 } else {
-                    $upload_error = "Erreur lors de l'enregistrement en base de données : " . mysqli_error($connexion);
+                    error_log("Document upload insert failed: " . mysqli_error($connexion));
+                    $upload_error = "Erreur lors de l'enregistrement en base de données";
                 }
             }
         }
