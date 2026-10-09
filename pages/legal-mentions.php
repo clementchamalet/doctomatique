@@ -123,8 +123,8 @@ else {
                     
                     <p>
                         Le code source de la plateforme est disponible sous licence open source sur notre 
-                        dépôt GitHub : <a href="https://github.com/clementchmlt/doctomatique" 
-                        style="color: var(--couleur-principale);">github.com/clementchmlt/doctomatique</a>
+                        dépôt GitHub : <a href="https://github.com/clementchamalet/doctomatique" 
+                        style="color: var(--couleur-principale);">github.com/clementchamalet/doctomatique</a>
                     </p>
                 </div>
 
